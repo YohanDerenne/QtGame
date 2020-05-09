@@ -12,6 +12,9 @@ PlayerView::PlayerView(QGraphicsItem *parent)
     img = img.scaled(PLAYER_WIDTH,PLAYER_HEIGHT);
     setPixmap(img);
 
+    // Accept collision with transparent pixels
+    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
     // Physics
     flying = false;
     movingLeft = false;
@@ -49,7 +52,7 @@ void PlayerView::SetMovingLeft(bool state)
 
 void PlayerView::MovePlayer()
 {
-    int collideOffset = 20;
+
     if(yAccel > 0 )
         falling = true;
     else
@@ -100,7 +103,7 @@ void PlayerView::MovePlayer()
 
     setPos(next_x,next_y);
     // get a list of all the items currently colliding with player
-    QList<QGraphicsItem *> colliding_items = collidingItems();
+    QList<QGraphicsItem *> colliding_items = this->collidingItems();
     QGraphicsItem * collidedBloc = NULL;
     for(QGraphicsItem * item : colliding_items){
         if(typeid(item) != typeid(Bloc)){
