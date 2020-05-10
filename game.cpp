@@ -33,15 +33,17 @@ Game::Game(QWidget *parent)
     // create map
     // floor
     for(int i = 0; i < 15; i++){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(i*BLOC_SIZE,500);
-         scene->addItem(bloc);
+        Bloc * bloc = new Bloc();
+        bloc->setPos(i*BLOC_SIZE,500);
+        scene->addItem(bloc);
     }
     // platform
-    for(int i = 0; i < 3; i++){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(i*BLOC_SIZE + 200 ,300);
-         scene->addItem(bloc);
+    for(int i = 0; i < 5; i++){
+        if(i != 3){
+            Bloc * bloc = new Bloc();
+            bloc->setPos(i*BLOC_SIZE + 200 ,300);
+            scene->addItem(bloc);
+        }
     }
     /*
     // roof
@@ -53,15 +55,18 @@ Game::Game(QWidget *parent)
     */
     // wall
     for(int i = 5; i >= 0; i--){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(0 ,500 - BLOC_SIZE - i * BLOC_SIZE);
-         scene->addItem(bloc);
+        if(i != 2 && i !=3 ){
+            Bloc * bloc = new Bloc();
+            bloc->setPos(0 ,500 - BLOC_SIZE - i * BLOC_SIZE);
+            scene->addItem(bloc);
+        }
+
     }
     // little wall
     for(int i = 3; i >= 0; i--){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(500 ,500 - BLOC_SIZE - i * BLOC_SIZE);
-         scene->addItem(bloc);
+        Bloc * bloc = new Bloc();
+        bloc->setPos(500 ,500 - BLOC_SIZE - i * BLOC_SIZE);
+        scene->addItem(bloc);
     }
 
     //show();

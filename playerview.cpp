@@ -33,8 +33,7 @@ PlayerView::PlayerView(QGraphicsItem *parent)
 void PlayerView::Jump()
 {
     if(flying == false){
-        setPos(x(),y() - 10);
-        yAccel = -800;
+        yAccel = -900;
         flying = true;
         jumping = true;
     }
@@ -111,7 +110,7 @@ void PlayerView::MovePlayer()
             colliding_blocs.append(item);
         }
     }
-
+    //qDebug() << "no "<< x() << y() << "prec : " << prec_x << prec_y;
     if (colliding_blocs.count() > 0){
         for(int i = 0 ; i < colliding_blocs.count() ; i ++){
             collidedBloc = colliding_blocs[i];
@@ -135,9 +134,9 @@ void PlayerView::MovePlayer()
             if( prec_x >= bloc_x + BLOC_SIZE )
                 isRight = true;
 
-            qDebug() << "top:" <<isTop << " under:" << isUnder << " right" << isRight << " left:" << isLeft;
+            //qDebug() << "top:" <<isTop << " under:" << isUnder << " right" << isRight << " left:" << isLeft;
             //qDebug() << x() << y() << "prec : " << prec_x << prec_y;
-            qDebug() << speed;
+            //qDebug() << speed;
             // falling on a top of a bloc case
             if(isTop == true && isUnder == false && isRight == false && isLeft == false){
                 // Adjust the position of the player exactly on the bloc
@@ -203,7 +202,7 @@ void PlayerView::MovePlayer()
     else{
         // no bloc colliding -> falling or continue force movement
         if(yAccel == 0)
-            yAccel -= 1;
+            yAccel += 100;
         //        next_y += yAccel * 1/FPS;
         //        float dt = 1/(float)FPS;
         //        yAccel = yAccel + weight * 9 * dt;
