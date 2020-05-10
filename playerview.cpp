@@ -12,6 +12,9 @@ PlayerView::PlayerView(QGraphicsItem *parent)
     img = img.scaled(PLAYER_WIDTH,PLAYER_HEIGHT);
     setPixmap(img);
 
+    // Accept collision with transparent pixels
+    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
     // Physics
     flying = false;
     movingLeft = false;
@@ -49,7 +52,7 @@ void PlayerView::SetMovingLeft(bool state)
 
 void PlayerView::MovePlayer()
 {
-    int collideOffset = 20;
+
     if(yAccel > 0 )
         falling = true;
     else
@@ -100,7 +103,7 @@ void PlayerView::MovePlayer()
 
     setPos(next_x,next_y);
     // get a list of all the items currently colliding with player
-    QList<QGraphicsItem *> colliding_items = collidingItems();
+    QList<QGraphicsItem *> colliding_items = this->collidingItems();
     QGraphicsItem * collidedBloc = NULL;
     for(QGraphicsItem * item : colliding_items){
         if(typeid(item) != typeid(Bloc)){
@@ -129,7 +132,7 @@ void PlayerView::MovePlayer()
 
         qDebug() << "top:" <<isTop << " under:" << isUnder << " right" << isRight << " left:" << isLeft;
         // falling on a top of a bloc case
-        if(falling == true && isTop){
+        if(isTop == true && isUnder == false && isRight == false && isLeft == false){
             // Adjust the position of the player exactly on the bloc
             next_y = bloc_y - PLAYER_HEIGHT + 1; // +1 to stay in touch with bloc
             falling = false;
@@ -144,16 +147,26 @@ void PlayerView::MovePlayer()
         }
 
         //qDebug() << isTop << isUnder;
-        // Collide the side of a bloc
-        else if(isTop == false && movingLeft == true && isUnder == false && isRight == true){
+        // Collide the right side of a bloc
+        else if(isTop == false && isLeft == false && isUnder == false && isRight == true){
             // Adjust the position of the player exactly beside the bloc
             next_x = bloc_x + BLOC_SIZE + 1;
             speed = 0;
         }
-        else if(isTop == false && movingRight == true && isUnder == false && isLeft == true){
+        // Collide the left side of a bloc
+        else if(isTop == false && isRight == false && isUnder == false && isLeft == true){
             // Adjust the position of the player exactly beside the bloc
             next_x = bloc_x - PLAYER_WIDTH - 1;
             speed = 0;
+        }
+
+        // Collide top corners
+        else if (isTop == true){
+            next_y = bloc_y - PLAYER_HEIGHT + 1;
+        }
+        //Collide bottom corners
+        else if (isUnder == true){
+            next_y = bloc_y + BLOC_SIZE ;
         }
 
         else{

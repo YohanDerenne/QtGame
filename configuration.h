@@ -14,7 +14,7 @@
 
 #define MAX_GRAVITY 5
 
-#define FPS 55
+#define FPS 60
 
 
 #endif // CONFIGURATION_H

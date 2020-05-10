@@ -37,9 +37,9 @@ Game::Game(QWidget *parent)
          scene->addItem(bloc);
     }
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 3; i++){
          Bloc * bloc = new Bloc();
-         bloc->setPos(i*BLOC_SIZE + 400 ,200);
+         bloc->setPos(i*BLOC_SIZE + 200 ,300);
          scene->addItem(bloc);
     }
 
