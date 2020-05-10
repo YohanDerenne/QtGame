@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     bloc.cpp \
     game.cpp \
+    hitmanagement.cpp \
     main.cpp \
     map.cpp \
     playerview.cpp
@@ -26,6 +27,7 @@ HEADERS += \
     bloc.h \
     configuration.h \
     game.h \
+    hitmanagement.h \
     map.h \
     playerview.h
 

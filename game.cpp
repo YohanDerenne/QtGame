@@ -25,21 +25,42 @@ Game::Game(QWidget *parent)
 
     // create the player
     player = new PlayerView();
-    player->setPos(200,200);
+    player->setPos(200,400);
 
     // add the player to the scene
     scene->addItem(player);
 
     // create map
-    for(int i = 0; i < 10; i++){
+    // floor
+    for(int i = 0; i < 15; i++){
          Bloc * bloc = new Bloc();
          bloc->setPos(i*BLOC_SIZE,500);
          scene->addItem(bloc);
     }
-
+    // platform
     for(int i = 0; i < 3; i++){
          Bloc * bloc = new Bloc();
          bloc->setPos(i*BLOC_SIZE + 200 ,300);
+         scene->addItem(bloc);
+    }
+    /*
+    // roof
+    for(int i = 0; i < 9; i++){
+         Bloc * bloc = new Bloc();
+         bloc->setPos(i*BLOC_SIZE + 50 ,300);
+         scene->addItem(bloc);
+    }
+    */
+    // wall
+    for(int i = 5; i >= 0; i--){
+         Bloc * bloc = new Bloc();
+         bloc->setPos(0 ,500 - BLOC_SIZE - i * BLOC_SIZE);
+         scene->addItem(bloc);
+    }
+    // little wall
+    for(int i = 3; i >= 0; i--){
+         Bloc * bloc = new Bloc();
+         bloc->setPos(500 ,500 - BLOC_SIZE - i * BLOC_SIZE);
          scene->addItem(bloc);
     }
 
