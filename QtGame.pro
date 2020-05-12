@@ -16,20 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bloc.cpp \
+    element.cpp \
+    fixedblock.cpp \
     game.cpp \
-    hitmanagement.cpp \
     main.cpp \
     map.cpp \
-    playerview.cpp
+    player.cpp \
+    unit.cpp \
+    wall.cpp
 
 HEADERS += \
-    bloc.h \
     configuration.h \
+    element.h \
+    fixedblock.h \
     game.h \
-    hitmanagement.h \
     map.h \
-    playerview.h
+    player.h \
+    unit.h \
+    wall.h
 
 FORMS +=
 

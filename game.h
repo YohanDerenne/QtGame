@@ -4,23 +4,35 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QGraphicsScene>
-#include "playerview.h"
+#include "player.h"
+#include "element.h"
+#include "map.h"
+
 
 class Game: public QGraphicsView{
+    Q_OBJECT
 public:
-    Game(QWidget * parent=0);
+    Game();
     ~Game();
 
     void keyPressEvent(QKeyEvent * event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+    void updatePlayerPosition();
+
+public slots:
+    void updatePositions();
+
 private:
     QGraphicsScene * scene;
-    PlayerView * player;
+    Player * player;
     QImage background;
-    float ratio;
+    QList<Element *> elementList;
+    Map * map;
 
+    int windowWidth;
+    int windowHeight;
 };
 
 

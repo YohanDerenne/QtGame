@@ -1,9 +1,12 @@
-#include "bloc.h"
+#include "wall.h"
 #include "configuration.h"
 
-Bloc::Bloc()
+Wall::Wall()
 {
     QPixmap blocSprite = QPixmap(":/ressources/images/bloc.png");
     blocSprite = blocSprite.scaled(BLOC_SIZE,BLOC_SIZE);
     setPixmap(blocSprite);
+
+    width = BLOC_SIZE;
+    height = BLOC_SIZE;
 }
