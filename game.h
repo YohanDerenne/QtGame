@@ -4,9 +4,19 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QGraphicsScene>
+#include <QDebug>
+#include <QTimer>
+#include <QKeyEvent>
+#include <qscrollbar.h>
+#include <QGraphicsPixmapItem>
+
+#include "collidemanager.h"
 #include "player.h"
 #include "element.h"
 #include "map.h"
+#include "wall.h"
+#include "configuration.h"
+
 
 
 class Game: public QGraphicsView{
@@ -20,6 +30,7 @@ public:
     void resizeEvent(QResizeEvent *event) override;
 
     void updatePlayerPosition();
+    void respawn();
 
 public slots:
     void updatePositions();
@@ -33,6 +44,7 @@ private:
 
     int windowWidth;
     int windowHeight;
+
 };
 
 

@@ -2,7 +2,8 @@
 
 Element::Element()
 {
-
+    height = 0;
+    width = 0;
 }
 
 int Element::getWidth() const

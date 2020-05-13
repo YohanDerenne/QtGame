@@ -1,5 +1,5 @@
 #include "wall.h"
-#include "configuration.h"
+
 
 Wall::Wall()
 {
@@ -9,4 +9,7 @@ Wall::Wall()
 
     width = BLOC_SIZE;
     height = BLOC_SIZE;
+
+    // Accept collision with transparent pixels
+    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 }

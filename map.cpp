@@ -1,6 +1,4 @@
 #include "map.h"
-#include "configuration.h"
-#include "wall.h"
 
 Map::Map()
 {
@@ -14,7 +12,7 @@ void Map::readExample()
 
     // set background
     background = QImage(":/ressources/images/background.jpg");
-    background = background.scaledToHeight(MAP_HEIGHT);
+    background = background.scaledToHeight(height);
 
     // create the player
     player = new Player();
@@ -29,6 +27,11 @@ void Map::readExample()
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth(),500);
         elementList.append(bloc);
+        if(i == 12){
+            Virus * virus = new Virus();
+            virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
+            unitList.append(virus);
+        }
     }
     // platform
     for(int i = 0; i < 5; i++){
@@ -86,4 +89,9 @@ int Map::getWidth() const
 int Map::getHeight() const
 {
     return height;
+}
+
+QList<Unit *> Map::getUnitList() const
+{
+    return unitList;
 }

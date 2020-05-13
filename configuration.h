@@ -16,6 +16,9 @@
 
 #define BLOC_SIZE 50
 
+#define VIRUS_WIDTH 50
+#define VIRUS_HEIGHT 50
+
 #define GRAVITY 9
 
 #define FPS 60

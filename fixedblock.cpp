@@ -1,6 +1,6 @@
 #include "fixedblock.h"
 
-FixedBlock::FixedBlock()
+FixedBlock::FixedBlock() : Element()
 {
 
 }

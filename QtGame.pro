@@ -23,9 +23,11 @@ SOURCES += \
     map.cpp \
     player.cpp \
     unit.cpp \
+    virus.cpp \
     wall.cpp
 
 HEADERS += \
+    collidemanager.h \
     configuration.h \
     element.h \
     fixedblock.h \
@@ -33,6 +35,7 @@ HEADERS += \
     map.h \
     player.h \
     unit.h \
+    virus.h \
     wall.h
 
 FORMS +=

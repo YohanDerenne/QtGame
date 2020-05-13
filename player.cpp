@@ -1,9 +1,4 @@
 #include "player.h"
-#include "wall.h"
-#include "configuration.h"
-#include <QKeyEvent>
-#include <QTimer>
-#include <QDebug>
 
 Player::Player() : Unit()
 {
@@ -24,8 +19,7 @@ void Player::Jump()
 {
     if(flying == false){
         yForce = -900;
-        flying = true;
-        jumping = true;
+        updateMovementStates();
     }
 }
 
