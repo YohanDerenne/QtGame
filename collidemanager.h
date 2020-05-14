@@ -143,6 +143,7 @@ void CollideManager<itemType>::updateCollidingPosition()
                     fromRight ){
                 // Adjust the position of the player exactly beside the bloc
                 next_x = bloc_x + collidedItem->getWidth() + 1;
+                subject->setXForce(0);
             }
             // Collide the left side
             else if(solidLeft &&
@@ -152,25 +153,28 @@ void CollideManager<itemType>::updateCollidingPosition()
                     fromLeft ){
                 // Adjust the position of the player exactly beside the bloc
                 next_x = bloc_x - subject->getWidth() - 1;
+                subject->setXForce(0);
             }
             else if (collidingItemList.count() > 1){
                 continue;   // if other collides exists, then its not realy a corner so we skip corner cases
             }
             // Collide top right corner
             else if ((solidTop || solidRight) && fromTop == true && fromRight == true){
-                next_y = bloc_y - subject->getHeight(); // +1 to stay in touch with bloc
-                next_x = bloc_x + collidedItem->getWidth() + 1;
-                subject->setYForce(0);
+                //next_y = bloc_y - subject->getHeight(); // +1 to stay in touch with bloc
+                next_x = bloc_x + collidedItem->getWidth();
+                //subject->setYForce(0);
+                subject->setXForce(0);
             }
             // Collide top left corner
             else if ((solidTop || solidLeft) && fromTop == true && fromLeft == true){
-                next_y = bloc_y - subject->getHeight(); // +1 to stay in touch with bloc
-                next_x = bloc_x - subject->getWidth() - 1;
-                subject->setYForce(0);
+                //next_y = bloc_y - subject->getHeight() + 2; // +1 to stay in touch with bloc
+                next_x = bloc_x - subject->getWidth();
+                //subject->setYForce(0);
+                subject->setXForce(0);
             }
             //Collide bottom right corners
             else if ((solidUnder || solidRight) && fromUnder ==  true && fromRight == true && subject->isJumping() == true){
-                next_y = bloc_y + collidedItem->getHeight() ;
+                next_y = bloc_y + collidedItem->getHeight() + 2;
                 next_x = bloc_x + collidedItem->getWidth() + 1;
                 subject->setYForce( - subject->getYForce());
             }
@@ -179,10 +183,11 @@ void CollideManager<itemType>::updateCollidingPosition()
                 next_y = bloc_y + collidedItem->getHeight() ;
                 next_x = bloc_x - subject->getWidth() - 1;
                 subject->setYForce( - subject->getYForce());
+                subject->setXForce(0);
             }
             else{
                 // reset speed
-                subject->setSpeed(10);
+                //subject->setXForce(10);
             }
         }
         subject->setPos(next_x,next_y);

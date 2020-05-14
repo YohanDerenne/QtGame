@@ -8,10 +8,12 @@ Unit::Unit() : Element()
     movingRight = false;
     falling = false;
     jumping = false;
-    speed = 10;
+    xForce = 0;
     weight = 200;
     yForce = 0;
-    xForce = 0;
+    xAcceleration = 0.5;
+
+    maxSpeed = MAX_SPEED;
 }
 
 void Unit::SetMovingRight(bool state)
@@ -39,20 +41,36 @@ void Unit::updateMovementStates()
     }
     if(yForce == 0){
         flying = false;
+        // better grip on the floor
+        xAcceleration = 1;
     }
     else{
         flying = true;
+        // lower grip in the air
+        xAcceleration = 0.5;
     }
 }
 
-int Unit::getSpeed() const
+void Unit::increaseLeftForce()
 {
-    return speed;
+    if(xForce > - maxSpeed){
+        xForce -= 1 * xAcceleration;
+    }
 }
 
-void Unit::setSpeed(int value)
+void Unit::increaseRightForce()
 {
-    speed = value;
+    if(xForce < maxSpeed){
+        xForce += 1 * xAcceleration;
+    }
+}
+
+void Unit::decreaseXForce()
+{
+    if(xForce > 0)
+        xForce -= 1 * xAcceleration;
+    if(xForce < 0)
+        xForce += 1 * xAcceleration;
 }
 
 float Unit::getXForce() const

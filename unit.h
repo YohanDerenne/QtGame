@@ -3,6 +3,7 @@
 
 #include "element.h"
 
+#include "configuration.h"
 
 class Unit : public Element
 {
@@ -31,8 +32,10 @@ public:
 
     void updateMovementStates();
 
-    int getSpeed() const;
-    void setSpeed(int value);
+    void increaseLeftForce();
+    void increaseRightForce();
+    void decreaseXForce();
+
 
 public slots:
     void MovePlayer();
@@ -41,13 +44,17 @@ protected :
     bool flying;
     bool falling;
     bool jumping;
+
     float yForce;
     float xForce;
+    float xAcceleration;
+
     int weight;
 
     bool movingLeft;
     bool movingRight;
-    int speed;
+
+    int maxSpeed;
 
 };
 

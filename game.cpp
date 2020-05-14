@@ -100,7 +100,7 @@ void Game::updatePlayerPosition()
 {
     player->updateMovementStates();
 
-    CollideManager<Wall> * wallCollider = new CollideManager<Wall>(player,true,true,true,true);
+    CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(player,true,true,true,true);
     CollideManager<Virus> * virusCollider = new CollideManager<Virus>(player,true,false,false,false);
 
     int next_x = player->x();
@@ -113,11 +113,15 @@ void Game::updatePlayerPosition()
         player->setYForce( player->getYForce() + player->getWeight() * GRAVITY * dt);
     }
     if(player->isMovingLeft()){
-        next_x -= player->getSpeed();
+        player->increaseLeftForce();
     }
-    if(player->isMovingRight()){
-        next_x += player->getSpeed();
+    else if(player->isMovingRight()){
+        player->increaseRightForce();
     }
+    else {
+        player->decreaseXForce();
+    }
+    next_x += player->getXForce();
     player->setPos(next_x,next_y);
 
     wallCollider->updateCollidingPosition();
@@ -128,7 +132,7 @@ void Game::updatePlayerPosition()
             !virusCollider->getAreColliding()){
         if(player->getYForce() == 0)
             player->setYForce(player->getYForce() + 100);
-        player->setSpeed(10);
+        //player->setXForce(10);
     }
     if(virusCollider->getAreColliding()){
         QMap<Virus *,fromPosition> virusInfo = virusCollider->getCollidingItemList();
@@ -151,6 +155,7 @@ void Game::updatePlayerPosition()
 
     delete wallCollider;
     delete virusCollider;
+    //qDebug() << player->getXForce();
 }
 
 void Game::respawn()
