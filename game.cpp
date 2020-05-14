@@ -1,15 +1,12 @@
 #include "game.h"
-#include "bloc.h"
-#include "configuration.h"
-#include <QDebug>
-#include <QKeyEvent>
-#include <qscrollbar.h>
-#include <QGraphicsPixmapItem>
 
-Game::Game(QWidget *parent)
+// for test only
+void createVirus(QGraphicsScene* scene);
+
+Game::Game()
 {
-    ratio = 1;
-
+    windowWidth = WINDOW_WIDTH;
+    windowHeight = WINDOW_HEIGHT;
     // create the scene
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
@@ -18,30 +15,33 @@ Game::Game(QWidget *parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 
-    // set background
-    background = QImage(":/ressources/images/background.jpg");
-    QImage background_resized = background.scaledToHeight(WINDOW_HEIGHT);
-    setBackgroundBrush(QBrush(background_resized));
+    // create map
+    map = new Map();
+    map->readExample();
 
-    // create the player
-    player = new PlayerView();
-    player->setPos(200,200);
+    // set scene background
+    //setBackgroundBrush(QImage(map->getBackground()));
+    this->setBackgroundBrush(QImage(map->getBackground()));
 
-    // add the player to the scene
+
+    // set player
+    player = map->getPlayer();
     scene->addItem(player);
 
-    // create map
-    for(int i = 0; i < 10; i++){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(i*BLOC_SIZE,500);
-         scene->addItem(bloc);
+    // set elements
+    for(Element * element : map->getElementList()){
+        scene->addItem(element);
     }
 
-    for(int i = 0; i < 3; i++){
-         Bloc * bloc = new Bloc();
-         bloc->setPos(i*BLOC_SIZE + 200 ,300);
-         scene->addItem(bloc);
+    // set mobs
+    for(Unit * unit : map->getUnitList()){
+        scene->addItem(unit);
     }
+
+    QTimer * timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(updatePositions()));
+    // start the timer
+    timer->start(1000/FPS);
 
     //show();
     horizontalScrollBar()->setValue(1);
@@ -71,7 +71,10 @@ void Game::keyPressEvent(QKeyEvent *event)
         player->Jump();
     }
     else if (event->key() == Qt::Key_R){
-        player->setPos(200,200);
+        respawn();
+    }
+    else if (event->key() == Qt::Key_A){
+        createVirus(scene);
     }
 }
 
@@ -91,5 +94,84 @@ void Game::resizeEvent(QResizeEvent *event)
     qDebug() << "resize";
     QRect rect = QRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
     fitInView(rect);
+}
+
+void Game::updatePlayerPosition()
+{
+    player->updateMovementStates();
+
+    CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(player,true,true,true,true);
+    CollideManager<Virus> * virusCollider = new CollideManager<Virus>(player,true,false,false,false);
+
+    int next_x = player->x();
+    int next_y = player->y();
+
+    // Moving the player
+    if(player->isFlying() == true){
+        next_y += player->getYForce() * 1/FPS;
+        float dt = 1/(float)FPS;
+        player->setYForce( player->getYForce() + player->getWeight() * GRAVITY * dt);
+    }
+    if(player->isMovingLeft()){
+        player->increaseLeftForce();
+    }
+    else if(player->isMovingRight()){
+        player->increaseRightForce();
+    }
+    else {
+        player->decreaseXForce();
+    }
+    next_x += player->getXForce();
+    player->setPos(next_x,next_y);
+
+    wallCollider->updateCollidingPosition();
+    virusCollider->updateCollidingPosition();
+
+    // If no collides -> begin de falling
+    if(!wallCollider->getAreColliding() &&
+            !virusCollider->getAreColliding()){
+        if(player->getYForce() == 0)
+            player->setYForce(player->getYForce() + 100);
+        //player->setXForce(10);
+    }
+    if(virusCollider->getAreColliding()){
+        QMap<Virus *,fromPosition> virusInfo = virusCollider->getCollidingItemList();
+        QMapIterator<Virus*, fromPosition> iterator(virusInfo);
+        while (iterator.hasNext()) {
+            iterator.next();
+            if(iterator.value().fromTop == true){
+                // rebondi
+                player->setYForce(-100);
+
+                // Kill virus
+                delete iterator.key();
+                elementList.removeOne(iterator.key());
+            }
+            else{
+                respawn();
+            }
+        }
+    }
+
+    delete wallCollider;
+    delete virusCollider;
+    //qDebug() << player->getXForce();
+}
+
+void Game::respawn()
+{
+    player->setPos(200,400);
+}
+
+void Game::updatePositions()
+{
+    updatePlayerPosition();
+}
+
+// FOR TESTS
+void createVirus(QGraphicsScene* scene){
+    Virus * virus = new Virus();
+    virus->setPos(700,450);
+    scene->addItem(virus);
 }
 

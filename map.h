@@ -3,17 +3,34 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
-#include "playerview.h"
+
+#include "player.h"
+#include "element.h"
+#include "virus.h"
 
 
-class Map : public QObject,public QGraphicsPixmapItem
+class Map
 {
 public:
     Map();
 
+    void readExample();
+
+    QList<Element *> getElementList() const;
+    QList<Unit *> getUnitList() const;
+    Player *getPlayer() const;
+    QImage getBackground() const;
+    int getWidth() const;
+    int getHeight() const;
+
 private:
-    QGraphicsScene * scene;
-    PlayerView * player;
+    QImage background;
+    Player * player;
+    QList<Element *> elementList;
+    QList<Unit *> unitList;
+
+    int width;
+    int height;
 };
 
 #endif // MAP_H

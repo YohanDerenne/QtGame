@@ -2,7 +2,10 @@
 Polytech S8 project - Qt creator c++
 
 # Controls
-R : 			Respawn
-LEFT ARROW : 	Move left
-RIGHT ARROW : 	Move Right
-UP ARROW :		Jump
+| KEY         | Action         |
+|-------------|----------------|
+| A           | Respawn Virus  |
+| R           | Respawn Player |
+| LEFT ARROW  | Move left      |
+| RIGHT ARROW | Move right     |
+| UP ARROW    | Jump           |
