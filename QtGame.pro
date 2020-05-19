@@ -16,9 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    consoObject.cpp \
     element.cpp \
     fixedblock.cpp \
     game.cpp \
+    life.cpp \
     main.cpp \
     map.cpp \
     player.cpp \
@@ -29,9 +31,11 @@ SOURCES += \
 HEADERS += \
     collidemanager.h \
     configuration.h \
+    consoObject.h \
     element.h \
     fixedblock.h \
     game.h \
+    life.h \
     map.h \
     player.h \
     unit.h \

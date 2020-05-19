@@ -19,6 +19,15 @@
 #define VIRUS_WIDTH 50
 #define VIRUS_HEIGHT 50
 
+#define GEL_WIDTH 50
+#define GEL_HEIGHT 50
+
+#define MASK_WIDTH 50
+#define MASK_HEIGHT 50
+
+#define LIFE_WIDTH 50
+#define LIFE_HEIGHT 50
+
 #define GRAVITY 9
 
 #define FPS 60
