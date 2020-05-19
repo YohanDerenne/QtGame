@@ -8,8 +8,8 @@ class life : public consoObject
 public:
     life();
 
-protected:
-    virtual void applyEffect(Unit unit);
+/*protected:
+    virtual void applyEffect(Unit unit);*/
 
 };
 

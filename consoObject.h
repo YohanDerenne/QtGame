@@ -12,8 +12,8 @@ public:
     int getDurationOfEffect() const;
     void setDurationOfEffect(int value);
 
-protected :
-    virtual void applyEffect(Unit unit) = 0;
+/*protected :
+    virtual void applyEffect(Unit unit) = 0;*/
 
 private:
     int durationOfEffect;

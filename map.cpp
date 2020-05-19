@@ -32,6 +32,13 @@ void Map::readExample()
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
             unitList.append(virus);
         }
+
+        if(i == 9){
+            life *l = new life();
+            l->setPos(i*bloc->getWidth(),500 - l->getHeight());
+            consoObjectList.append(l);
+
+        }
     }
     // platform
     for(int i = 0; i < 5; i++){
@@ -94,4 +101,9 @@ int Map::getHeight() const
 QList<Unit *> Map::getUnitList() const
 {
     return unitList;
+}
+
+QList<consoObject *> Map:: getConsoObjectList() const
+{
+    return consoObjectList;
 }

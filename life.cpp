@@ -15,7 +15,7 @@ life::life() : consoObject()
 
 }
 
-void life::applyEffect(Unit unit)
+/*void life::applyEffect(Unit unit)
 {
-    unit
-}
+
+}*/
