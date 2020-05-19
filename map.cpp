@@ -47,6 +47,7 @@ void Map::readExample()
             bloc->setPos(i*bloc->getWidth() + 200 ,300);
             elementList.append(bloc);
         }
+
     }
     /*
     // roof

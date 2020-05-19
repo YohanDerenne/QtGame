@@ -20,9 +20,11 @@ SOURCES += \
     element.cpp \
     fixedblock.cpp \
     game.cpp \
+    gelhydro.cpp \
     life.cpp \
     main.cpp \
     map.cpp \
+    mask.cpp \
     player.cpp \
     unit.cpp \
     virus.cpp \
@@ -35,8 +37,10 @@ HEADERS += \
     element.h \
     fixedblock.h \
     game.h \
+    gelhydro.h \
     life.h \
     map.h \
+    mask.h \
     player.h \
     unit.h \
     virus.h \

@@ -25,8 +25,8 @@
 #define MASK_WIDTH 50
 #define MASK_HEIGHT 50
 
-#define LIFE_WIDTH 50
-#define LIFE_HEIGHT 50
+#define LIFE_WIDTH 30
+#define LIFE_HEIGHT 30
 
 #define GRAVITY 9
 

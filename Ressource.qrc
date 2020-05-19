@@ -5,5 +5,7 @@
         <file>images/bloc.png</file>
         <file>images/virus.png</file>
         <file>images/life.png</file>
+        <file>images/mask.jpg</file>
+        <file>images/gel.jpg</file>
     </qresource>
 </RCC>
