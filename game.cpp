@@ -44,8 +44,10 @@ Game::Game()
     timer->start(1000/FPS);
 
     //show();
-    horizontalScrollBar()->setValue(1);
-    verticalScrollBar()->setValue(1);
+    horizontalScrollBar()->setValue(0);
+    verticalScrollBar()->setValue(0);
+    horizontalScrollBar()->setMinimum(0);
+    horizontalScrollBar()->setMaximum(map->getWidth());
 }
 
 Game::~Game()
@@ -163,9 +165,36 @@ void Game::respawn()
     player->setPos(200,400);
 }
 
+void Game::updateCamera()
+{
+    // Scrollbar is similar to x position but it's not accurate.
+    // With this offset it can be use as a x position (linéar), much accurate
+    int offset = (int) (0.13 * horizontalScrollBar()->value());
+
+    // Player have to stay between CAMERA_LEFT and CAMERA_RIGHT borders
+
+    // The player is too close to the left of the window, so we scroll to the left
+    // not at the map border
+    if (horizontalScrollBar()->value() > 0 && player->x() - horizontalScrollBar()->value() - offset < CAMERA_LEFT ){
+        horizontalScrollBar()->setValue(player->x() - CAMERA_LEFT - offset);
+        //qDebug() << "left";
+    }
+
+    // The player is too close to the right of the window, so we scroll to the right
+    // not at the map border
+    else if (horizontalScrollBar()->value() + CAMERA_RIGHT < map->getWidth() && player->x() - horizontalScrollBar()->value() - offset> CAMERA_RIGHT ){
+        horizontalScrollBar()->setValue(player->x() - CAMERA_RIGHT - offset);
+        //qDebug() << "right";
+    }
+
+    //qDebug() << offset <<  player->x() << horizontalScrollBar()->value() << player->x() - horizontalScrollBar()->value() - offset;
+
+}
+
 void Game::updatePositions()
 {
     updatePlayerPosition();
+    updateCamera();
 }
 
 // FOR TESTS

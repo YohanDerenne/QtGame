@@ -12,7 +12,10 @@
 #define PLAYER_HEIGHT 90
 
 #define MAP_HEIGHT 720
-#define MAP_WIDTH 10000
+#define MAP_WIDTH 4000
+
+#define CAMERA_LEFT 350
+#define CAMERA_RIGHT 500
 
 #define BLOC_SIZE 50
 

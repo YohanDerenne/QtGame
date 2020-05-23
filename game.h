@@ -32,6 +32,8 @@ public:
     void updatePlayerPosition();
     void respawn();
 
+    void updateCamera();
+
 public slots:
     void updatePositions();
 
