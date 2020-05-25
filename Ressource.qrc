@@ -4,5 +4,14 @@
         <file>images/player.png</file>
         <file>images/bloc.png</file>
         <file>images/virus.png</file>
+        <file>images/player/1.png</file>
+        <file>images/player/2.png</file>
+        <file>images/player/3.png</file>
+        <file>images/player/4.png</file>
+        <file>images/player/11.png</file>
+        <file>images/player/12.png</file>
+        <file>images/player/13.png</file>
+        <file>images/player/21.png</file>
+        <file>images/player/22.png</file>
     </qresource>
 </RCC>

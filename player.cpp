@@ -5,13 +5,7 @@ Player::Player() : Unit()
     width = PLAYER_WIDTH;
     height = PLAYER_HEIGHT;
 
-    // set graphic
-    QPixmap img = QPixmap(":/ressources/images/player.png");
-    img = img.scaled(width,height);
-    setPixmap(img);
-
-    // Accept collision with transparent pixels
-    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+    setSprite(":/ressources/images/player/1.png");
 
 }
 

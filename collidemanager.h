@@ -111,7 +111,7 @@ void CollideManager<itemType>::updateCollidingPosition()
             positions.fromUnder = fromUnder;
             this->collidingItemList.insert(collidedItem,positions);
 
-            qDebug() << "top:" <<fromTop << " under:" << fromUnder << " right" << fromRight << " left:" << fromLeft;
+            //qDebug() << "top:" <<fromTop << " under:" << fromUnder << " right" << fromRight << " left:" << fromLeft;
             //qDebug() << x() << y() << "prec : " << prec_x << prec_y;
             //qDebug() << speed;
 
