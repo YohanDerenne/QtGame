@@ -3,6 +3,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
+#include <QMutex>
 
 class Element : public QGraphicsPixmapItem
 {
@@ -15,9 +16,14 @@ public:
     int getHeight() const;
     void setHeight(int value);
 
+    void setSprite(QString ressource);
+
 protected:
     int width;
     int height;
+    int isRightSide;
+
+
 };
 
 #endif // ELEMENT_H

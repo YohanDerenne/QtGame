@@ -14,16 +14,21 @@ Unit::Unit() : Element()
     xAcceleration = 0.5;
 
     maxSpeed = MAX_SPEED;
+    isRightSide = true;
 }
 
 void Unit::SetMovingRight(bool state)
 {
     movingRight = state;
+    if(state == true)
+        isRightSide = true;
 }
 
 void Unit::SetMovingLeft(bool state)
 {
     movingLeft = state;
+    if(state == true)
+        isRightSide = false;
 }
 
 void Unit::updateMovementStates()
@@ -49,6 +54,10 @@ void Unit::updateMovementStates()
         // lower grip in the air
         xAcceleration = 0.5;
     }
+    if(xForce < 1 &&  xForce > -1 && yForce < 1 &&  yForce > -1)
+        fixed = true;
+    else
+        fixed = false;
 }
 
 void Unit::increaseLeftForce()
@@ -71,6 +80,11 @@ void Unit::decreaseXForce()
         xForce -= 1 * xAcceleration;
     if(xForce < 0)
         xForce += 1 * xAcceleration;
+}
+
+bool Unit::getFixed() const
+{
+    return fixed;
 }
 
 float Unit::getXForce() const

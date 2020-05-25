@@ -36,6 +36,7 @@ public:
     void increaseRightForce();
     void decreaseXForce();
 
+    bool getFixed() const;
 
 public slots:
     void MovePlayer();
@@ -44,6 +45,7 @@ protected :
     bool flying;
     bool falling;
     bool jumping;
+    bool fixed;
 
     float yForce;
     float xForce;

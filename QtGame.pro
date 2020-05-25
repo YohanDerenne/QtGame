@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     element.cpp \
     fixedblock.cpp \
-    game.cpp \
+    gameEngine.cpp \
     main.cpp \
     map.cpp \
     player.cpp \
@@ -31,7 +31,7 @@ HEADERS += \
     configuration.h \
     element.h \
     fixedblock.h \
-    game.h \
+    gameEngine.h \
     map.h \
     player.h \
     unit.h \
