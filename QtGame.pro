@@ -19,6 +19,8 @@ SOURCES += \
     element.cpp \
     fixedblock.cpp \
     gameEngine.cpp \
+    info.cpp \
+    lifeinfo.cpp \
     main.cpp \
     map.cpp \
     player.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     element.h \
     fixedblock.h \
     gameEngine.h \
+    info.h \
+    lifeinfo.h \
     map.h \
     player.h \
     unit.h \

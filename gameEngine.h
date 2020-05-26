@@ -16,7 +16,7 @@
 #include "map.h"
 #include "wall.h"
 #include "configuration.h"
-#include <QThreadPool>
+#include "info.h"
 
 
 class GameEngine: public QGraphicsView{
@@ -55,6 +55,8 @@ private:
 
     int playerSprite;
     int playerStaticCounter;
+
+    Info * playerInfo;
 
 signals:
     void operate(const QString&);

@@ -13,5 +13,6 @@
         <file>images/player/21.png</file>
         <file>images/player/22.png</file>
         <file>images/backgrounds/background_1.jpg</file>
+        <file>images/heart.png</file>
     </qresource>
 </RCC>

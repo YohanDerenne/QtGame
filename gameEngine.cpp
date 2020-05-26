@@ -1,4 +1,6 @@
 #include "gameEngine.h"
+
+
 // for test only
 void createVirus(QGraphicsScene* scene);
 
@@ -37,12 +39,17 @@ GameEngine::GameEngine()
     //show();
     horizontalScrollBar()->setValue(0);
     verticalScrollBar()->setValue(0);
-    horizontalScrollBar()->setMinimum(0);
-    horizontalScrollBar()->setMaximum(map->getWidth());
-
+    //horizontalScrollBar()->setMinimum(0);
+    //horizontalScrollBar()->setMaximum(map->getWidth() + WINDOW_WIDTH);
+    horizontalScrollBar()->setPageStep(0);
     playerSprite = 1;
     playerStaticCounter = 1;
 
+    // Info
+    playerInfo = new Info();
+    scene->addItem(playerInfo);
+
+    //horizontalScrollBar()->setRange(0,MAP_WIDTH);
 }
 
 GameEngine::~GameEngine()
@@ -164,25 +171,34 @@ void GameEngine::respawn()
 
 void GameEngine::updateCamera()
 {
-    // Scrollbar is similar to x position but it's not accurate.
-    // With this offset it can be use as a x position (linéar), much accurate
-    int offset = (int) (0.13 * horizontalScrollBar()->value());
-
-    // Player have to stay between CAMERA_LEFT and CAMERA_RIGHT borders
+    float coef = (float) horizontalScrollBar()->maximum() / (float) (MAP_WIDTH - WINDOW_WIDTH);
 
     // The player is too close to the left of the window, so we scroll to the left
     // not at the map border
-    if (horizontalScrollBar()->value() > 0 && player->x() - horizontalScrollBar()->value() - offset < CAMERA_LEFT ){
-        horizontalScrollBar()->setValue(player->x() - CAMERA_LEFT - offset);
+    if (player->x() - CAMERA_LEFT > 0 && player->x() * coef - horizontalScrollBar()->value() < CAMERA_LEFT * coef ){
+        horizontalScrollBar()->setValue((player->x() - CAMERA_LEFT) * coef);
+        playerInfo->setPos(player->x() - CAMERA_LEFT,playerInfo->y());
         //qDebug() << "left";
+    }
+    // Player at the begin of the map
+    else if (player->x() - CAMERA_LEFT < 0){
+        horizontalScrollBar()->setValue(0);
+        playerInfo->setPos(0,playerInfo->y());
     }
 
     // The player is too close to the right of the window, so we scroll to the right
     // not at the map border
-    else if (horizontalScrollBar()->value() + CAMERA_RIGHT < map->getWidth() && player->x() - horizontalScrollBar()->value() - offset> CAMERA_RIGHT ){
-        horizontalScrollBar()->setValue(player->x() - CAMERA_RIGHT - offset);
-        //qDebug() << "right";
+    else if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && player->x() * coef - horizontalScrollBar()->value() > CAMERA_RIGHT * coef ){
+        //horizontalScrollBar()->setValue(player->x() - CAMERA_RIGHT - offset);
+        horizontalScrollBar()->setValue((player->x() - CAMERA_RIGHT)* coef);
+        playerInfo->setPos(player->x() - CAMERA_RIGHT ,playerInfo->y());
+        //qDebug() << player->x() - CAMERA_RIGHT<< coef <<(player->x() - CAMERA_RIGHT)* coef <<horizontalScrollBar()->value() ;
     }
+    /* Player at the end of the map (never happened so commented)
+    else if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT > map->getWidth()){
+        horizontalScrollBar()->setValue(map->getWidth() - WINDOW_WIDTH - offset);
+        playerInfo->setPos(map->getWidth() - WINDOW_WIDTH,playerInfo->y());
+    }*/
 
     //qDebug() << offset <<  player->x() << horizontalScrollBar()->value() << player->x() - horizontalScrollBar()->value() - offset;
 
