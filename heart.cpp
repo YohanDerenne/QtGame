@@ -1,16 +1,16 @@
-#include "mask.h"
+#include "heart.h"
 
-Mask::Mask()
+Heart::Heart()
 {
-
-    width = MASK_WIDTH;
-    height = MASK_HEIGHT;
+    width = LIFE_WIDTH;
+    height = LIFE_HEIGHT;
 
     // set graphic
-    QPixmap img = QPixmap(":/ressources/images/mask.jpg");
+    QPixmap img = QPixmap(":/ressources/images/life.png");
     img = img.scaled(width,height);
     setPixmap(img);
 
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
 }

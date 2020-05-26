@@ -2,7 +2,9 @@
 
 // for test only
 void createVirus(QGraphicsScene* scene);
-void createLife(QGraphicsScene* scene);
+void createHeart(QGraphicsScene* scene);
+void createMask(QGraphicsScene* scene);
+void createGel(QGraphicsScene* scene);
 
 Game::Game()
 {
@@ -83,14 +85,20 @@ void Game::keyPressEvent(QKeyEvent *event)
         createVirus(scene);
 
     }
-    else if(event->key() == Qt::Key_L){
-        createLife(scene);
+    else if(event->key() == Qt::Key_H){
+        createHeart(scene);
+    }
+    else if(event->key() == Qt::Key_M){
+        createMask(scene);
+    }
+    else if(event->key() == Qt::Key_G){
+        createGel(scene);
     }
 }
 
 void Game::keyReleaseEvent(QKeyEvent *event)
 {
-    qDebug() << "key released" ;
+    qDebug() << "Lifekey released" ;
     if (event->key() == Qt::Key_Left){
         player->SetMovingLeft(false);
     }
@@ -112,7 +120,9 @@ void Game::updatePlayerPosition()
 
     CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(player,true,true,true,true);
     CollideManager<Virus> * virusCollider = new CollideManager<Virus>(player,true,false,false,false);
-    CollideManager<life> * lifeCollider = new CollideManager<life>(player,true,false,false,false);
+    CollideManager<Heart> * heartCollider = new CollideManager<Heart>(player,false,false,false,false);
+    CollideManager<Mask> * maskCollider = new CollideManager<Mask>(player,false,false,false,false);
+    CollideManager<Gel> * gelCollider = new CollideManager<Gel>(player,false,false,false,false);
 
     int next_x = player->x();
     int next_y = player->y();
@@ -137,7 +147,9 @@ void Game::updatePlayerPosition()
 
     wallCollider->updateCollidingPosition();
     virusCollider->updateCollidingPosition();
-    lifeCollider->updateCollidingPosition();
+    heartCollider->updateCollidingPosition();
+    maskCollider->updateCollidingPosition();
+    gelCollider->updateCollidingPosition();
 
     // If no collides -> begin de falling
     if(!wallCollider->getAreColliding() &&
@@ -149,7 +161,22 @@ void Game::updatePlayerPosition()
 
     // If no collides -> begin de falling
     if(!wallCollider->getAreColliding() &&
-            !lifeCollider->getAreColliding()){
+            !heartCollider->getAreColliding()){
+        if(player->getYForce() == 0)
+            player->setYForce(player->getYForce() + 100);
+        //player->setXForce(10);
+    }
+
+    // If no collides -> begin de falling
+    if(!wallCollider->getAreColliding() &&
+            !maskCollider->getAreColliding()){
+        if(player->getYForce() == 0)
+            player->setYForce(player->getYForce() + 100);
+        //player->setXForce(10);
+    }
+    // If no collides -> begin de falling
+    if(!wallCollider->getAreColliding() &&
+            !gelCollider->getAreColliding()){
         if(player->getYForce() == 0)
             player->setYForce(player->getYForce() + 100);
         //player->setXForce(10);
@@ -173,29 +200,13 @@ void Game::updatePlayerPosition()
             }
         }
     }
-    //life
-    if(lifeCollider->getAreColliding()){
-        QMap<life *,fromPosition> lifeInfo = lifeCollider->getCollidingItemList();
-        QMapIterator<life*, fromPosition> iterator(lifeInfo);
-        while (iterator.hasNext()) {
-            iterator.next();
-            if(iterator.value().fromTop == true){
-                // rebondi
-                player->setYForce(-100);
 
-                // delete lifegame
-                delete iterator.key();
-                consoObjectList.removeOne(iterator.key());
-            }
-            else{
-                respawn();
-            }
-        }
-    }
 
     delete wallCollider;
     delete virusCollider;
-    delete lifeCollider;
+    delete heartCollider;
+    delete maskCollider;
+    delete gelCollider;
     //qDebug() << player->getXForce();
 }
 
@@ -216,9 +227,23 @@ void createVirus(QGraphicsScene* scene){
     scene->addItem(virus);
 }
 
-void createLife(QGraphicsScene* scene){
+void createHeart(QGraphicsScene* scene){
 
-    life *l = new life();
-    l->setPos(700,450);
-    scene->addItem(l);
+    Heart *heart = new Heart();
+    heart->setPos(700,450);
+    scene->addItem(heart);
+}
+
+void createMask(QGraphicsScene* scene){
+
+    Mask *mask = new Mask();
+    mask->setPos(700,450);
+    scene->addItem(mask);
+}
+
+void createGel(QGraphicsScene* scene){
+
+    Gel *gel = new Gel();
+    gel->setPos(700,450);
+    scene->addItem(gel);
 }

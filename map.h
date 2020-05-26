@@ -7,7 +7,10 @@
 #include "player.h"
 #include "element.h"
 #include "virus.h"
-#include "life.h"
+#include "heart.h"
+#include "mask.h"
+#include "gel.h"
+
 
 
 class Map

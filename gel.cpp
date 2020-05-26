@@ -1,13 +1,12 @@
-#include "mask.h"
+#include "gel.h"
 
-Mask::Mask()
+Gel::Gel()
 {
-
-    width = MASK_WIDTH;
-    height = MASK_HEIGHT;
+    width = GEL_WIDTH;
+    height = GEL_HEIGHT;
 
     // set graphic
-    QPixmap img = QPixmap(":/ressources/images/mask.jpg");
+    QPixmap img = QPixmap(":/ressources/images/gel.jpg");
     img = img.scaled(width,height);
     setPixmap(img);
 

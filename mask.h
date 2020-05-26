@@ -1,15 +1,13 @@
 #ifndef MASK_H
 #define MASK_H
 #include "consoObject.h"
+#include "configuration.h"
 
 
-class mask : public consoObject
+class Mask: public consoObject
 {
 public:
-    mask();
-/*protected:
-        virtual void applyEffect(Unit unit);*/
-
+    Mask();
 };
 
 #endif // MASK_H

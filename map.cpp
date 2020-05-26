@@ -34,9 +34,23 @@ void Map::readExample()
         }
 
         if(i == 9){
-            life *l = new life();
-            l->setPos(i*bloc->getWidth(),500 - l->getHeight());
-            consoObjectList.append(l);
+            Heart *heart = new Heart();
+            heart->setPos(i*bloc->getWidth(),500 - heart->getHeight());
+            consoObjectList.append(heart);
+
+        }
+
+        if(i == 2){
+            Mask *mask = new Mask();
+            mask->setPos(i*bloc->getWidth(),500 - mask->getHeight());
+            consoObjectList.append(mask);
+
+        }
+
+        if(i == 5){
+            Gel *gel = new Gel();
+            gel->setPos(i*bloc->getWidth(),500 - gel->getHeight());
+            consoObjectList.append(gel);
 
         }
     }
