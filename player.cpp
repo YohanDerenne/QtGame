@@ -6,7 +6,7 @@ Player::Player() : Unit()
     height = PLAYER_HEIGHT;
 
     setSprite(":/ressources/images/player/1.png");
-
+    type = "player";
 }
 
 void Player::Jump()

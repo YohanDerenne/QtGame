@@ -12,4 +12,6 @@ Wall::Wall()
 
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
+    type = "wall";
 }

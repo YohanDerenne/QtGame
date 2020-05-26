@@ -1,18 +1,28 @@
 #include "map.h"
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QDir>
 
 Map::Map()
 {
-
+    player = NULL;
 }
 
-void Map::readExample()
+Map::~Map()
+{
+    clearMap();
+}
+
+void Map::generateMap1()
 {
     width = MAP_WIDTH;
     height = MAP_HEIGHT;
 
     // set background
-    background = QImage(":/ressources/images/background.jpg");
-    background = background.scaledToHeight(height);
+    backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
+    setBackground(QImage(backgroundPath));
+
 
     // create the player
     player = new Player();
@@ -23,7 +33,7 @@ void Map::readExample()
 
     // create map
     // floor
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 70; i++){
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth(),500);
         elementList.append(bloc);
@@ -66,6 +76,118 @@ void Map::readExample()
     }
 }
 
+bool Map::readmap(QString directory)
+{
+    // Clear the actual map if exists
+    clearMap();
+
+    // Open the json file
+    QDir dir = directory;
+    QString path = QStringLiteral("%1/map.json").arg(directory);
+    QFile loadFile(path);
+    // qDebug() << path;
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+        return false;
+    }
+
+    // Read data
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
+    // transform brut data to json data
+    QJsonObject mapJson = loadDoc.object();
+
+    // read json elements
+    height = mapJson["height"].toInt();
+    width = mapJson["width"].toInt();
+
+    backgroundPath = mapJson["background"].toString();
+    background = QImage(backgroundPath);
+    background = background.scaledToHeight(height);
+
+    QJsonArray elemTab = mapJson["elem"].toArray();
+    for (int index = 0; index < elemTab.size(); ++index) {
+            QJsonObject elem = elemTab[index].toObject();
+            if(elem["type"].toString() == "player"){
+                player = new Player();
+                player->setX(elem["x"].toInt());
+                player->setY(elem["y"].toInt());
+            }
+            if(elem["type"].toString() == "wall"){
+                Wall * w = new Wall();
+                w->setX(elem["x"].toInt());
+                w->setY(elem["y"].toInt());
+                elementList.append(w);
+            }
+            if(elem["type"].toString() == "virus"){
+                Virus * v = new Virus();
+                v->setX(elem["x"].toInt());
+                v->setY(elem["y"].toInt());
+                elementList.append(v);
+            }
+        }
+
+    return true;
+}
+
+void Map::clearMap()
+{
+    if(player != NULL)
+        delete player;
+    for(Element * elem : elementList){
+        delete elem;
+    }
+    elementList.clear();
+    for(Unit * unit: unitList){
+        delete unit;
+    }
+    unitList.clear();
+}
+
+bool Map::saveMap(QString directory)
+{
+    // Open the file
+    QDir dir = directory;
+    QString path = QStringLiteral("%1/map.json").arg(directory);
+    QFile saveFile(path);
+    // We create the directory if needed
+    if (!dir.exists(path))
+        dir.mkpath(path);
+    //qDebug() << path;
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open save file.");
+        return false;
+    }
+
+    QJsonObject mapJson;
+    QJsonArray jsonTab;
+
+    // Save the map in mapJson
+    mapJson["height"] = height;
+    mapJson["width"] = width;
+    mapJson["background"] = backgroundPath;
+    foreach (Element * elem, elementList) {
+        QJsonObject npcObject;
+        npcObject["type"] = elem->getType();
+        npcObject["x"] = elem->x();
+        npcObject["y"] = elem->y();
+        jsonTab.append(npcObject);
+    }
+    QJsonObject playerJson;
+    playerJson["type"] = player->getType();
+    playerJson["x"] = player->x();
+    playerJson["y"] = player->y();
+    jsonTab.append(playerJson);
+    mapJson["elem"] = jsonTab;
+
+    // save and write de mapJson
+    QJsonDocument saveDoc(mapJson);
+    saveFile.write(saveDoc.toJson());
+
+    // success
+    return true;
+}
+
 QList<Element *> Map::getElementList() const
 {
     return elementList;
@@ -89,6 +211,11 @@ int Map::getWidth() const
 int Map::getHeight() const
 {
     return height;
+}
+
+void Map::setBackground(const QImage &value)
+{
+    background = value.scaledToHeight(height);
 }
 
 QList<Unit *> Map::getUnitList() const

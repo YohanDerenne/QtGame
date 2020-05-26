@@ -13,4 +13,6 @@ Virus::Virus() : Unit()
 
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
+    type = "virus";
 }

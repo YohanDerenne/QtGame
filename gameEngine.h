@@ -21,7 +21,6 @@
 
 class GameEngine: public QGraphicsView{
     Q_OBJECT
-    QThread workerThread;
 
 public:
     GameEngine();
@@ -38,7 +37,7 @@ public:
 
     Player *getPlayer() const;
 
-    QMutex mutex;
+    void drawElements();
 
 public slots:
     void updatePositions();

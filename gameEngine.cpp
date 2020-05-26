@@ -16,26 +16,12 @@ GameEngine::GameEngine()
 
     // create map
     map = new Map();
-    map->readExample();
+    map->generateMap1();
+    //drawElements();
+    map->saveMap("world_1");
+    map->readmap("world_1");
+    drawElements();
 
-    // set scene background
-    // setBackgroundBrush(QImage(map->getBackground()));
-    this->setBackgroundBrush(QImage(map->getBackground()));
-
-
-    // set player
-    player = map->getPlayer();
-    scene->addItem(player);
-
-    // set elements
-    for(Element * element : map->getElementList()){
-        scene->addItem(element);
-    }
-
-    // set mobs
-    for(Unit * unit : map->getUnitList()){
-        scene->addItem(unit);
-    }
 
     QTimer * timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(updatePositions()));
@@ -61,8 +47,6 @@ GameEngine::GameEngine()
 
 GameEngine::~GameEngine()
 {
-    workerThread.quit();
-    workerThread.wait();
     qDebug() << "delete";
     scene->clear();
     delete player;
@@ -73,7 +57,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << "key pressed" ;
+    //qDebug() << "key pressed" ;
     if (event->key() == Qt::Key_Left){
         //horizontalScrollBar()->setValue(horizontalScrollBar()->value() - 10);
         player->SetMovingLeft(true);
@@ -95,7 +79,7 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
 
 void GameEngine::keyReleaseEvent(QKeyEvent *event)
 {
-    qDebug() << "key released" ;
+    //qDebug() << "key released" ;
     if (event->key() == Qt::Key_Left){
         player->SetMovingLeft(false);
     }
@@ -255,6 +239,28 @@ void GameEngine::animate()
 Player *GameEngine::getPlayer() const
 {
     return player;
+}
+
+void GameEngine::drawElements()
+{
+    // set scene background
+    // setBackgroundBrush(QImage(map->getBackground()));
+    this->setBackgroundBrush(QImage(map->getBackground()));
+
+
+    // set player
+    player = map->getPlayer();
+    scene->addItem(player);
+
+    // set elements
+    for(Element * element : map->getElementList()){
+        scene->addItem(element);
+    }
+
+    // set mobs
+    for(Unit * unit : map->getUnitList()){
+        scene->addItem(unit);
+    }
 }
 
 // FOR TESTS

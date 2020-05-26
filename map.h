@@ -13,8 +13,12 @@ class Map
 {
 public:
     Map();
+    ~Map();
 
-    void readExample();
+    void generateMap1();
+    bool readmap(QString directory);
+    void clearMap();
+    bool saveMap(QString directory);
 
     QList<Element *> getElementList() const;
     QList<Unit *> getUnitList() const;
@@ -22,9 +26,11 @@ public:
     QImage getBackground() const;
     int getWidth() const;
     int getHeight() const;
+    void setBackground(const QImage &value);
 
 private:
     QImage background;
+    QString backgroundPath;
     Player * player;
     QList<Element *> elementList;
     QList<Unit *> unitList;

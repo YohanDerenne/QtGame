@@ -41,3 +41,13 @@ void Element::setSprite(QString ressource)
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 
 }
+
+QString Element::getType() const
+{
+    return type;
+}
+
+void Element::setType(const QString &value)
+{
+    type = value;
+}
