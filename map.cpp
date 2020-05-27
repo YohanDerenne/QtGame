@@ -123,7 +123,7 @@ bool Map::readmap(QString directory)
                 Virus * v = new Virus();
                 v->setX(elem["x"].toInt());
                 v->setY(elem["y"].toInt());
-                elementList.append(v);
+                unitList.append(v);
             }
         }
 
@@ -167,6 +167,13 @@ bool Map::saveMap(QString directory)
     mapJson["width"] = width;
     mapJson["background"] = backgroundPath;
     foreach (Element * elem, elementList) {
+        QJsonObject npcObject;
+        npcObject["type"] = elem->getType();
+        npcObject["x"] = elem->x();
+        npcObject["y"] = elem->y();
+        jsonTab.append(npcObject);
+    }
+    foreach (Element * elem, unitList) {
         QJsonObject npcObject;
         npcObject["type"] = elem->getType();
         npcObject["x"] = elem->x();

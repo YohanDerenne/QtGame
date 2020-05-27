@@ -2,7 +2,6 @@
 
 
 // for test only
-void createVirus(QGraphicsScene* scene);
 
 GameEngine::GameEngine()
 {
@@ -15,12 +14,15 @@ GameEngine::GameEngine()
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+    resize(windowWidth,windowHeight);
+    //showFullScreen();
 
     // create map
+    worldPlan = new QGraphicsItemGroup();
     map = new Map();
-    map->generateMap1();
+    //map->generateMap1();
     //drawElements();
-    map->saveMap("world_1");
+    //map->saveMap("world_1");
     map->readmap("world_1");
     drawElements();
 
@@ -49,7 +51,7 @@ GameEngine::GameEngine()
     playerInfo = new Info();
     scene->addItem(playerInfo);
 
-    //horizontalScrollBar()->setRange(0,MAP_WIDTH);
+
 }
 
 GameEngine::~GameEngine()
@@ -80,7 +82,7 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
         respawn();
     }
     else if (event->key() == Qt::Key_A){
-        createVirus(scene);
+        createVirus();
     }
 }
 
@@ -169,8 +171,23 @@ void GameEngine::respawn()
     player->setPos(200,400);
 }
 
+// Follow the player
 void GameEngine::updateCamera()
 {
+    // Player too much to the left
+    if (player->x() - CAMERA_LEFT > 0 && player->x() + worldPlan->x() < CAMERA_LEFT ){
+        worldPlan->setPos(-(player->x() - CAMERA_LEFT),0);
+    }
+    // Player at the begin of the map
+    else if (player->x() - CAMERA_LEFT < 0){
+        worldPlan->setPos(0,0);
+    }
+    // Player too much to the right
+    if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && player->x() + worldPlan->x() > CAMERA_RIGHT ){
+        worldPlan->setPos(-(player->x() - CAMERA_RIGHT) , 0);
+    }
+
+    /*
     float coef = (float) horizontalScrollBar()->maximum() / (float) (MAP_WIDTH - WINDOW_WIDTH);
 
     // The player is too close to the left of the window, so we scroll to the left
@@ -240,8 +257,8 @@ void GameEngine::animate()
         }
         // if the player do not wink for a while : he will wink
         else if(playerSprite > 3 && playerStaticCounter > 10){
-             playerSprite = 4;
-             playerStaticCounter = 1;
+            playerSprite = 4;
+            playerStaticCounter = 1;
         }
         // player not wink
         else if(playerSprite > 3 ){
@@ -266,23 +283,27 @@ void GameEngine::drawElements()
 
     // set player
     player = map->getPlayer();
-    scene->addItem(player);
+    //scene->addItem(player);
+    worldPlan->addToGroup(player);
 
     // set elements
     for(Element * element : map->getElementList()){
-        scene->addItem(element);
+        //scene->addItem(element);
+        worldPlan->addToGroup(element);
     }
 
     // set mobs
     for(Unit * unit : map->getUnitList()){
-        scene->addItem(unit);
+        //scene->addItem(unit);
+        worldPlan->addToGroup(unit);
     }
+    scene->addItem(worldPlan);
 }
 
 // FOR TESTS
-void createVirus(QGraphicsScene* scene){
+void GameEngine::createVirus(){
     Virus * virus = new Virus();
+    worldPlan->addToGroup(virus);
     virus->setPos(700,450);
-    scene->addItem(virus);
 }
 

@@ -39,6 +39,8 @@ public:
 
     void drawElements();
 
+    void createVirus();
+
 public slots:
     void updatePositions();
     void animate();
@@ -57,6 +59,8 @@ private:
     int playerStaticCounter;
 
     Info * playerInfo;
+
+    QGraphicsItemGroup * worldPlan;
 
 signals:
     void operate(const QString&);

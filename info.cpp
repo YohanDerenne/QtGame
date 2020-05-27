@@ -21,7 +21,7 @@ Info::Info()
     zone->setBrush(Qt::black);
 
     // Add all item to the group
-    this->addToGroup(zone);
+    // this->addToGroup(zone);
     this->addToGroup(life);
     this->addToGroup(lives);
 }
