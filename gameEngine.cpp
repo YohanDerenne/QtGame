@@ -17,7 +17,7 @@ GameEngine::GameEngine()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
     //resize(windowWidth,windowHeight);
-    //showFullScreen();
+    showFullScreen();
 
     // Game plan
     worldPlan = new QGraphicsItemGroup();
@@ -243,7 +243,7 @@ void GameEngine::updatePositions()
 {
     updatePlayerPosition();
     updateCamera();
-    qDebug() << map->getUnitList()->count();
+    //qDebug() << map->getUnitList()->count();
 }
 
 void GameEngine::animate()
