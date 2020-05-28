@@ -45,6 +45,27 @@ void Map::generateMap1()
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
             unitList->append(virus);
         }
+
+        if(i == 9){
+            Heart *heart = new Heart();
+            heart->setPos(i*bloc->getWidth(),500 - heart->getHeight());
+            consoObjectList.append(heart);
+
+        }
+
+        if(i == 2){
+            Mask *mask = new Mask();
+            mask->setPos(i*bloc->getWidth(),500 - mask->getHeight());
+            consoObjectList.append(mask);
+
+        }
+
+        if(i == 5){
+            Gel *gel = new Gel();
+            gel->setPos(i*bloc->getWidth(),500 - gel->getHeight());
+            consoObjectList.append(gel);
+
+        }
     }
     // platform
     for(int i = 0; i < 5; i++){
@@ -53,6 +74,7 @@ void Map::generateMap1()
             bloc->setPos(i*bloc->getWidth() + 200 ,300);
             elementList->append(bloc);
         }
+
     }
     /*
     // roof
@@ -258,4 +280,9 @@ QList<QString> Map::getLevels()
 QList<Unit *> * Map::getUnitList()
 {
     return unitList;
+}
+
+QList<consoObject *> Map:: getConsoObjectList() const
+{
+    return consoObjectList;
 }

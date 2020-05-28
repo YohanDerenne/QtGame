@@ -1,0 +1,16 @@
+#include "mask.h"
+
+Mask::Mask()
+{
+
+    width = MASK_WIDTH;
+    height = MASK_HEIGHT;
+
+    // set graphic
+    QPixmap img = QPixmap(":/ressources/images/mask.jpg");
+    img = img.scaled(width,height);
+    setPixmap(img);
+
+    // Accept collision with transparent pixels
+    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+}

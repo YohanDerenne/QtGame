@@ -15,5 +15,8 @@
         <file>images/backgrounds/background_1.jpg</file>
         <file>images/heart.png</file>
         <file>images/backgrounds/background_menu.png</file>
+        <file>images/life.png</file>
+        <file>images/mask.jpg</file>
+        <file>images/gel.jpg</file>
     </qresource>
 </RCC>
