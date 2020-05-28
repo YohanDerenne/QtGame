@@ -17,6 +17,7 @@
 #include "wall.h"
 #include "configuration.h"
 #include "info.h"
+#include "menu.h"
 
 
 class GameEngine: public QGraphicsView{
@@ -41,12 +42,15 @@ public:
 
     void createVirus();
 
+    void openMenu();
+    void openGame();
+
 public slots:
     void updatePositions();
     void animate();
 
 private:
-    QGraphicsScene * scene;
+    QGraphicsScene * gameScene;
     Player * player;
     QImage background;
     QList<Element *> elementList;
@@ -62,8 +66,11 @@ private:
 
     QGraphicsItemGroup * worldPlan;
 
-signals:
-    void operate(const QString&);
+    Menu * menuScene;
+
+    QTimer * Animtimer;
+    QTimer * refreshTimer;
+
 
 };
 

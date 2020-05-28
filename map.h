@@ -27,6 +27,7 @@ public:
     int getWidth() const;
     int getHeight() const;
     void setBackground(const QImage &value);
+    static QList<QString> getLevels();
 
 private:
     QImage background;

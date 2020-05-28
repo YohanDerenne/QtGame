@@ -16,6 +16,7 @@ private:
     LifeInfo * life;
     QGraphicsRectItem * zone;
     int nbLife;
+
 };
 
 #endif // INFO_H

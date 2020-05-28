@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDir>
+#include <QDirIterator>
 
 Map::Map()
 {
@@ -83,11 +84,11 @@ bool Map::readmap(QString directory)
 
     // Open the json file
     QDir dir = directory;
-    QString path = QStringLiteral("%1/map.json").arg(directory);
+    QString path = QStringLiteral("levels/%1/map.json").arg(directory);
     QFile loadFile(path);
     // qDebug() << path;
     if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open save file.");
+        qWarning("Couldn't open load file.");
         return false;
     }
 
@@ -147,13 +148,22 @@ void Map::clearMap()
 bool Map::saveMap(QString directory)
 {
     // Open the file
-    QDir dir = directory;
-    QString path = QStringLiteral("%1/map.json").arg(directory);
+    QDir dir =  QStringLiteral("levels/%1").arg(directory);;
+    QString path = QStringLiteral("levels/%1/map.json").arg(directory);
     QFile saveFile(path);
-    // We create the directory if needed
-    if (!dir.exists(path))
-        dir.mkpath(path);
-    //qDebug() << path;
+    qDebug() << dir.absolutePath();
+    QDir dirLevel = QString("levels");
+    // create levels directory if not exists
+    if(!dirLevel.exists()){
+        QDir().mkdir(QString("levels"));
+    }
+
+    // create map directory if not exists
+    if(!dir.exists()){
+        QDir().mkdir( QStringLiteral("levels/%1").arg(directory));
+    }
+
+    // Open file and create it if not exists
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
         return false;
@@ -223,6 +233,19 @@ int Map::getHeight() const
 void Map::setBackground(const QImage &value)
 {
     background = value.scaledToHeight(height);
+}
+
+QList<QString> Map::getLevels()
+{
+    QList<QString> list;
+    QDirIterator iterator("levels");
+    while (iterator.hasNext()) {
+        QString dir = iterator.next();
+        dir.remove("levels/");
+        if(dir != "." && dir != "..")
+            list.append(dir);
+    }
+    return list;
 }
 
 QList<Unit *> Map::getUnitList() const

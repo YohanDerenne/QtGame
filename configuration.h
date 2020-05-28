@@ -14,8 +14,8 @@
 #define MAP_HEIGHT 1200
 #define MAP_WIDTH 4000
 
-#define CAMERA_LEFT 350
-#define CAMERA_RIGHT 700
+#define CAMERA_LEFT 450
+#define CAMERA_RIGHT 800
 
 #define BLOC_SIZE 50
 

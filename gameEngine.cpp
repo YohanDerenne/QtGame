@@ -8,35 +8,37 @@ GameEngine::GameEngine()
     windowWidth = WINDOW_WIDTH;
     windowHeight = WINDOW_HEIGHT;
     // create the scene
-    scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
-    setScene(scene);
+    gameScene = new QGraphicsScene();
+    gameScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
+
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
     resize(windowWidth,windowHeight);
     //showFullScreen();
 
-    // create map
+    // Game plan
     worldPlan = new QGraphicsItemGroup();
+    gameScene->addItem(worldPlan);
+    // Info plan
+    playerInfo = new Info();
+    gameScene->addItem(playerInfo);
+
     map = new Map();
-    //map->generateMap1();
-    //drawElements();
-    //map->saveMap("world_1");
-    map->readmap("world_1");
+    map->generateMap1();
+    drawElements();
+    map->saveMap("world 2");
+    map->readmap("world 2");
     drawElements();
 
-
-    QTimer * timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(updatePositions()));
-    // start the timer
-    timer->start(1000/FPS);
+    menuScene = new Menu;
 
 
-    QTimer * Animtimer = new QTimer(this);
+
+    refreshTimer = new QTimer(this);
+    connect(refreshTimer,SIGNAL(timeout()),this,SLOT(updatePositions()));
+    Animtimer = new QTimer(this);
     connect(Animtimer,SIGNAL(timeout()),this,SLOT(animate()));
-    // start the timer
-    Animtimer->start(90);
 
     //show();
     horizontalScrollBar()->setValue(0);
@@ -47,19 +49,17 @@ GameEngine::GameEngine()
     playerSprite = 1;
     playerStaticCounter = 1;
 
-    // Info
-    playerInfo = new Info();
-    scene->addItem(playerInfo);
-
+    openMenu();
+    //openGame();
 
 }
 
 GameEngine::~GameEngine()
 {
     qDebug() << "delete";
-    scene->clear();
+    gameScene->clear();
     delete player;
-    delete scene;
+    delete gameScene;
 
 
 }
@@ -278,7 +278,7 @@ void GameEngine::drawElements()
 {
     // set scene background
     // setBackgroundBrush(QImage(map->getBackground()));
-    this->setBackgroundBrush(QImage(map->getBackground()));
+    gameScene->setBackgroundBrush(QImage(map->getBackground()));
 
 
     // set player
@@ -297,7 +297,7 @@ void GameEngine::drawElements()
         //scene->addItem(unit);
         worldPlan->addToGroup(unit);
     }
-    scene->addItem(worldPlan);
+
 }
 
 // FOR TESTS
@@ -305,5 +305,19 @@ void GameEngine::createVirus(){
     Virus * virus = new Virus();
     worldPlan->addToGroup(virus);
     virus->setPos(700,450);
+}
+
+void GameEngine::openMenu()
+{
+    Animtimer->stop();
+    refreshTimer->stop();
+    setScene(menuScene);
+}
+
+void GameEngine::openGame()
+{
+    Animtimer->start(90);
+    refreshTimer->start(1000/FPS);
+    setScene(gameScene);
 }
 

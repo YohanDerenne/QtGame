@@ -1,6 +1,7 @@
 #include "info.h"
 #include <QBrush>
 #include <QFont>
+#include <QColor>
 
 Info::Info()
 {
@@ -11,8 +12,10 @@ Info::Info()
 
     // Nb Life info
     QGraphicsTextItem * lives = new QGraphicsTextItem("4");
-    lives->setPos(26,15);
+    lives->setPos(25,15);
     QFont lifeFont;
+    //lives->setDefaultTextColor(Qt::white);
+    lifeFont.setBold(true);
     lifeFont.setPixelSize(20);
     lives->setFont(lifeFont);
 

@@ -23,6 +23,8 @@ SOURCES += \
     lifeinfo.cpp \
     main.cpp \
     map.cpp \
+    menu.cpp \
+    menubutton.cpp \
     player.cpp \
     unit.cpp \
     virus.cpp \
@@ -37,6 +39,8 @@ HEADERS += \
     info.h \
     lifeinfo.h \
     map.h \
+    menu.h \
+    menubutton.h \
     player.h \
     unit.h \
     virus.h \
