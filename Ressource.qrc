@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/ressources">
-        <file>images/background.jpg</file>
         <file>images/player.png</file>
         <file>images/bloc.png</file>
         <file>images/virus.png</file>
@@ -13,5 +12,8 @@
         <file>images/player/13.png</file>
         <file>images/player/21.png</file>
         <file>images/player/22.png</file>
+        <file>images/backgrounds/background_1.jpg</file>
+        <file>images/heart.png</file>
+        <file>images/backgrounds/background_menu.png</file>
     </qresource>
 </RCC>

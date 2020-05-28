@@ -18,10 +18,14 @@ public:
 
     void setSprite(QString ressource);
 
+    QString getType() const;
+    void setType(const QString &value);
+
 protected:
     int width;
     int height;
     int isRightSide;
+    QString type;
 
 
 };

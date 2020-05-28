@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 #include <qscrollbar.h>
 #include <QGraphicsPixmapItem>
+#include <QSignalMapper>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -16,12 +17,12 @@
 #include "map.h"
 #include "wall.h"
 #include "configuration.h"
-#include <QThreadPool>
+#include "info.h"
+#include "menu.h"
 
 
 class GameEngine: public QGraphicsView{
     Q_OBJECT
-    QThread workerThread;
 
 public:
     GameEngine();
@@ -38,17 +39,21 @@ public:
 
     Player *getPlayer() const;
 
-    QMutex mutex;
+    void drawElements();
+
+    void createVirus();
+    void openMenu();
+    void openGame();
 
 public slots:
     void updatePositions();
     void animate();
+    void loadMap(QString worldName);
 
 private:
-    QGraphicsScene * scene;
+    QGraphicsScene * gameScene;
     Player * player;
     QImage background;
-    QList<Element *> elementList;
     Map * map;
 
     int windowWidth;
@@ -57,8 +62,16 @@ private:
     int playerSprite;
     int playerStaticCounter;
 
-signals:
-    void operate(const QString&);
+    Info * playerInfo;
+
+    QGraphicsItemGroup * worldPlan;
+
+    Menu * menuScene;
+
+    QTimer * Animtimer;
+    QTimer * refreshTimer;
+
+    QSignalMapper * mapper;
 
 };
 

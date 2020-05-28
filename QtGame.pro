@@ -19,8 +19,12 @@ SOURCES += \
     element.cpp \
     fixedblock.cpp \
     gameEngine.cpp \
+    info.cpp \
+    lifeinfo.cpp \
     main.cpp \
     map.cpp \
+    menu.cpp \
+    menubutton.cpp \
     player.cpp \
     unit.cpp \
     virus.cpp \
@@ -32,7 +36,11 @@ HEADERS += \
     element.h \
     fixedblock.h \
     gameEngine.h \
+    info.h \
+    lifeinfo.h \
     map.h \
+    menu.h \
+    menubutton.h \
     player.h \
     unit.h \
     virus.h \
