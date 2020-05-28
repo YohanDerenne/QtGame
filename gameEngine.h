@@ -9,6 +9,7 @@
 #include <QKeyEvent>
 #include <qscrollbar.h>
 #include <QGraphicsPixmapItem>
+#include <QSignalMapper>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -41,19 +42,18 @@ public:
     void drawElements();
 
     void createVirus();
-
     void openMenu();
     void openGame();
 
 public slots:
     void updatePositions();
     void animate();
+    void loadMap(QString worldName);
 
 private:
     QGraphicsScene * gameScene;
     Player * player;
     QImage background;
-    QList<Element *> elementList;
     Map * map;
 
     int windowWidth;
@@ -71,6 +71,7 @@ private:
     QTimer * Animtimer;
     QTimer * refreshTimer;
 
+    QSignalMapper * mapper;
 
 };
 

@@ -44,3 +44,8 @@ Menu::Menu() : QGraphicsScene()
 
 
 }
+
+QList<MenuButton *> Menu::getButtonList() const
+{
+    return buttonList;
+}

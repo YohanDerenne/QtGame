@@ -1,6 +1,7 @@
 #include "gameEngine.h"
 
 
+
 // for test only
 
 GameEngine::GameEngine()
@@ -10,11 +11,12 @@ GameEngine::GameEngine()
     // create the scene
     gameScene = new QGraphicsScene();
     gameScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
+    setScene(gameScene);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-    resize(windowWidth,windowHeight);
+    //resize(windowWidth,windowHeight);
     //showFullScreen();
 
     // Game plan
@@ -33,8 +35,7 @@ GameEngine::GameEngine()
 
     menuScene = new Menu;
 
-
-
+    // Init Timer
     refreshTimer = new QTimer(this);
     connect(refreshTimer,SIGNAL(timeout()),this,SLOT(updatePositions()));
     Animtimer = new QTimer(this);
@@ -48,6 +49,16 @@ GameEngine::GameEngine()
     horizontalScrollBar()->setPageStep(0);
     playerSprite = 1;
     playerStaticCounter = 1;
+
+    // Link button menu
+    mapper = new QSignalMapper(this);
+    foreach(MenuButton * btn ,menuScene->getButtonList()){
+        QString worldName = btn->text();
+        mapper->setMapping(btn, btn->text());
+        connect(btn,SIGNAL(clicked()),mapper,SLOT(map()));
+    }
+    connect(mapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
+
 
     openMenu();
     //openGame();
@@ -83,6 +94,10 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
     }
     else if (event->key() == Qt::Key_A){
         createVirus();
+    }
+    else if (event->key() == Qt::Key_Escape){
+        map->clearMap();
+        openMenu();
     }
 }
 
@@ -152,8 +167,11 @@ void GameEngine::updatePlayerPosition()
                 player->setYForce(-100);
 
                 // Kill virus
+                map->getUnitList()->removeOne(iterator.key());
+                qDebug() << "desl" << map->getUnitList()->count();
+                worldPlan->removeFromGroup(iterator.key());
                 delete iterator.key();
-                elementList.removeOne(iterator.key());
+
             }
             else{
                 respawn();
@@ -225,6 +243,7 @@ void GameEngine::updatePositions()
 {
     updatePlayerPosition();
     updateCamera();
+    qDebug() << map->getUnitList()->count();
 }
 
 void GameEngine::animate()
@@ -269,6 +288,14 @@ void GameEngine::animate()
 
 }
 
+void GameEngine::loadMap(QString worldName)
+{
+    //qDebug() << "loading " << worldName;
+    map->readmap(worldName);
+    drawElements();
+    openGame();
+}
+
 Player *GameEngine::getPlayer() const
 {
     return player;
@@ -287,13 +314,13 @@ void GameEngine::drawElements()
     worldPlan->addToGroup(player);
 
     // set elements
-    for(Element * element : map->getElementList()){
+    for(Element * element : *map->getElementList()){
         //scene->addItem(element);
         worldPlan->addToGroup(element);
     }
 
     // set mobs
-    for(Unit * unit : map->getUnitList()){
+    for(Unit * unit : *map->getUnitList()){
         //scene->addItem(unit);
         worldPlan->addToGroup(unit);
     }
@@ -304,6 +331,7 @@ void GameEngine::drawElements()
 void GameEngine::createVirus(){
     Virus * virus = new Virus();
     worldPlan->addToGroup(virus);
+    map->getUnitList()->append(virus);
     virus->setPos(700,450);
 }
 

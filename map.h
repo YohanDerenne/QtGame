@@ -20,8 +20,8 @@ public:
     void clearMap();
     bool saveMap(QString directory);
 
-    QList<Element *> getElementList() const;
-    QList<Unit *> getUnitList() const;
+    QList<Element *> * getElementList() const;
+    QList<Unit *> * getUnitList() ;
     Player *getPlayer() const;
     QImage getBackground() const;
     int getWidth() const;
@@ -33,8 +33,8 @@ private:
     QImage background;
     QString backgroundPath;
     Player * player;
-    QList<Element *> elementList;
-    QList<Unit *> unitList;
+    QList<Element *> * elementList;
+    QList<Unit *> * unitList;
 
     int width;
     int height;

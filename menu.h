@@ -12,6 +12,8 @@ class Menu : public QGraphicsScene
 public:
     Menu();
 
+    QList<MenuButton *> getButtonList() const;
+
 private:
     QList<MenuButton *> buttonList;
 

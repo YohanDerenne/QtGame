@@ -8,6 +8,8 @@
 Map::Map()
 {
     player = NULL;
+    elementList = new QList<Element*>();
+    unitList = new QList<Unit*>();
 }
 
 Map::~Map()
@@ -37,11 +39,11 @@ void Map::generateMap1()
     for(int i = 0; i < 70; i++){
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth(),500);
-        elementList.append(bloc);
+        elementList->append(bloc);
         if(i == 12){
             Virus * virus = new Virus();
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
-            unitList.append(virus);
+            unitList->append(virus);
         }
     }
     // platform
@@ -49,7 +51,7 @@ void Map::generateMap1()
         if(i != 3){
             Wall * bloc = new Wall();
             bloc->setPos(i*bloc->getWidth() + 200 ,300);
-            elementList.append(bloc);
+            elementList->append(bloc);
         }
     }
     /*
@@ -65,7 +67,7 @@ void Map::generateMap1()
         if(i != 2 && i !=3 ){
             Wall * bloc = new Wall();
             bloc->setPos(0 ,500 - bloc->getHeight() - i * bloc->getHeight());
-            elementList.append(bloc);
+            elementList->append(bloc);
         }
 
     }
@@ -73,7 +75,7 @@ void Map::generateMap1()
     for(int i = 3; i >= 0; i--){
         Wall * bloc = new Wall();
         bloc->setPos(500 ,500 - bloc->getHeight() - i * bloc->getHeight());
-        elementList.append(bloc);
+        elementList->append(bloc);
     }
 }
 
@@ -118,13 +120,13 @@ bool Map::readmap(QString directory)
                 Wall * w = new Wall();
                 w->setX(elem["x"].toInt());
                 w->setY(elem["y"].toInt());
-                elementList.append(w);
+                elementList->append(w);
             }
             if(elem["type"].toString() == "virus"){
                 Virus * v = new Virus();
                 v->setX(elem["x"].toInt());
                 v->setY(elem["y"].toInt());
-                unitList.append(v);
+                unitList->append(v);
             }
         }
 
@@ -133,16 +135,21 @@ bool Map::readmap(QString directory)
 
 void Map::clearMap()
 {
-    if(player != NULL)
+    if(player != NULL){
         delete player;
-    for(Element * elem : elementList){
+        player = NULL;
+    }
+    for(Element * elem : *elementList){
         delete elem;
     }
-    elementList.clear();
-    for(Unit * unit: unitList){
+    elementList->clear();
+    //qDebug() << unitList.count();
+    for(Unit * unit: *unitList){
+        //qDebug() << unit->getType();
         delete unit;
     }
-    unitList.clear();
+    unitList->clear();
+    //qDebug() << unitList.count();
 }
 
 bool Map::saveMap(QString directory)
@@ -176,14 +183,14 @@ bool Map::saveMap(QString directory)
     mapJson["height"] = height;
     mapJson["width"] = width;
     mapJson["background"] = backgroundPath;
-    foreach (Element * elem, elementList) {
+    foreach (Element * elem, *elementList) {
         QJsonObject npcObject;
         npcObject["type"] = elem->getType();
         npcObject["x"] = elem->x();
         npcObject["y"] = elem->y();
         jsonTab.append(npcObject);
     }
-    foreach (Element * elem, unitList) {
+    foreach (Element * elem, *unitList) {
         QJsonObject npcObject;
         npcObject["type"] = elem->getType();
         npcObject["x"] = elem->x();
@@ -205,7 +212,7 @@ bool Map::saveMap(QString directory)
     return true;
 }
 
-QList<Element *> Map::getElementList() const
+QList<Element *> * Map::getElementList() const
 {
     return elementList;
 }
@@ -248,7 +255,7 @@ QList<QString> Map::getLevels()
     return list;
 }
 
-QList<Unit *> Map::getUnitList() const
+QList<Unit *> * Map::getUnitList()
 {
     return unitList;
 }
