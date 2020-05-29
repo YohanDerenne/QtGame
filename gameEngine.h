@@ -54,8 +54,6 @@ private:
     QGraphicsScene * gameScene;
     Player * player;
     QImage background;
-    QList<Element *> * elementList;
-    QList<consoObject *> consoObjectList;
     Map * map;
 
     int windowWidth;

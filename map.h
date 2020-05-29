@@ -25,8 +25,8 @@ public:
     bool saveMap(QString directory);
 
     QList<Element *> * getElementList() const;
-    QList<Unit *> * getUnitList() ;
-    QList<consoObject *> getConsoObjectList() const;
+    QList<Unit *> * getUnitList() const;
+    QList<consoObject *> * getConsoObjectList() const;
     Player *getPlayer() const;
     QImage getBackground() const;
     int getWidth() const;
@@ -40,7 +40,7 @@ private:
     Player * player;
     QList<Element *> * elementList;
     QList<Unit *> * unitList;
-    QList<consoObject *> consoObjectList;
+    QList<consoObject *> * consoObjectList;
     int width;
     int height;
 };

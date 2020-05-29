@@ -16,7 +16,7 @@
         <file>images/heart.png</file>
         <file>images/backgrounds/background_menu.png</file>
         <file>images/life.png</file>
-        <file>images/mask.jpg</file>
-        <file>images/gel.jpg</file>
+        <file>images/gel.png</file>
+        <file>images/mask.png</file>
     </qresource>
 </RCC>
