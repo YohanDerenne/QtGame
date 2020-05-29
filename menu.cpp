@@ -5,24 +5,27 @@ Menu::Menu() : QGraphicsScene()
 {
     int xButton = 200;
     int yStartButton = 300;
-    int buttonSperator = 50;
-
     // Create window scene with background
     this->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
     QImage background = QImage(":/ressources/images/backgrounds/background_menu.png");
     background = background.scaledToHeight(WINDOW_HEIGHT);
     this->setBackgroundBrush(background);
 
-    // Display buttons
+    // Display levels buttons
     int index = 0;
     foreach (QString world, Map::getLevels() ){
         qDebug() << world;
         MenuButton * button = new MenuButton(world);
-        button->move(xButton,yStartButton + index * (button->height() + buttonSperator));
+        button->move(xButton,yStartButton + index * (button->height() + BTN_GAP));
         buttonList.append(button);
         this->addWidget(button);
         index ++;
     }
+
+    // display quitBtn
+    QuitBtn= new MenuButton("Quit");
+    QuitBtn->move(xButton,yStartButton + index * (QuitBtn->height() + BTN_GAP));
+    this->addWidget(QuitBtn);
 
     // Player Image
     QGraphicsPixmapItem * playerImage = new QGraphicsPixmapItem();
@@ -45,7 +48,21 @@ Menu::Menu() : QGraphicsScene()
 
 }
 
+Menu::~Menu()
+{
+    foreach(QPushButton * btn,buttonList){
+        delete btn;
+    }
+    buttonList.clear();
+    delete QuitBtn;
+}
+
 QList<MenuButton *> Menu::getButtonList() const
 {
     return buttonList;
+}
+
+MenuButton *Menu::getQuitBtn() const
+{
+    return QuitBtn;
 }

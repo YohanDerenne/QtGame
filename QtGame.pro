@@ -32,6 +32,7 @@ SOURCES += \
     main.cpp \
     map.cpp \
     mask.cpp \
+    pausegroup.cpp \
     player.cpp \
     unit.cpp \
     virus.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     life.h \
     map.h \
     mask.h \
+    pausegroup.h \
     player.h \
     unit.h \
     virus.h \

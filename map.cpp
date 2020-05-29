@@ -178,7 +178,7 @@ bool Map::readmap(QString directory)
 
 void Map::clearMap()
 {
-    if(player){
+    if(player != NULL){
         //qDebug() << player;
         delete player;
         player = NULL;

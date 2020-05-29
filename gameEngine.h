@@ -10,6 +10,8 @@
 #include <qscrollbar.h>
 #include <QGraphicsPixmapItem>
 #include <QSignalMapper>
+#include <QApplication>
+#include <QGraphicsProxyWidget>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -19,6 +21,8 @@
 #include "configuration.h"
 #include "info.h"
 #include "menu.h"
+#include "pausegroup.h"
+
 
 
 class GameEngine: public QGraphicsView{
@@ -36,24 +40,25 @@ public:
     void respawn();
 
     void updateCamera();
-
-    Player *getPlayer() const;
-
     void drawElements();
 
     void createVirus();
-    void openMenu();
+
     void openGame();
+    void openPause();
+
     void clearLevel();
 
 public slots:
     void updatePositions();
     void animate();
     void loadMap(QString worldName);
+    void closePause();
+    void openMenu();
+    void quitApp();
 
 private:
     QGraphicsScene * levelScene;
-    Player * player;
     QImage background;
     Map * map;
 
@@ -73,6 +78,13 @@ private:
     QTimer * refreshTimer;
 
     QSignalMapper * buttonMenuMapper;
+
+    PauseGroup * pauseMenu;
+
+    QGraphicsProxyWidget * continueProxy;
+    QGraphicsProxyWidget * backMenuProxy;
+
+    bool paused;
 
 };
 

@@ -1,11 +1,9 @@
 #include "gameEngine.h"
 
 
-
-// for test only
-
 GameEngine::GameEngine()
 {
+    // init sizes
     windowWidth = WINDOW_WIDTH;
     windowHeight = WINDOW_HEIGHT;
 
@@ -27,18 +25,17 @@ GameEngine::GameEngine()
     // Game plan
     worldPlan = new QGraphicsItemGroup();
     levelScene->addItem(worldPlan);
+
     // Info plan
     playerInfo = new Info();
     levelScene->addItem(playerInfo);
 
+    // init map
     map = new Map();
+    // Save genarated map
     map->generateMap1();
-    drawElements();
     map->saveMap("world 2");
-    map->readmap("world 2");
-    drawElements();
 
-    menuScene = new Menu;
 
     // Init Timer
     refreshTimer = new QTimer(this);
@@ -52,10 +49,15 @@ GameEngine::GameEngine()
     //horizontalScrollBar()->setMinimum(0);
     //horizontalScrollBar()->setMaximum(map->getWidth() + WINDOW_WIDTH);
     horizontalScrollBar()->setPageStep(0);
+
+    // init sprite number for animation
     playerSprite = 1;
     playerStaticCounter = 1;
 
-    // Link button menu
+
+    // init menu
+    menuScene = new Menu();
+    // Link level button in menu
     buttonMenuMapper = new QSignalMapper(this);
     foreach(MenuButton * btn ,menuScene->getButtonList()){
         QString worldName = btn->text();
@@ -63,7 +65,14 @@ GameEngine::GameEngine()
         connect(btn,SIGNAL(clicked()),buttonMenuMapper,SLOT(map()));
     }
     connect(buttonMenuMapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
+    // link quit button in menu
+    connect(menuScene->getQuitBtn(),SIGNAL(clicked()),this,SLOT(quitApp()));
 
+
+    // init pause
+    pauseMenu = new PauseGroup();
+    connect(pauseMenu->getContinueBtn(), SIGNAL(clicked()), this, SLOT(closePause()));
+    connect(pauseMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
 
     openMenu();
     //openGame();
@@ -85,34 +94,47 @@ GameEngine::~GameEngine()
 
     delete menuScene;
 
+    delete pauseMenu;
+
     levelScene->clear();
     delete levelScene;
 }
 
 void GameEngine::keyPressEvent(QKeyEvent *event)
 {
-    //qDebug() << "key pressed" ;
-    if (event->key() == Qt::Key_Left){
-        //horizontalScrollBar()->setValue(horizontalScrollBar()->value() - 10);
-        player->SetMovingLeft(true);
+    //Player control
+    if(paused == false){
+
+        if (event->key() == Qt::Key_Left){
+            //horizontalScrollBar()->setValue(horizontalScrollBar()->value() - 10);
+            map->getPlayer()->SetMovingLeft(true);
+        }
+        else if (event->key() == Qt::Key_Right){
+            //horizontalScrollBar()->setValue(horizontalScrollBar()->value() + 10);
+            map->getPlayer()->SetMovingRight(true);
+        }
+        else if (event->key() == Qt::Key_Space || event->key() == Qt::Key_Up){
+            map->getPlayer()->Jump();
+        }
+        else if (event->key() == Qt::Key_R){
+            respawn();
+        }
+        else if (event->key() == Qt::Key_A){
+            createVirus();
+        }
     }
-    else if (event->key() == Qt::Key_Right){
-        //horizontalScrollBar()->setValue(horizontalScrollBar()->value() + 10);
-        player->SetMovingRight(true);
+    // pause control
+    if (event->key() == Qt::Key_Escape){
+        if(scene() == levelScene){
+            if(pauseMenu->scene() == levelScene)
+                closePause();
+            else
+                openPause();
+        }
+        //openMenu();
     }
-    else if (event->key() == Qt::Key_Space || event->key() == Qt::Key_Up){
-        player->Jump();
-    }
-    else if (event->key() == Qt::Key_R){
-        respawn();
-    }
-    else if (event->key() == Qt::Key_A){
-        createVirus();
-    }
-    else if (event->key() == Qt::Key_Escape){
-        openMenu();
-    }
-    else if (event->key() == Qt::Key_F11){
+    // full screen control
+    if (event->key() == Qt::Key_F11){
         if(isFullScreen())
             showNormal();
         else
@@ -124,47 +146,49 @@ void GameEngine::keyReleaseEvent(QKeyEvent *event)
 {
     //qDebug() << "key released" ;
     if (event->key() == Qt::Key_Left){
-        player->SetMovingLeft(false);
+        map->getPlayer()->SetMovingLeft(false);
     }
     else if (event->key() == Qt::Key_Right){
-        player->SetMovingRight(false);
+        map->getPlayer()->SetMovingRight(false);
     }
 }
 
 void GameEngine::resizeEvent(QResizeEvent *event)
 {
     qDebug() << "resize";
+
+    // Scale the view to the new size
     QRect rect = QRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
     fitInView(rect);
 }
 
 void GameEngine::updatePlayerPosition()
 {
-    player->updateMovementStates();
+    map->getPlayer()->updateMovementStates();
 
-    CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(player,true,true,true,true);
-    CollideManager<Virus> * virusCollider = new CollideManager<Virus>(player,true,false,false,false);
+    CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(map->getPlayer(),true,true,true,true);
+    CollideManager<Virus> * virusCollider = new CollideManager<Virus>(map->getPlayer(),true,false,false,false);
 
-    int next_x = player->x();
-    int next_y = player->y();
+    int next_x = map->getPlayer()->x();
+    int next_y = map->getPlayer()->y();
 
     // Moving the player
-    if(player->isFlying() == true){
-        next_y += player->getYForce() * 1/FPS;
+    if(map->getPlayer()->isFlying() == true){
+        next_y += map->getPlayer()->getYForce() * 1/FPS;
         float dt = 1/(float)FPS;
-        player->setYForce( player->getYForce() + player->getWeight() * GRAVITY * dt);
+        map->getPlayer()->setYForce( map->getPlayer()->getYForce() + map->getPlayer()->getWeight() * GRAVITY * dt);
     }
-    if(player->isMovingLeft()){
-        player->increaseLeftForce();
+    if(map->getPlayer()->isMovingLeft()){
+        map->getPlayer()->increaseLeftForce();
     }
-    else if(player->isMovingRight()){
-        player->increaseRightForce();
+    else if(map->getPlayer()->isMovingRight()){
+        map->getPlayer()->increaseRightForce();
     }
     else {
-        player->decreaseXForce();
+        map->getPlayer()->decreaseXForce();
     }
-    next_x += player->getXForce();
-    player->setPos(next_x,next_y);
+    next_x += map->getPlayer()->getXForce();
+    map->getPlayer()->setPos(next_x,next_y);
 
     wallCollider->updateCollidingPosition();
     virusCollider->updateCollidingPosition();
@@ -172,8 +196,8 @@ void GameEngine::updatePlayerPosition()
     // If no collides -> begin de falling
     if(!wallCollider->getAreColliding() &&
             !virusCollider->getAreColliding()){
-        if(player->getYForce() == 0)
-            player->setYForce(player->getYForce() + 100);
+        if(map->getPlayer()->getYForce() == 0)
+            map->getPlayer()->setYForce(map->getPlayer()->getYForce() + 100);
         //player->setXForce(10);
     }
     if(virusCollider->getAreColliding()){
@@ -183,13 +207,12 @@ void GameEngine::updatePlayerPosition()
             iterator.next();
             if(iterator.value().fromTop == true){
                 // rebondi
-                player->setYForce(-200);
+                map->getPlayer()->setYForce(-200);
 
                 // Kill virus
                 map->getUnitList()->removeOne(iterator.key());
                 worldPlan->removeFromGroup(iterator.key());
                 delete iterator.key();
-
             }
             else{
                 respawn();
@@ -204,23 +227,23 @@ void GameEngine::updatePlayerPosition()
 
 void GameEngine::respawn()
 {
-    player->setPos(200,400);
+    map->getPlayer()->setPos(200,400);
 }
 
 // Follow the player
 void GameEngine::updateCamera()
 {
     // Player too much to the left
-    if (player->x() - CAMERA_LEFT > 0 && player->x() + worldPlan->x() < CAMERA_LEFT ){
-        worldPlan->setPos(-(player->x() - CAMERA_LEFT),0);
+    if (map->getPlayer()->x() - CAMERA_LEFT > 0 && map->getPlayer()->x() + worldPlan->x() < CAMERA_LEFT ){
+        worldPlan->setPos(-(map->getPlayer()->x() - CAMERA_LEFT),0);
     }
     // Player at the begin of the map
-    else if (player->x() - CAMERA_LEFT < 0){
+    else if (map->getPlayer()->x() - CAMERA_LEFT < 0){
         worldPlan->setPos(0,0);
     }
     // Player too much to the right
-    if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && player->x() + worldPlan->x() > CAMERA_RIGHT ){
-        worldPlan->setPos(-(player->x() - CAMERA_RIGHT) , 0);
+    if (map->getPlayer()->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && map->getPlayer()->x() + worldPlan->x() > CAMERA_RIGHT ){
+        worldPlan->setPos(-(map->getPlayer()->x() - CAMERA_RIGHT) , 0);
     }
 }
 
@@ -234,24 +257,24 @@ void GameEngine::updatePositions()
 void GameEngine::animate()
 {
     // if player in the air
-    if(player->isJumping()){
-        player->setSprite(QString(":/ressources/images/player/21.png"));
+    if(map->getPlayer()->isJumping()){
+        map->getPlayer()->setSprite(QString(":/ressources/images/player/21.png"));
     }
-    else if (player->isFalling()){
-        player->setSprite(QString(":/ressources/images/player/22.png"));
+    else if (map->getPlayer()->isFalling()){
+        map->getPlayer()->setSprite(QString(":/ressources/images/player/22.png"));
     }
     // if player run
-    else if(player->isMovingRight() || player->isMovingLeft()){
+    else if(map->getPlayer()->isMovingRight() || map->getPlayer()->isMovingLeft()){
         if(playerSprite < 11 || playerSprite > 13)
             playerSprite = 11;
-        player->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
+        map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
         playerSprite ++;
     }
     // if player is static
-    else if(player->getFixed()){
+    else if(map->getPlayer()->getFixed()){
         if(playerSprite > 4)
             playerSprite = 1;
-        player->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
+        map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
 
         playerSprite ++;
         playerStaticCounter ++;
@@ -282,11 +305,6 @@ void GameEngine::loadMap(QString worldName)
     openGame();
 }
 
-Player *GameEngine::getPlayer() const
-{
-    return player;
-}
-
 void GameEngine::drawElements()
 {
     // set scene background
@@ -294,10 +312,8 @@ void GameEngine::drawElements()
     levelScene->setBackgroundBrush(QImage(map->getBackground()));
 
 
-    // set player
-    player = map->getPlayer();
-    //scene->addItem(player);
-    worldPlan->addToGroup(player);
+    // Add p
+    worldPlan->addToGroup(map->getPlayer());
 
     // set elements
     for(Element * element : *map->getElementList()){
@@ -329,16 +345,70 @@ void GameEngine::createVirus(){
 
 void GameEngine::openMenu()
 {
+    if(paused == true)
+        closePause();
+
+    paused = true;
+    // Show mouse cursor
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+    // stop timers
     Animtimer->stop();
     refreshTimer->stop();
+
+    // replace scene by menu scene
     setScene(menuScene);
+}
+
+void GameEngine::quitApp()
+{
+    this->close();
 }
 
 void GameEngine::openGame()
 {
+    // hide mouse cursor
+    QApplication::setOverrideCursor(Qt::BlankCursor);
+
+    // start timer
     Animtimer->start(90);
     refreshTimer->start(1000/FPS);
     setScene(levelScene);
+    paused = false;
+}
+
+void GameEngine::openPause()
+{
+    // Show mouse cursor
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+    // stop timer
+    paused = true;
+    Animtimer->stop();
+    refreshTimer->stop();
+
+    levelScene->addItem(pauseMenu);
+    levelScene->addWidget(pauseMenu->getContinueBtn());
+    levelScene->addWidget(pauseMenu->getBackMenuBtn());
+}
+
+void GameEngine::closePause()
+{
+    // hide mouse cursor
+    QApplication::setOverrideCursor(Qt::BlankCursor);
+
+    // restart timers
+    paused = false;
+    Animtimer->start(90);
+    refreshTimer->start(1000/FPS);
+
+    // remove pause component from scene
+    levelScene->removeItem(pauseMenu);
+    levelScene->removeItem(pauseMenu->getBackMenuBtn()->graphicsProxyWidget());
+    levelScene->removeItem(pauseMenu->getContinueBtn()->graphicsProxyWidget());
+    // reset proxy
+    pauseMenu->getBackMenuBtn()->graphicsProxyWidget()->setWidget( NULL );
+    pauseMenu->getContinueBtn()->graphicsProxyWidget()->setWidget( NULL );
 }
 
 void GameEngine::clearLevel()

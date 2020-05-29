@@ -37,5 +37,7 @@
 
 #define TITLE "Virus Fighter"
 
+#define BTN_GAP 50
+
 
 #endif // CONFIGURATION_H
