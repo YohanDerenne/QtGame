@@ -54,7 +54,6 @@ GameEngine::GameEngine()
     playerSprite = 1;
     playerStaticCounter = 1;
 
-
     // init menu
     menuScene = new Menu();
     // Link level button in menu
@@ -67,7 +66,6 @@ GameEngine::GameEngine()
     connect(buttonMenuMapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
     // link quit button in menu
     connect(menuScene->getQuitBtn(),SIGNAL(clicked()),this,SLOT(quitApp()));
-
 
     // init pause
     pauseMenu = new PauseGroup();
@@ -114,10 +112,10 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             map->getPlayer()->SetMovingRight(true);
         }
         else if (event->key() == Qt::Key_Space || event->key() == Qt::Key_Up){
-            map->getPlayer()->Jump();
+            map->getPlayer()->jump();
         }
         else if (event->key() == Qt::Key_R){
-            respawn();
+            loadMap(map->getName());
         }
         else if (event->key() == Qt::Key_A){
             createVirus();
@@ -168,6 +166,7 @@ void GameEngine::updatePlayerPosition()
 
     CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(map->getPlayer(),true,true,true,true);
     CollideManager<Virus> * virusCollider = new CollideManager<Virus>(map->getPlayer(),true,false,false,false);
+    CollideManager<consoObject> * consoCollider = new CollideManager<consoObject>(map->getPlayer(),false,false,false,false);
 
     int next_x = map->getPlayer()->x();
     int next_y = map->getPlayer()->y();
@@ -192,34 +191,52 @@ void GameEngine::updatePlayerPosition()
 
     wallCollider->updateCollidingPosition();
     virusCollider->updateCollidingPosition();
+    consoCollider->updateCollidingPosition();
 
-    // If no collides -> begin de falling
+    // If no wall or virus collides -> begin de falling
     if(!wallCollider->getAreColliding() &&
             !virusCollider->getAreColliding()){
+        // if initial falling
         if(map->getPlayer()->getYForce() == 0)
             map->getPlayer()->setYForce(map->getPlayer()->getYForce() + 100);
-        //player->setXForce(10);
     }
     if(virusCollider->getAreColliding()){
-        QMap<Virus *,fromPosition> virusInfo = virusCollider->getCollidingItemList();
-        QMapIterator<Virus*, fromPosition> iterator(virusInfo);
+        QMap<Virus *,fromPosition> virusMap = virusCollider->getCollidingItemList();
+        QMapIterator<Virus*, fromPosition> iterator(virusMap);
         while (iterator.hasNext()) {
             iterator.next();
+            Virus * virus = iterator.key();
             if(iterator.value().fromTop == true){
                 // rebondi
-                map->getPlayer()->setYForce(-200);
+                map->getPlayer()->bounce();
 
                 // Kill virus
-                map->getUnitList()->removeOne(iterator.key());
-                worldPlan->removeFromGroup(iterator.key());
+                map->getUnitList()->removeOne(virus);
+                worldPlan->removeFromGroup(virus);
                 delete iterator.key();
             }
             else{
-                respawn();
+                // is attacked !
+                virus->attack(map->getPlayer());
+
+                // if player is not alive
+                if(!map->getPlayer()->isAlive()){
+                    gameOver();
+                }
             }
         }
     }
-
+    if(consoCollider->getAreColliding()){
+        QMap<consoObject *,fromPosition> consoMap = consoCollider->getCollidingItemList();
+        QMapIterator<consoObject*, fromPosition> iterator(consoMap);
+        while (iterator.hasNext()) {
+            iterator.next();
+            consoObject * conso = iterator.key();
+            conso->applyEffect(map->getPlayer());
+            map->getConsoObjectList()->removeOne(conso);
+            delete conso;
+        }
+    }
     delete wallCollider;
     delete virusCollider;
     //qDebug() << player->getXForce();
@@ -256,6 +273,18 @@ void GameEngine::updatePositions()
 
 void GameEngine::animate()
 {
+    // if player immune (get a an attack)
+    // qDebug() << playerSprite % 2;
+    if(map->getPlayer()->getImmune() && playerSprite % 2 == 0){
+        map->getPlayer()->hide();
+        playerSprite ++;
+        return;
+    }
+    else{
+        map->getPlayer()->show();
+    }
+
+
     // if player in the air
     if(map->getPlayer()->isJumping()){
         map->getPlayer()->setSprite(QString(":/ressources/images/player/21.png"));
@@ -268,7 +297,7 @@ void GameEngine::animate()
         if(playerSprite < 11 || playerSprite > 13)
             playerSprite = 11;
         map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
-        playerSprite ++;
+
     }
     // if player is static
     else if(map->getPlayer()->getFixed()){
@@ -276,7 +305,6 @@ void GameEngine::animate()
             playerSprite = 1;
         map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
 
-        playerSprite ++;
         playerStaticCounter ++;
         // if player wink, skip the first sprite
         if(playerSprite == 5){
@@ -292,6 +320,7 @@ void GameEngine::animate()
             playerSprite = 1;
         }
     }
+    playerSprite ++;
     //qDebug() << player->getXForce() << player->getYForce() << player->getFixed();
 
 }
@@ -299,6 +328,7 @@ void GameEngine::animate()
 void GameEngine::loadMap(QString worldName)
 {
     //qDebug() << "loading " << worldName;
+    worldPlan->setPos(0,0);
     clearLevel();
     map->readmap(worldName);
     drawElements();
@@ -312,8 +342,10 @@ void GameEngine::drawElements()
     levelScene->setBackgroundBrush(QImage(map->getBackground()));
 
 
-    // Add p
+    // Add player
     worldPlan->addToGroup(map->getPlayer());
+    map->getPlayer()->setInfo(playerInfo);
+    map->getPlayer()->setLife(1);
 
     // set elements
     for(Element * element : *map->getElementList()){
@@ -363,6 +395,12 @@ void GameEngine::openMenu()
 void GameEngine::quitApp()
 {
     this->close();
+}
+
+void GameEngine::restart()
+{
+    delete restartTimer;
+    loadMap("world 2");
 }
 
 void GameEngine::openGame()
@@ -415,5 +453,17 @@ void GameEngine::clearLevel()
 {
     map->clearMap();
     worldPlan->setPos(0,0);
+}
+
+void GameEngine::gameOver()
+{
+    map->getPlayer()->setSprite(":/ressources/images/player/hurt.png");
+    Animtimer->stop();
+    refreshTimer->stop();
+
+    restartTimer = new QTimer();
+    restartTimer->start(1000);
+    connect(restartTimer,SIGNAL(timeout()),this,SLOT(restart()));
+
 }
 

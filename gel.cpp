@@ -14,3 +14,8 @@ Gel::Gel()
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 }
+
+void Gel::applyEffect(Unit *unit)
+{
+
+}

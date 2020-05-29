@@ -19,5 +19,6 @@
         <file>images/gel.png</file>
         <file>images/mask.png</file>
         <file>images/icone.ico</file>
+        <file>images/player/hurt.png</file>
     </qresource>
 </RCC>

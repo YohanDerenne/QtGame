@@ -49,6 +49,8 @@ public:
 
     void clearLevel();
 
+    void gameOver();
+
 public slots:
     void updatePositions();
     void animate();
@@ -56,6 +58,7 @@ public slots:
     void closePause();
     void openMenu();
     void quitApp();
+    void restart();
 
 private:
     QGraphicsScene * levelScene;
@@ -76,6 +79,7 @@ private:
 
     QTimer * Animtimer;
     QTimer * refreshTimer;
+    QTimer * restartTimer;
 
     QSignalMapper * buttonMenuMapper;
 

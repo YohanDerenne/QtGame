@@ -8,6 +8,7 @@ class Mask: public consoObject
 {
 public:
     Mask();
+    void applyEffect(Unit * unit);
 };
 
 #endif // MASK_H

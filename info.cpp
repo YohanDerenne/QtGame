@@ -11,13 +11,13 @@ Info::Info()
     life->setY(5);
 
     // Nb Life info
-    QGraphicsTextItem * lives = new QGraphicsTextItem("4");
-    lives->setPos(25,15);
+    livesText = new QGraphicsTextItem("4");
+    livesText->setPos(25,15);
     QFont lifeFont;
     //lives->setDefaultTextColor(Qt::white);
     lifeFont.setBold(true);
     lifeFont.setPixelSize(20);
-    lives->setFont(lifeFont);
+    livesText->setFont(lifeFont);
 
     // Background Info
     zone = new QGraphicsRectItem(0,0,WINDOW_WIDTH + 10,60);
@@ -26,5 +26,21 @@ Info::Info()
     // Add all item to the group
     // this->addToGroup(zone);
     this->addToGroup(life);
-    this->addToGroup(lives);
+    this->addToGroup(livesText);
+}
+
+LifeInfo *Info::getLife() const
+{
+    return life;
+}
+
+int Info::getNbLife() const
+{
+    return nbLife;
+}
+
+void Info::setNbLife(int value)
+{
+    nbLife = value;
+    livesText->setPlainText(QString::number(value));
 }

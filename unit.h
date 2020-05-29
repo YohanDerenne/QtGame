@@ -1,12 +1,15 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include <QTimer>
+#include <QObject>
 #include "element.h"
 
 #include "configuration.h"
 
-class Unit : public Element
+class Unit : public QObject,public Element
 {
+    Q_OBJECT
 public:
     Unit();
     void SetMovingRight(bool state);
@@ -38,8 +41,21 @@ public:
 
     bool getFixed() const;
 
+    void receiveDammage(int dammage);
+    void attack(Unit * unit);
+
+    int getLife() const;
+
+
+    bool isAlive() const;
+
+    virtual void setLife(int value);
+
+    bool getImmune() const;
+
 public slots:
-    void MovePlayer();
+    //void MovePlayer();
+    void disableImmune();
 
 protected :
     bool flying;
@@ -57,6 +73,12 @@ protected :
     bool movingRight;
 
     int maxSpeed;
+
+    bool alive;
+    int life;
+    bool immune;
+
+    QTimer * immuneTimer;
 
 };
 

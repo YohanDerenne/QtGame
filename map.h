@@ -34,6 +34,8 @@ public:
     void setBackground(const QImage &value);
     static QList<QString> getLevels();
 
+    QString getName() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -43,6 +45,7 @@ private:
     QList<consoObject *> * consoObjectList;
     int width;
     int height;
+    QString name;
 };
 
 #endif // MAP_H

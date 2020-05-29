@@ -14,3 +14,8 @@ Mask::Mask()
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 }
+
+void Mask::applyEffect(Unit *unit)
+{
+
+}

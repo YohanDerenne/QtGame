@@ -9,13 +9,40 @@ Player::Player() : Unit()
     type = "player";
 }
 
-void Player::Jump()
+void Player::jump()
 {
     if(flying == false){
         yForce = -900;
         updateMovementStates();
     }
 }
+
+void Player::bounce()
+{
+    yForce = -200;
+    updateMovementStates();
+}
+
+void Player::setLife(int value)
+{
+    life = value;
+    if(life <= 0)
+        alive = false;
+    else
+        alive = true;
+    getInfo()->setNbLife(life);
+}
+
+Info *Player::getInfo() const
+{
+    return info;
+}
+
+void Player::setInfo(Info *value)
+{
+    info = value;
+}
+
 
 
 

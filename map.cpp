@@ -11,6 +11,7 @@ Map::Map()
     elementList = new QList<Element*>();
     unitList = new QList<Unit*>();
     consoObjectList = new QList<consoObject *>();
+    name = "no level";
 }
 
 Map::~Map()
@@ -31,7 +32,6 @@ void Map::generateMap1()
     // set background
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
-
 
     // create the player
     player = new Player();
@@ -109,6 +109,8 @@ bool Map::readmap(QString directory)
     // Clear the actual map if exists
     clearMap();
 
+    name = directory;
+
     // Open the json file
     QDir dir = directory;
     QString path = QStringLiteral("levels/%1/map.json").arg(directory);
@@ -172,7 +174,7 @@ bool Map::readmap(QString directory)
             consoObjectList->append(mask);
         }
     }
-
+    loadFile.close();
     return true;
 }
 
@@ -263,6 +265,7 @@ bool Map::saveMap(QString directory)
     saveFile.write(saveDoc.toJson());
 
     // success
+    saveFile.close();
     return true;
 }
 
@@ -307,6 +310,11 @@ QList<QString> Map::getLevels()
             list.append(dir);
     }
     return list;
+}
+
+QString Map::getName() const
+{
+    return name;
 }
 
 QList<Unit *> * Map::getUnitList() const
