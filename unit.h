@@ -2,12 +2,11 @@
 #define UNIT_H
 
 #include <QTimer>
-#include <QObject>
 #include "element.h"
 
 #include "configuration.h"
 
-class Unit : public QObject,public Element
+class Unit : public Element
 {
     Q_OBJECT
 public:
@@ -45,13 +44,12 @@ public:
     void attack(Unit * unit);
 
     int getLife() const;
-
-
     bool isAlive() const;
 
     virtual void setLife(int value);
 
     bool getImmune() const;
+    void setImmune(bool value);
 
 public slots:
     //void MovePlayer();

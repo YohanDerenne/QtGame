@@ -21,14 +21,12 @@ SOURCES += \
     fixedblock.cpp \
     gameEngine.cpp \
     info.cpp \
-    lifeinfo.cpp \
     main.cpp \
     map.cpp \
     menu.cpp \
     menubutton.cpp \
     gel.cpp \
     heart.cpp \
-    life.cpp \
     main.cpp \
     map.cpp \
     mask.cpp \
@@ -46,13 +44,11 @@ HEADERS += \
     fixedblock.h \
     gameEngine.h \
     info.h \
-    lifeinfo.h \
     map.h \
     menu.h \
     menubutton.h \
     gel.h \
     heart.h \
-    life.h \
     map.h \
     mask.h \
     pausegroup.h \

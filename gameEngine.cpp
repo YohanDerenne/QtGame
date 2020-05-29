@@ -274,7 +274,6 @@ void GameEngine::updatePositions()
 void GameEngine::animate()
 {
     // if player immune (get a an attack)
-    // qDebug() << playerSprite % 2;
     if(map->getPlayer()->getImmune() && playerSprite % 2 == 0){
         map->getPlayer()->hide();
         playerSprite ++;

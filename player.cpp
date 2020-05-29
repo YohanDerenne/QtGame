@@ -43,6 +43,20 @@ void Player::setInfo(Info *value)
     info = value;
 }
 
+void Player::putMask()
+{
+    setImmune(true);
+    maskTimer = new QTimer();
+    maskTimer->start(5000);
+    connect(maskTimer,&QTimer::timeout,this,&Player::takeOffMask);
+}
+
+void Player::takeOffMask()
+{
+    delete maskTimer;
+    setImmune(false);
+}
+
 
 
 

@@ -95,7 +95,7 @@ void Unit::receiveDammage(int dammage)
     if(!immune){
         setLife(life - dammage);
         immuneTimer = new QTimer();
-        immuneTimer->start(2000);
+        immuneTimer->start(1000);
         connect(immuneTimer,SIGNAL(timeout()),this,SLOT(disableImmune()));
         immune = true;
     }
@@ -129,6 +129,11 @@ void Unit::disableImmune()
 {
     immune = false;
     delete immuneTimer;
+}
+
+void Unit::setImmune(bool value)
+{
+    immune = value;
 }
 
 bool Unit::isAlive() const

@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QMutex>
 
-class Element :  public QGraphicsPixmapItem
+class Element :  public QObject, public QGraphicsPixmapItem
 {
 public:
     Element();

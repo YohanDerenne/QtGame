@@ -5,6 +5,7 @@ PauseGroup::PauseGroup()
     continueBtn = new MenuButton("Continue");
     backMenuBtn = new MenuButton("Menu");
 
+    // Set button in the midle of the screen
     int yOffset = 100;
     continueBtn->move(WINDOW_WIDTH / 2 - continueBtn->width() / 2,yOffset);
     backMenuBtn->move(WINDOW_WIDTH / 2 - backMenuBtn->width() / 2,continueBtn->height() + BTN_GAP + yOffset);;

@@ -1,4 +1,7 @@
 #include "mask.h"
+#include "player.h"
+
+#include <QColor>
 
 Mask::Mask()
 {
@@ -17,5 +20,8 @@ Mask::Mask()
 
 void Mask::applyEffect(Unit *unit)
 {
-
+    if(unit->getType() == "player"){
+        Player * player = static_cast<Player*>(unit);
+        player->putMask();
+    }
 }
