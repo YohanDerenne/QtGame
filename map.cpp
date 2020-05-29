@@ -10,6 +10,7 @@ Map::Map()
     player = NULL;
     elementList = new QList<Element*>();
     unitList = new QList<Unit*>();
+    consoObjectList = new QList<consoObject *>();
 }
 
 Map::~Map()
@@ -45,7 +46,25 @@ void Map::generateMap1()
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
             unitList->append(virus);
         }
+
+        // Consos
+        if(i == 9){
+            Heart *heart = new Heart();
+            heart->setPos(i*bloc->getWidth(),500 - heart->getHeight());
+            consoObjectList->append(heart);
+        }
+        if(i == 2){
+            Mask *mask = new Mask();
+            mask->setPos(i*bloc->getWidth(),500 - mask->getHeight());
+            consoObjectList->append(mask);
+        }
+        if(i == 5){
+            Gel *gel = new Gel();
+            gel->setPos(i*bloc->getWidth(),500 - gel->getHeight());
+            consoObjectList->append(gel);
+        }
     }
+
     // platform
     for(int i = 0; i < 5; i++){
         if(i != 3){
@@ -53,6 +72,7 @@ void Map::generateMap1()
             bloc->setPos(i*bloc->getWidth() + 200 ,300);
             elementList->append(bloc);
         }
+
     }
     /*
     // roof
@@ -110,25 +130,43 @@ bool Map::readmap(QString directory)
 
     QJsonArray elemTab = mapJson["elem"].toArray();
     for (int index = 0; index < elemTab.size(); ++index) {
-            QJsonObject elem = elemTab[index].toObject();
-            if(elem["type"].toString() == "player"){
-                player = new Player();
-                player->setX(elem["x"].toInt());
-                player->setY(elem["y"].toInt());
-            }
-            if(elem["type"].toString() == "wall"){
-                Wall * w = new Wall();
-                w->setX(elem["x"].toInt());
-                w->setY(elem["y"].toInt());
-                elementList->append(w);
-            }
-            if(elem["type"].toString() == "virus"){
-                Virus * v = new Virus();
-                v->setX(elem["x"].toInt());
-                v->setY(elem["y"].toInt());
-                unitList->append(v);
-            }
+        QJsonObject elem = elemTab[index].toObject();
+        if(elem["type"].toString() == "player"){
+            player = new Player();
+            player->setX(elem["x"].toInt());
+            player->setY(elem["y"].toInt());
         }
+        if(elem["type"].toString() == "wall"){
+            Wall * w = new Wall();
+            w->setX(elem["x"].toInt());
+            w->setY(elem["y"].toInt());
+            elementList->append(w);
+        }
+        if(elem["type"].toString() == "virus"){
+            Virus * v = new Virus();
+            v->setX(elem["x"].toInt());
+            v->setY(elem["y"].toInt());
+            unitList->append(v);
+        }
+        if(elem["type"].toString() == "gel"){
+            Gel * gel = new Gel();
+            gel->setX(elem["x"].toInt());
+            gel->setY(elem["y"].toInt());
+            consoObjectList->append(gel);
+        }
+        if(elem["type"].toString() == "heart"){
+            Heart * heart = new Heart();
+            heart->setX(elem["x"].toInt());
+            heart->setY(elem["y"].toInt());
+            consoObjectList->append(heart);
+        }
+        if(elem["type"].toString() == "mask"){
+            Mask * mask = new Mask();
+            mask->setX(elem["x"].toInt());
+            mask->setY(elem["y"].toInt());
+            consoObjectList->append(mask);
+        }
+    }
 
     return true;
 }
@@ -143,13 +181,16 @@ void Map::clearMap()
         delete elem;
     }
     elementList->clear();
-    //qDebug() << unitList.count();
+
     for(Unit * unit: *unitList){
-        //qDebug() << unit->getType();
         delete unit;
     }
     unitList->clear();
-    //qDebug() << unitList.count();
+
+    for(consoObject * conso: *consoObjectList){
+        delete conso;
+    }
+    consoObjectList->clear();
 }
 
 bool Map::saveMap(QString directory)
@@ -184,18 +225,25 @@ bool Map::saveMap(QString directory)
     mapJson["width"] = width;
     mapJson["background"] = backgroundPath;
     foreach (Element * elem, *elementList) {
-        QJsonObject npcObject;
-        npcObject["type"] = elem->getType();
-        npcObject["x"] = elem->x();
-        npcObject["y"] = elem->y();
-        jsonTab.append(npcObject);
+        QJsonObject jsonObject;
+        jsonObject["type"] = elem->getType();
+        jsonObject["x"] = elem->x();
+        jsonObject["y"] = elem->y();
+        jsonTab.append(jsonObject);
     }
     foreach (Element * elem, *unitList) {
-        QJsonObject npcObject;
-        npcObject["type"] = elem->getType();
-        npcObject["x"] = elem->x();
-        npcObject["y"] = elem->y();
-        jsonTab.append(npcObject);
+        QJsonObject jsonObject;
+        jsonObject["type"] = elem->getType();
+        jsonObject["x"] = elem->x();
+        jsonObject["y"] = elem->y();
+        jsonTab.append(jsonObject);
+    }
+    foreach (Element * elem, *consoObjectList) {
+        QJsonObject jsonObject;
+        jsonObject["type"] = elem->getType();
+        jsonObject["x"] = elem->x();
+        jsonObject["y"] = elem->y();
+        jsonTab.append(jsonObject);
     }
     QJsonObject playerJson;
     playerJson["type"] = player->getType();
@@ -255,7 +303,12 @@ QList<QString> Map::getLevels()
     return list;
 }
 
-QList<Unit *> * Map::getUnitList()
+QList<Unit *> * Map::getUnitList() const
 {
     return unitList;
+}
+
+QList<consoObject *> * Map:: getConsoObjectList() const
+{
+    return consoObjectList;
 }

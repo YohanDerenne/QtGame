@@ -17,7 +17,7 @@ GameEngine::GameEngine()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
     //resize(windowWidth,windowHeight);
-    showFullScreen();
+    //showFullScreen();
 
     // Game plan
     worldPlan = new QGraphicsItemGroup();
@@ -96,8 +96,13 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
         createVirus();
     }
     else if (event->key() == Qt::Key_Escape){
-        map->clearMap();
         openMenu();
+    }
+    else if (event->key() == Qt::Key_F11){
+        if(isFullScreen())
+            showNormal();
+        else
+            showFullScreen();
     }
 }
 
@@ -164,11 +169,10 @@ void GameEngine::updatePlayerPosition()
             iterator.next();
             if(iterator.value().fromTop == true){
                 // rebondi
-                player->setYForce(-100);
+                player->setYForce(-200);
 
                 // Kill virus
                 map->getUnitList()->removeOne(iterator.key());
-                qDebug() << "desl" << map->getUnitList()->count();
                 worldPlan->removeFromGroup(iterator.key());
                 delete iterator.key();
 
@@ -323,6 +327,12 @@ void GameEngine::drawElements()
     for(Unit * unit : *map->getUnitList()){
         //scene->addItem(unit);
         worldPlan->addToGroup(unit);
+    }
+
+    // set bonus
+    for(consoObject * conso : *map->getConsoObjectList()){
+        //scene->addItem(unit);
+        worldPlan->addToGroup(conso);
     }
 
 }
