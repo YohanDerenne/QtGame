@@ -16,6 +16,8 @@ Map::Map()
 Map::~Map()
 {
     clearMap();
+    if(player)
+        delete player;
     delete elementList;
     delete unitList;
     delete consoObjectList;
@@ -176,7 +178,8 @@ bool Map::readmap(QString directory)
 
 void Map::clearMap()
 {
-    if(player != NULL){
+    if(player){
+        //qDebug() << player;
         delete player;
         player = NULL;
     }

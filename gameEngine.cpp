@@ -14,9 +14,9 @@ GameEngine::GameEngine()
     setWindowIcon(QIcon(":/ressources/images/icone.ico"));
 
     // create the scene
-    gameScene = new QGraphicsScene();
-    gameScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
-    setScene(gameScene);
+    levelScene = new QGraphicsScene();
+    levelScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
+    setScene(levelScene);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -26,10 +26,10 @@ GameEngine::GameEngine()
 
     // Game plan
     worldPlan = new QGraphicsItemGroup();
-    gameScene->addItem(worldPlan);
+    levelScene->addItem(worldPlan);
     // Info plan
     playerInfo = new Info();
-    gameScene->addItem(playerInfo);
+    levelScene->addItem(playerInfo);
 
     map = new Map();
     map->generateMap1();
@@ -56,13 +56,13 @@ GameEngine::GameEngine()
     playerStaticCounter = 1;
 
     // Link button menu
-    mapper = new QSignalMapper(this);
+    buttonMenuMapper = new QSignalMapper(this);
     foreach(MenuButton * btn ,menuScene->getButtonList()){
         QString worldName = btn->text();
-        mapper->setMapping(btn, btn->text());
-        connect(btn,SIGNAL(clicked()),mapper,SLOT(map()));
+        buttonMenuMapper->setMapping(btn, btn->text());
+        connect(btn,SIGNAL(clicked()),buttonMenuMapper,SLOT(map()));
     }
-    connect(mapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
+    connect(buttonMenuMapper, SIGNAL(mapped(QString)), this, SLOT(loadMap(QString)));
 
 
     openMenu();
@@ -78,15 +78,15 @@ GameEngine::~GameEngine()
     refreshTimer->stop();
     delete refreshTimer;
 
-    delete mapper;
+    delete buttonMenuMapper;
 
     delete map;
     delete playerInfo;
 
     delete menuScene;
 
-    gameScene->clear();
-    delete gameScene;
+    levelScene->clear();
+    delete levelScene;
 }
 
 void GameEngine::keyPressEvent(QKeyEvent *event)
@@ -276,6 +276,7 @@ void GameEngine::animate()
 void GameEngine::loadMap(QString worldName)
 {
     //qDebug() << "loading " << worldName;
+    clearLevel();
     map->readmap(worldName);
     drawElements();
     openGame();
@@ -290,7 +291,7 @@ void GameEngine::drawElements()
 {
     // set scene background
     // setBackgroundBrush(QImage(map->getBackground()));
-    gameScene->setBackgroundBrush(QImage(map->getBackground()));
+    levelScene->setBackgroundBrush(QImage(map->getBackground()));
 
 
     // set player
@@ -337,6 +338,12 @@ void GameEngine::openGame()
 {
     Animtimer->start(90);
     refreshTimer->start(1000/FPS);
-    setScene(gameScene);
+    setScene(levelScene);
+}
+
+void GameEngine::clearLevel()
+{
+    map->clearMap();
+    worldPlan->setPos(0,0);
 }
 

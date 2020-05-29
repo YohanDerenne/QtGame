@@ -44,6 +44,7 @@ public:
     void createVirus();
     void openMenu();
     void openGame();
+    void clearLevel();
 
 public slots:
     void updatePositions();
@@ -51,7 +52,7 @@ public slots:
     void loadMap(QString worldName);
 
 private:
-    QGraphicsScene * gameScene;
+    QGraphicsScene * levelScene;
     Player * player;
     QImage background;
     Map * map;
@@ -71,7 +72,7 @@ private:
     QTimer * Animtimer;
     QTimer * refreshTimer;
 
-    QSignalMapper * mapper;
+    QSignalMapper * buttonMenuMapper;
 
 };
 
