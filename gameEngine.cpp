@@ -8,6 +8,11 @@ GameEngine::GameEngine()
 {
     windowWidth = WINDOW_WIDTH;
     windowHeight = WINDOW_HEIGHT;
+
+    //title and icon
+    setWindowTitle(TITLE);
+    setWindowIcon(QIcon(":/ressources/images/icone.ico"));
+
     // create the scene
     gameScene = new QGraphicsScene();
     gameScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);

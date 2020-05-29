@@ -34,7 +34,7 @@ Menu::Menu() : QGraphicsScene()
 
     // Title
     QGraphicsTextItem * title = new QGraphicsTextItem();
-    title->setPlainText("Virus Fighter");
+    title->setPlainText(TITLE);
     QFont font = QFont("Agency FB",100);
     font.setBold(true);
     title->setFont(font);

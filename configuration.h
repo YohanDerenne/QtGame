@@ -35,5 +35,7 @@
 
 #define FPS 60
 
+#define TITLE "Virus Fighter"
+
 
 #endif // CONFIGURATION_H

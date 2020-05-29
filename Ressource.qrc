@@ -18,5 +18,6 @@
         <file>images/life.png</file>
         <file>images/gel.png</file>
         <file>images/mask.png</file>
+        <file>images/icone.ico</file>
     </qresource>
 </RCC>
