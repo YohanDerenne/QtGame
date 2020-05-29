@@ -16,6 +16,9 @@ Map::Map()
 Map::~Map()
 {
     clearMap();
+    delete elementList;
+    delete unitList;
+    delete consoObjectList;
 }
 
 void Map::generateMap1()

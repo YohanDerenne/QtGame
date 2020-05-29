@@ -68,11 +68,20 @@ GameEngine::GameEngine()
 GameEngine::~GameEngine()
 {
     qDebug() << "delete";
+    Animtimer->stop();
+    delete Animtimer;
+    refreshTimer->stop();
+    delete refreshTimer;
+
+    delete mapper;
+
+    delete map;
+    delete playerInfo;
+
+    delete menuScene;
+
     gameScene->clear();
-    delete player;
     delete gameScene;
-
-
 }
 
 void GameEngine::keyPressEvent(QKeyEvent *event)
@@ -208,39 +217,6 @@ void GameEngine::updateCamera()
     if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && player->x() + worldPlan->x() > CAMERA_RIGHT ){
         worldPlan->setPos(-(player->x() - CAMERA_RIGHT) , 0);
     }
-
-    /*
-    float coef = (float) horizontalScrollBar()->maximum() / (float) (MAP_WIDTH - WINDOW_WIDTH);
-
-    // The player is too close to the left of the window, so we scroll to the left
-    // not at the map border
-    if (player->x() - CAMERA_LEFT > 0 && player->x() * coef - horizontalScrollBar()->value() < CAMERA_LEFT * coef ){
-        horizontalScrollBar()->setValue((player->x() - CAMERA_LEFT) * coef);
-        playerInfo->setPos(player->x() - CAMERA_LEFT,playerInfo->y());
-        //qDebug() << "left";
-    }
-    // Player at the begin of the map
-    else if (player->x() - CAMERA_LEFT < 0){
-        horizontalScrollBar()->setValue(0);
-        playerInfo->setPos(0,playerInfo->y());
-    }
-
-    // The player is too close to the right of the window, so we scroll to the right
-    // not at the map border
-    else if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT < map->getWidth() && player->x() * coef - horizontalScrollBar()->value() > CAMERA_RIGHT * coef ){
-        //horizontalScrollBar()->setValue(player->x() - CAMERA_RIGHT - offset);
-        horizontalScrollBar()->setValue((player->x() - CAMERA_RIGHT)* coef);
-        playerInfo->setPos(player->x() - CAMERA_RIGHT ,playerInfo->y());
-        //qDebug() << player->x() - CAMERA_RIGHT<< coef <<(player->x() - CAMERA_RIGHT)* coef <<horizontalScrollBar()->value() ;
-    }
-    /* Player at the end of the map (never happened so commented)
-    else if (player->x() + WINDOW_WIDTH - CAMERA_RIGHT > map->getWidth()){
-        horizontalScrollBar()->setValue(map->getWidth() - WINDOW_WIDTH - offset);
-        playerInfo->setPos(map->getWidth() - WINDOW_WIDTH,playerInfo->y());
-    }*/
-
-    //qDebug() << offset <<  player->x() << horizontalScrollBar()->value() << player->x() - horizontalScrollBar()->value() - offset;
-
 }
 
 void GameEngine::updatePositions()
