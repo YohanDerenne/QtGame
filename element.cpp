@@ -6,6 +6,12 @@ Element::Element()
     width = 0;
 }
 
+Element::Element(int height, int width)
+{
+    this->height = height;
+    this->width = width;
+}
+
 int Element::getWidth() const
 {
     return width;

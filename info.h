@@ -3,26 +3,20 @@
 
 #include <QGraphicsItemGroup>
 #include "configuration.h"
-#include "lifeinfo.h"
-
+#include "lifebar.h"
 
 class Info : public QGraphicsItemGroup
 {
 public:
     Info();
-
-    LifeInfo *getLife() const;
-
-    int getNbLife() const;
+    ~Info();
 
     void setNbLife(int value);
+    void setMaskIndicator(bool state);
 
 private:
-    LifeInfo * life;
-    QGraphicsRectItem * zone;
-    int nbLife;
-    QGraphicsTextItem * livesText;
-
+    LifeBar * life;
+    Element * maskIndicator;
 };
 
 #endif // INFO_H

@@ -21,6 +21,7 @@ SOURCES += \
     fixedblock.cpp \
     gameEngine.cpp \
     info.cpp \
+    lifebar.cpp \
     main.cpp \
     map.cpp \
     menu.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     fixedblock.h \
     gameEngine.h \
     info.h \
+    lifebar.h \
     map.h \
     menu.h \
     menubutton.h \

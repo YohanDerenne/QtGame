@@ -49,12 +49,14 @@ void Player::putMask()
     maskTimer = new QTimer();
     maskTimer->start(5000);
     connect(maskTimer,&QTimer::timeout,this,&Player::takeOffMask);
+    info->setMaskIndicator(true);
 }
 
 void Player::takeOffMask()
 {
     delete maskTimer;
     setImmune(false);
+    info->setMaskIndicator(false);
 }
 
 

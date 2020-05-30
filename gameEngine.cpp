@@ -30,6 +30,7 @@ GameEngine::GameEngine()
     playerInfo = new Info();
     levelScene->addItem(playerInfo);
 
+
     // init map
     map = new Map();
     // Save genarated map
@@ -287,16 +288,18 @@ void GameEngine::animate()
     // if player in the air
     if(map->getPlayer()->isJumping()){
         map->getPlayer()->setSprite(QString(":/ressources/images/player/21.png"));
+        playerSprite ++;
     }
     else if (map->getPlayer()->isFalling()){
         map->getPlayer()->setSprite(QString(":/ressources/images/player/22.png"));
+        playerSprite ++;
     }
     // if player run
     else if(map->getPlayer()->isMovingRight() || map->getPlayer()->isMovingLeft()){
         if(playerSprite < 11 || playerSprite > 13)
             playerSprite = 11;
         map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
-
+        playerSprite ++;
     }
     // if player is static
     else if(map->getPlayer()->getFixed()){
@@ -305,6 +308,7 @@ void GameEngine::animate()
         map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
 
         playerStaticCounter ++;
+        playerSprite ++;
         // if player wink, skip the first sprite
         if(playerSprite == 5){
             playerSprite = 2;
@@ -319,7 +323,7 @@ void GameEngine::animate()
             playerSprite = 1;
         }
     }
-    playerSprite ++;
+
     //qDebug() << player->getXForce() << player->getYForce() << player->getFixed();
 
 }
@@ -332,6 +336,7 @@ void GameEngine::loadMap(QString worldName)
     map->readmap(worldName);
     drawElements();
     openGame();
+    //playerInfo->setPos(10,10);
 }
 
 void GameEngine::drawElements()

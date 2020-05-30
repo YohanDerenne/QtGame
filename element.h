@@ -9,6 +9,7 @@ class Element :  public QObject, public QGraphicsPixmapItem
 {
 public:
     Element();
+    Element(int height,int width);
 
     int getWidth() const;
     void setWidth(int value);
