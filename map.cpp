@@ -7,6 +7,7 @@
 
 Map::Map()
 {
+    playerInfo = NULL;
     player = NULL;
     elementList = new QList<Element*>();
     unitList = new QList<Unit*>();
@@ -142,6 +143,9 @@ bool Map::readmap(QString directory)
             player = new Player();
             player->setX(elem["x"].toInt());
             player->setY(elem["y"].toInt());
+
+            playerInfo = new Info();
+            player->setInfo(playerInfo);
         }
         if(elem["type"].toString() == "wall"){
             Wall * w = new Wall();
@@ -185,6 +189,13 @@ void Map::clearMap()
         delete player;
         player = NULL;
     }
+
+    if(playerInfo != NULL){
+        delete playerInfo;
+        playerInfo = NULL;
+    }
+
+
     for(Element * elem : *elementList){
         delete elem;
     }
@@ -315,6 +326,11 @@ QList<QString> Map::getLevels()
 QString Map::getName() const
 {
     return name;
+}
+
+Info *Map::getPlayerInfo() const
+{
+    return playerInfo;
 }
 
 QList<Unit *> * Map::getUnitList() const

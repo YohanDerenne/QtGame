@@ -27,13 +27,19 @@ public:
     void setInfo(Info *value);
 
     void putMask();
+    void catchGel();
+
+    bool getGotGel() const;
 
 public slots:
     void takeOffMask();
+    void disableGel();
 
 private:
     Info * info;
     QTimer * maskTimer;
+    QTimer * gelTimer;
+    bool gotGel;
 };
 
 #endif // PLAYER_H

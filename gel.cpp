@@ -17,5 +17,8 @@ Gel::Gel()
 
 void Gel::applyEffect(Unit *unit)
 {
-
+    if(unit->getType() == "player"){
+        Player * player = static_cast<Player*>(unit);
+        player->catchGel();
+    }
 }

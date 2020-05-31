@@ -14,7 +14,7 @@ Menu::Menu() : QGraphicsScene()
     // Display levels buttons
     int index = 0;
     foreach (QString world, Map::getLevels() ){
-        qDebug() << world;
+        //qDebug() << world;
         MenuButton * button = new MenuButton(world);
         button->move(xButton,yStartButton + index * (button->height() + BTN_GAP));
         buttonList.append(button);

@@ -36,6 +36,8 @@ public:
 
     QString getName() const;
 
+    Info *getPlayerInfo() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -46,6 +48,7 @@ private:
     int width;
     int height;
     QString name;
+    Info * playerInfo;
 };
 
 #endif // MAP_H

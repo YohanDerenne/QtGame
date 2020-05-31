@@ -26,10 +26,6 @@ GameEngine::GameEngine()
     worldPlan = new QGraphicsItemGroup();
     levelScene->addItem(worldPlan);
 
-    // Info plan
-    playerInfo = new Info();
-    levelScene->addItem(playerInfo);
-
 
     // init map
     map = new Map();
@@ -89,7 +85,6 @@ GameEngine::~GameEngine()
     delete buttonMenuMapper;
 
     delete map;
-    delete playerInfo;
 
     delete menuScene;
 
@@ -227,6 +222,7 @@ void GameEngine::updatePlayerPosition()
             }
         }
     }
+    // get conso
     if(consoCollider->getAreColliding()){
         QMap<consoObject *,fromPosition> consoMap = consoCollider->getCollidingItemList();
         QMapIterator<consoObject*, fromPosition> iterator(consoMap);
@@ -348,8 +344,11 @@ void GameEngine::drawElements()
 
     // Add player
     worldPlan->addToGroup(map->getPlayer());
-    map->getPlayer()->setInfo(playerInfo);
     map->getPlayer()->setLife(1);
+
+
+    // Info plan
+    levelScene->addItem(map->getPlayerInfo());
 
     // set elements
     for(Element * element : *map->getElementList()){

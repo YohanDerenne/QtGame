@@ -71,7 +71,7 @@ private:
     int playerSprite;
     int playerStaticCounter;
 
-    Info * playerInfo;
+
 
     QGraphicsItemGroup * worldPlan;
 

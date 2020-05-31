@@ -4,6 +4,7 @@ Player::Player() : Unit()
 {
     width = PLAYER_WIDTH;
     height = PLAYER_HEIGHT;
+    gotGel = false;
 
     setSprite(":/ressources/images/player/1.png");
     type = "player";
@@ -52,11 +53,32 @@ void Player::putMask()
     info->setMaskIndicator(true);
 }
 
+void Player::catchGel()
+{
+    gotGel = true;
+    gelTimer = new QTimer();
+    gelTimer->start(5000);
+    connect(gelTimer,&QTimer::timeout,this,&Player::disableGel);
+    info->setGelIndicator(true);
+}
+
 void Player::takeOffMask()
 {
     delete maskTimer;
     setImmune(false);
     info->setMaskIndicator(false);
+}
+
+void Player::disableGel()
+{
+    delete gelTimer;
+    gotGel = false;
+    info->setGelIndicator(false);
+}
+
+bool Player::getGotGel() const
+{
+    return gotGel;
 }
 
 

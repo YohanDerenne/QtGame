@@ -13,10 +13,13 @@ public:
 
     void setNbLife(int value);
     void setMaskIndicator(bool state);
+    void setGelIndicator(bool state);
 
 private:
     LifeBar * life;
     Element * maskIndicator;
+    Element * gelIndicator;
+    void updateIndicatorPos();
 };
 
 #endif // INFO_H

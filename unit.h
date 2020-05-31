@@ -51,9 +51,12 @@ public:
     bool getImmune() const;
     void setImmune(bool value);
 
+
+
 public slots:
     //void MovePlayer();
-    void disableImmune();
+    virtual void disableImmune();
+
 
 protected :
     bool flying;
@@ -76,7 +79,9 @@ protected :
     int life;
     bool immune;
 
+
     QTimer * immuneTimer;
+
 
 };
 
