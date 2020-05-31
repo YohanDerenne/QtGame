@@ -36,7 +36,7 @@ GameEngine::GameEngine()
 
     // Init Timer
     refreshTimer = new QTimer(this);
-    connect(refreshTimer,SIGNAL(timeout()),this,SLOT(updatePositions()));
+    connect(refreshTimer,SIGNAL(timeout()),this,SLOT(updateAllPositions()));
     Animtimer = new QTimer(this);
     connect(Animtimer,SIGNAL(timeout()),this,SLOT(animate()));
 
@@ -107,8 +107,27 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             //horizontalScrollBar()->setValue(horizontalScrollBar()->value() + 10);
             map->getPlayer()->SetMovingRight(true);
         }
-        else if (event->key() == Qt::Key_Space || event->key() == Qt::Key_Up){
+        else if (event->key() == Qt::Key_Up){
             map->getPlayer()->jump();
+        }
+        else if (event->key() == Qt::Key_Space){
+            // create projectile
+            Player * player = map->getPlayer();
+            if(map->getPlayer()->getGotGel()){
+                GelProjectile * proj = new GelProjectile(map->getPlayer()->getIsRightSide());
+                map->getProjectileList()->append(proj);
+                levelScene->addItem(proj);
+                if(player->getIsRightSide()){
+                    proj->setX(player->x() + player->getWidth() + worldPlan->x());
+                    proj->setBegin(player->x() + player->getWidth() + worldPlan->x());
+                }
+                else{
+                    proj->setX(player->x() + worldPlan->x());
+                    proj->setBegin(player->x() + worldPlan->x());
+                }
+
+                proj->setY(player->y() + player->getHeight() / 2 - proj->getHeight() / 2);
+            }
         }
         else if (event->key() == Qt::Key_R){
             loadMap(map->getName());
@@ -163,6 +182,8 @@ void GameEngine::updatePlayerPosition()
     CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(map->getPlayer(),true,true,true,true);
     CollideManager<Virus> * virusCollider = new CollideManager<Virus>(map->getPlayer(),true,false,false,false);
     CollideManager<consoObject> * consoCollider = new CollideManager<consoObject>(map->getPlayer(),false,false,false,false);
+    //CollideManager<gel> * consoCollider = new CollideManager<consoObject>(map->getPlayer(),false,false,false,false);
+
 
     int next_x = map->getPlayer()->x();
     int next_y = map->getPlayer()->y();
@@ -234,6 +255,10 @@ void GameEngine::updatePlayerPosition()
             delete conso;
         }
     }
+
+    // projectile
+
+
     delete wallCollider;
     delete virusCollider;
     //qDebug() << player->getXForce();
@@ -261,9 +286,10 @@ void GameEngine::updateCamera()
     }
 }
 
-void GameEngine::updatePositions()
+void GameEngine::updateAllPositions()
 {
     updatePlayerPosition();
+    updateProjectilePosition();
     updateCamera();
     //qDebug() << map->getUnitList()->count();
 }
@@ -368,6 +394,40 @@ void GameEngine::drawElements()
         worldPlan->addToGroup(conso);
     }
 
+}
+
+void GameEngine::updateProjectilePosition()
+{
+    for(Projectile * projectile : *map->getProjectileList()){
+        projectile->move();
+        if(projectile->isMaxDist()){
+            map->getProjectileList()->removeOne(projectile);
+            delete projectile;
+            continue;
+        }
+        QList<QGraphicsItem *> targets = projectile->collidingItems();
+        for(QGraphicsItem * target : targets){
+            Virus * virus = NULL;
+            virus = dynamic_cast<Virus*>(target);
+            if(virus){
+                projectile->touch(virus);
+                if(virus->getLife() == 0 ){
+                    map->getUnitList()->removeOne(virus);
+                    delete virus;
+                    map->getProjectileList()->removeOne(projectile);
+                    delete projectile;
+                    break;
+                }
+            }
+            FixedBlock * fBlock = NULL;
+            fBlock = dynamic_cast<FixedBlock*>(target);
+            if(fBlock){
+                map->getProjectileList()->removeOne(projectile);
+                delete projectile;
+                break;
+            }
+        }
+    }
 }
 
 // FOR TESTS

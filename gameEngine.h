@@ -22,6 +22,8 @@
 #include "info.h"
 #include "menu.h"
 #include "pausegroup.h"
+#include "projectile.h"
+#include "gelprojectile.h"
 
 
 
@@ -41,6 +43,7 @@ public:
 
     void updateCamera();
     void drawElements();
+    void updateProjectilePosition();
 
     void createVirus();
 
@@ -52,7 +55,7 @@ public:
     void gameOver();
 
 public slots:
-    void updatePositions();
+    void updateAllPositions();
     void animate();
     void loadMap(QString worldName);
     void closePause();
@@ -70,8 +73,6 @@ private:
 
     int playerSprite;
     int playerStaticCounter;
-
-
 
     QGraphicsItemGroup * worldPlan;
 

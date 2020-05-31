@@ -30,6 +30,8 @@ public:
 
     void respawn();
 
+    int getIsRightSide() const;
+
 protected:
     int width;
     int height;

@@ -8,6 +8,9 @@ Player::Player() : Unit()
 
     setSprite(":/ressources/images/player/1.png");
     type = "player";
+
+    // Accept collision with transparent pixels
+    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 }
 
 void Player::jump()
@@ -80,6 +83,8 @@ bool Player::getGotGel() const
 {
     return gotGel;
 }
+
+
 
 
 

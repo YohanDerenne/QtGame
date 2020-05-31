@@ -31,6 +31,9 @@
 #define LIFE_WIDTH 30
 #define LIFE_HEIGHT 30
 
+#define PROJ_HEIGHT 40
+#define PROJ_WIDTH 40
+
 #define GRAVITY 9
 
 #define FPS 60

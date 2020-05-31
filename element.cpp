@@ -43,9 +43,6 @@ void Element::setSprite(QString ressource)
     }
     setPixmap(img);
 
-    // Accept collision with transparent pixels
-    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-
 }
 
 QString Element::getType() const
@@ -81,4 +78,9 @@ void Element::setSpawnY(int value)
 void Element::respawn()
 {
     setPos(spawnX,spawnY);
+}
+
+int Element::getIsRightSide() const
+{
+    return isRightSide;
 }

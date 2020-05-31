@@ -13,6 +13,7 @@ Map::Map()
     unitList = new QList<Unit*>();
     consoObjectList = new QList<consoObject *>();
     name = "no level";
+    projectileList = new QList<Projectile *>();
 }
 
 Map::~Map()
@@ -23,6 +24,7 @@ Map::~Map()
     delete elementList;
     delete unitList;
     delete consoObjectList;
+    delete projectileList;
 }
 
 void Map::generateMap1()
@@ -206,6 +208,11 @@ void Map::clearMap()
     }
     unitList->clear();
 
+    for(Unit * unit: *projectileList){
+        delete unit;
+    }
+    projectileList->clear();
+
     for(consoObject * conso: *consoObjectList){
         delete conso;
     }
@@ -331,6 +338,11 @@ QString Map::getName() const
 Info *Map::getPlayerInfo() const
 {
     return playerInfo;
+}
+
+QList<Projectile *> *Map::getProjectileList() const
+{
+    return projectileList;
 }
 
 QList<Unit *> * Map::getUnitList() const

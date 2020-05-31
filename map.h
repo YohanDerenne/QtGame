@@ -10,6 +10,7 @@
 #include "heart.h"
 #include "mask.h"
 #include "gel.h"
+#include "projectile.h"
 
 
 
@@ -38,6 +39,8 @@ public:
 
     Info *getPlayerInfo() const;
 
+    QList<Projectile *> *getProjectileList() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -45,6 +48,7 @@ private:
     QList<Element *> * elementList;
     QList<Unit *> * unitList;
     QList<consoObject *> * consoObjectList;
+    QList<Projectile *> * projectileList;
     int width;
     int height;
     QString name;

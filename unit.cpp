@@ -94,9 +94,11 @@ void Unit::receiveDammage(int dammage)
 {
     if(!immune){
         setLife(life - dammage);
-        immuneTimer = new QTimer();
-        immuneTimer->start(1000);
-        connect(immuneTimer,SIGNAL(timeout()),this,SLOT(disableImmune()));
+        if(type == "player"){
+            immuneTimer = new QTimer();
+            immuneTimer->start(1000);
+            connect(immuneTimer,SIGNAL(timeout()),this,SLOT(disableImmune()));
+        }
         immune = true;
     }
 }

@@ -20,5 +20,6 @@
         <file>images/mask.png</file>
         <file>images/icone.ico</file>
         <file>images/player/hurt.png</file>
+        <file>images/projectile.png</file>
     </qresource>
 </RCC>

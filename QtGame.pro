@@ -20,6 +20,7 @@ SOURCES += \
     element.cpp \
     fixedblock.cpp \
     gameEngine.cpp \
+    gelprojectile.cpp \
     info.cpp \
     lifebar.cpp \
     main.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     mask.cpp \
     pausegroup.cpp \
     player.cpp \
+    projectile.cpp \
     unit.cpp \
     virus.cpp \
     wall.cpp
@@ -44,6 +46,7 @@ HEADERS += \
     element.h \
     fixedblock.h \
     gameEngine.h \
+    gelprojectile.h \
     info.h \
     lifebar.h \
     map.h \
@@ -55,6 +58,7 @@ HEADERS += \
     mask.h \
     pausegroup.h \
     player.h \
+    projectile.h \
     unit.h \
     virus.h \
     wall.h
