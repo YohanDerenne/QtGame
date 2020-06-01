@@ -9,3 +9,4 @@ Polytech S8 project - Qt creator c++
 | LEFT ARROW  | Move left      |
 | RIGHT ARROW | Move right     |
 | UP ARROW    | Jump           |
+| F11         | Full Screen    |
