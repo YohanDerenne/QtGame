@@ -22,7 +22,7 @@
 #define VIRUS_WIDTH 50
 #define VIRUS_HEIGHT 50
 
-#define GEL_WIDTH 40
+#define GEL_WIDTH 30
 #define GEL_HEIGHT 50
 
 #define MASK_WIDTH 70
@@ -31,9 +31,19 @@
 #define LIFE_WIDTH 30
 #define LIFE_HEIGHT 30
 
+#define PROJ_HEIGHT 40
+#define PROJ_WIDTH 40
+
+#define FLAG_HEIGHT 300
+#define FLAG_WIDTH 120
+
 #define GRAVITY 9
 
 #define FPS 60
+
+#define TITLE "Virus Fighter"
+
+#define BTN_GAP 50
 
 
 #endif // CONFIGURATION_H

@@ -5,10 +5,11 @@
 #include <QObject>
 #include <QMutex>
 
-class Element : public QGraphicsPixmapItem
+class Element :  public QObject, public QGraphicsPixmapItem
 {
 public:
     Element();
+    Element(int height,int width);
 
     int getWidth() const;
     void setWidth(int value);
@@ -21,13 +22,24 @@ public:
     QString getType() const;
     void setType(const QString &value);
 
+    int getSpawnX() const;
+    void setSpawnX(int value);
+
+    int getSpawnY() const;
+    void setSpawnY(int value);
+
+    void respawn();
+
+    int getIsRightSide() const;
+
 protected:
     int width;
     int height;
     int isRightSide;
     QString type;
 
-
+    int spawnX;
+    int spawnY;
 };
 
 #endif // ELEMENT_H

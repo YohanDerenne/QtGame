@@ -6,6 +6,12 @@ Element::Element()
     width = 0;
 }
 
+Element::Element(int height, int width)
+{
+    this->height = height;
+    this->width = width;
+}
+
 int Element::getWidth() const
 {
     return width;
@@ -37,9 +43,6 @@ void Element::setSprite(QString ressource)
     }
     setPixmap(img);
 
-    // Accept collision with transparent pixels
-    this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-
 }
 
 QString Element::getType() const
@@ -50,4 +53,34 @@ QString Element::getType() const
 void Element::setType(const QString &value)
 {
     type = value;
+}
+
+int Element::getSpawnX() const
+{
+    return spawnX;
+}
+
+void Element::setSpawnX(int value)
+{
+    spawnX = value;
+}
+
+int Element::getSpawnY() const
+{
+    return spawnY;
+}
+
+void Element::setSpawnY(int value)
+{
+    spawnY = value;
+}
+
+void Element::respawn()
+{
+    setPos(spawnX,spawnY);
+}
+
+int Element::getIsRightSide() const
+{
+    return isRightSide;
 }

@@ -10,6 +10,9 @@
 #include "heart.h"
 #include "mask.h"
 #include "gel.h"
+#include "projectile.h"
+#include "finishflag.h"
+#include "mobilevirus.h"
 
 
 
@@ -20,6 +23,7 @@ public:
     ~Map();
 
     void generateMap1();
+    void generateMap2();
     bool readmap(QString directory);
     void clearMap();
     bool saveMap(QString directory);
@@ -34,6 +38,12 @@ public:
     void setBackground(const QImage &value);
     static QList<QString> getLevels();
 
+    QString getName() const;
+
+    Info *getPlayerInfo() const;
+
+    QList<Projectile *> *getProjectileList() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -41,8 +51,11 @@ private:
     QList<Element *> * elementList;
     QList<Unit *> * unitList;
     QList<consoObject *> * consoObjectList;
+    QList<Projectile *> * projectileList;
     int width;
     int height;
+    QString name;
+    Info * playerInfo;
 };
 
 #endif // MAP_H

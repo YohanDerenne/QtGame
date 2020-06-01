@@ -42,7 +42,6 @@ private:
     bool solidRight;
     bool solidUnder;
 
-
     int prec_y;
     int prec_x;
 };

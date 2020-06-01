@@ -9,6 +9,7 @@ class Heart: public consoObject
 {
 public:
     Heart();
+    void applyEffect(Unit * unit);
 };
 
 #endif // HEART_H

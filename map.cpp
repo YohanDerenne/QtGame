@@ -7,15 +7,24 @@
 
 Map::Map()
 {
+    playerInfo = NULL;
     player = NULL;
     elementList = new QList<Element*>();
     unitList = new QList<Unit*>();
     consoObjectList = new QList<consoObject *>();
+    name = "no level";
+    projectileList = new QList<Projectile *>();
 }
 
 Map::~Map()
 {
     clearMap();
+    if(player)
+        delete player;
+    delete elementList;
+    delete unitList;
+    delete consoObjectList;
+    delete projectileList;
 }
 
 void Map::generateMap1()
@@ -26,7 +35,6 @@ void Map::generateMap1()
     // set background
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
-
 
     // create the player
     player = new Player();
@@ -62,6 +70,11 @@ void Map::generateMap1()
             Gel *gel = new Gel();
             gel->setPos(i*bloc->getWidth(),500 - gel->getHeight());
             consoObjectList->append(gel);
+        }
+        if(i == 69){
+            FinishFlag *flag = new FinishFlag();
+            flag->setPos(i*bloc->getWidth(),500 - flag->getHeight());
+            elementList->append(flag);
         }
     }
 
@@ -99,10 +112,17 @@ void Map::generateMap1()
     }
 }
 
+void Map::generateMap2()
+{
+
+}
+
 bool Map::readmap(QString directory)
 {
     // Clear the actual map if exists
     clearMap();
+
+    name = directory;
 
     // Open the json file
     QDir dir = directory;
@@ -135,6 +155,9 @@ bool Map::readmap(QString directory)
             player = new Player();
             player->setX(elem["x"].toInt());
             player->setY(elem["y"].toInt());
+
+            playerInfo = new Info();
+            player->setInfo(playerInfo);
         }
         if(elem["type"].toString() == "wall"){
             Wall * w = new Wall();
@@ -166,17 +189,37 @@ bool Map::readmap(QString directory)
             mask->setY(elem["y"].toInt());
             consoObjectList->append(mask);
         }
+        if(elem["type"].toString() == "finish"){
+            FinishFlag * flag = new FinishFlag();
+            flag->setX(elem["x"].toInt());
+            flag->setY(elem["y"].toInt());
+            elementList->append(flag);
+        }
+        if(elem["type"].toString() == "mobileVirus"){
+            MobileVirus * mbVir = new MobileVirus();
+            mbVir->setX(elem["x"].toInt());
+            mbVir->setY(elem["y"].toInt());
+            unitList->append(mbVir);
+        }
     }
-
+    loadFile.close();
     return true;
 }
 
 void Map::clearMap()
 {
     if(player != NULL){
+        //qDebug() << player;
         delete player;
         player = NULL;
     }
+
+    if(playerInfo != NULL){
+        delete playerInfo;
+        playerInfo = NULL;
+    }
+
+
     for(Element * elem : *elementList){
         delete elem;
     }
@@ -186,6 +229,11 @@ void Map::clearMap()
         delete unit;
     }
     unitList->clear();
+
+    for(Unit * unit: *projectileList){
+        delete unit;
+    }
+    projectileList->clear();
 
     for(consoObject * conso: *consoObjectList){
         delete conso;
@@ -257,6 +305,7 @@ bool Map::saveMap(QString directory)
     saveFile.write(saveDoc.toJson());
 
     // success
+    saveFile.close();
     return true;
 }
 
@@ -301,6 +350,21 @@ QList<QString> Map::getLevels()
             list.append(dir);
     }
     return list;
+}
+
+QString Map::getName() const
+{
+    return name;
+}
+
+Info *Map::getPlayerInfo() const
+{
+    return playerInfo;
+}
+
+QList<Projectile *> *Map::getProjectileList() const
+{
+    return projectileList;
 }
 
 QList<Unit *> * Map::getUnitList() const

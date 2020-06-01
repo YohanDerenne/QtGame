@@ -14,4 +14,5 @@ Wall::Wall() : FixedBlock()
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
 
     type = "wall";
+
 }

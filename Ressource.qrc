@@ -18,5 +18,10 @@
         <file>images/life.png</file>
         <file>images/gel.png</file>
         <file>images/mask.png</file>
+        <file>images/icone.ico</file>
+        <file>images/player/hurt.png</file>
+        <file>images/projectile.png</file>
+        <file>images/player/fire.png</file>
+        <file>images/flag.png</file>
     </qresource>
 </RCC>

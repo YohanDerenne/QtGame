@@ -11,11 +11,15 @@ class Menu : public QGraphicsScene
 {
 public:
     Menu();
+    ~Menu();
 
     QList<MenuButton *> getButtonList() const;
 
+    MenuButton *getQuitBtn() const;
+
 private:
     QList<MenuButton *> buttonList;
+    MenuButton * QuitBtn;
 
 };
 

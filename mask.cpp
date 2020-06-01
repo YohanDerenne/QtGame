@@ -1,4 +1,7 @@
 #include "mask.h"
+#include "player.h"
+
+#include <QColor>
 
 Mask::Mask()
 {
@@ -13,4 +16,12 @@ Mask::Mask()
 
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+}
+
+void Mask::applyEffect(Unit *unit)
+{
+    if(unit->getType() == "player"){
+        Player * player = static_cast<Player*>(unit);
+        player->putMask();
+    }
 }

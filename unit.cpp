@@ -15,6 +15,11 @@ Unit::Unit() : Element()
 
     maxSpeed = MAX_SPEED;
     isRightSide = true;
+
+    setLife(1);
+    immune = false;
+
+    immuneTimer = NULL;
 }
 
 void Unit::SetMovingRight(bool state)
@@ -85,6 +90,65 @@ void Unit::decreaseXForce()
 bool Unit::getFixed() const
 {
     return fixed;
+}
+
+void Unit::receiveDammage(int dammage)
+{
+    if(!immune){
+        setLife(life - dammage);
+        if(type == "player"){
+            immuneTimer = new QTimer();
+            immuneTimer->start(1000);
+            connect(immuneTimer,SIGNAL(timeout()),this,SLOT(disableImmune()));
+        }
+        immune = true;
+    }
+}
+
+void Unit::attack(Unit *target)
+{
+    target->receiveDammage(1);
+}
+
+int Unit::getLife() const
+{
+    return life;
+}
+
+void Unit::setLife(int value)
+{
+    life = value;
+    if(life <= 0)
+        alive = false;
+    else
+        alive = true;
+}
+
+bool Unit::getImmune() const
+{
+    return immune;
+}
+
+void Unit::disableImmune()
+{
+    immune = false;
+    delete immuneTimer;
+    immuneTimer = NULL;
+}
+
+QTimer *Unit::getImmuneTimer() const
+{
+    return immuneTimer;
+}
+
+void Unit::setImmune(bool value)
+{
+    immune = value;
+}
+
+bool Unit::isAlive() const
+{
+    return alive;
 }
 
 float Unit::getXForce() const

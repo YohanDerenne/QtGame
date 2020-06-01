@@ -11,6 +11,7 @@ public:
     consoObject();
     int getDurationOfEffect() const;
     void setDurationOfEffect(int value);
+    virtual void applyEffect(Unit * unit)=0;
 
 /*protected :
     virtual void applyEffect(Unit unit) = 0;*/

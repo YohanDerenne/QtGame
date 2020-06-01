@@ -9,3 +9,8 @@ Heart::Heart()
     setSprite(":/ressources/images/heart.png");
 
 }
+
+void Heart::applyEffect(Unit *unit)
+{
+    unit->setLife(unit->getLife() + 1);
+}

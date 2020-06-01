@@ -8,6 +8,10 @@ class Mask: public consoObject
 {
 public:
     Mask();
+    void applyEffect(Unit * unit);
+
+private:
+    QTimer * bonusTimer;
 };
 
 #endif // MASK_H

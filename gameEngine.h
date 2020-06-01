@@ -10,6 +10,8 @@
 #include <qscrollbar.h>
 #include <QGraphicsPixmapItem>
 #include <QSignalMapper>
+#include <QApplication>
+#include <QGraphicsProxyWidget>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -19,6 +21,11 @@
 #include "configuration.h"
 #include "info.h"
 #include "menu.h"
+#include "pausegroup.h"
+#include "projectile.h"
+#include "gelprojectile.h"
+#include "victorygroup.h"
+
 
 
 class GameEngine: public QGraphicsView{
@@ -36,23 +43,36 @@ public:
     void respawn();
 
     void updateCamera();
-
-    Player *getPlayer() const;
-
     void drawElements();
+    void updateProjectilePosition();
 
     void createVirus();
-    void openMenu();
+
     void openGame();
+    void openPause();
+
+    void clearLevel();
+
+    void gameOver();
+
+    void pauseTimer();
+    void resumeTimer();
+
+    void victory();
+    void closeVictory();
 
 public slots:
-    void updatePositions();
-    void animate();
+    void updateAllPositions();
     void loadMap(QString worldName);
+    void animate();
+    void retryMap();
+    void closePause();
+    void openMenu();
+    void quitApp();
+    void restart();
 
 private:
-    QGraphicsScene * gameScene;
-    Player * player;
+    QGraphicsScene * levelScene;
     QImage background;
     Map * map;
 
@@ -62,16 +82,33 @@ private:
     int playerSprite;
     int playerStaticCounter;
 
-    Info * playerInfo;
-
     QGraphicsItemGroup * worldPlan;
 
     Menu * menuScene;
 
     QTimer * Animtimer;
     QTimer * refreshTimer;
+    QTimer * restartTimer;
 
-    QSignalMapper * mapper;
+    QSignalMapper * buttonMenuMapper;
+
+    PauseGroup * pauseMenu;
+    VictoryGroup * victoryMenu;
+
+    QGraphicsProxyWidget * continueProxy;
+    QGraphicsProxyWidget * backMenuProxy;
+
+    bool paused;
+    bool finished;
+
+    int animFireDuration;
+
+    bool spacePressed;
+
+    int overRemainTime;
+    int maskRemainTime;
+    int gelRemainTime;
+    int immuneRemainTime;
 
 };
 
