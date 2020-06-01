@@ -13,6 +13,7 @@
 #include "configuration.h"
 #include "info.h"
 #include "mask.h"
+#include "gelprojectile.h"
 
 
 class Player : public Unit{
@@ -31,6 +32,11 @@ public:
 
     bool getGotGel() const;
 
+    GelProjectile * launchGel(int xOffset,int yOffset);
+
+    bool getFire() const;
+    void setFire(bool value);
+
 public slots:
     void takeOffMask();
     void disableGel();
@@ -40,6 +46,7 @@ private:
     QTimer * maskTimer;
     QTimer * gelTimer;
     bool gotGel;
+    bool fire;
 };
 
 #endif // PLAYER_H

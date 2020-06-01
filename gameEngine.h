@@ -91,6 +91,10 @@ private:
 
     bool paused;
 
+    int animFireDuration;
+
+    bool spacePressed;
+
 };
 
 

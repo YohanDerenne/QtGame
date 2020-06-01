@@ -107,6 +107,11 @@ void Map::generateMap1()
     }
 }
 
+void Map::generateMap2()
+{
+
+}
+
 bool Map::readmap(QString directory)
 {
     // Clear the actual map if exists

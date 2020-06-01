@@ -29,16 +29,20 @@ GameEngine::GameEngine()
 
     // init map
     map = new Map();
-    // Save genarated map
+
+    // SAVE GENERATED MAP ===================================================
     map->generateMap1();
     map->saveMap("world 2");
+    // ======================================================================
 
 
     // Init Timer
     refreshTimer = new QTimer(this);
     connect(refreshTimer,SIGNAL(timeout()),this,SLOT(updateAllPositions()));
+
     Animtimer = new QTimer(this);
     connect(Animtimer,SIGNAL(timeout()),this,SLOT(animate()));
+    animFireDuration = 2;
 
     //show();
     horizontalScrollBar()->setValue(0);
@@ -46,12 +50,13 @@ GameEngine::GameEngine()
     //horizontalScrollBar()->setMinimum(0);
     //horizontalScrollBar()->setMaximum(map->getWidth() + WINDOW_WIDTH);
     horizontalScrollBar()->setPageStep(0);
+    spacePressed = false;
 
     // init sprite number for animation
     playerSprite = 1;
     playerStaticCounter = 1;
 
-    // init menu
+    // init main menu
     menuScene = new Menu();
     // Link level button in menu
     buttonMenuMapper = new QSignalMapper(this);
@@ -64,7 +69,7 @@ GameEngine::GameEngine()
     // link quit button in menu
     connect(menuScene->getQuitBtn(),SIGNAL(clicked()),this,SLOT(quitApp()));
 
-    // init pause
+    // init pause menu
     pauseMenu = new PauseGroup();
     connect(pauseMenu->getContinueBtn(), SIGNAL(clicked()), this, SLOT(closePause()));
     connect(pauseMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
@@ -111,22 +116,14 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             map->getPlayer()->jump();
         }
         else if (event->key() == Qt::Key_Space){
-            // create projectile
-            Player * player = map->getPlayer();
-            if(map->getPlayer()->getGotGel()){
-                GelProjectile * proj = new GelProjectile(map->getPlayer()->getIsRightSide());
-                map->getProjectileList()->append(proj);
-                levelScene->addItem(proj);
-                if(player->getIsRightSide()){
-                    proj->setX(player->x() + player->getWidth() + worldPlan->x());
-                    proj->setBegin(player->x() + player->getWidth() + worldPlan->x());
+            // change sprite
+            if(spacePressed == false){
+                GelProjectile * proj = map->getPlayer()->launchGel(worldPlan->x(), worldPlan->y());
+                if(proj != NULL){
+                    spacePressed = true;
+                    levelScene->addItem(proj);
+                    map->getProjectileList()->append(proj);
                 }
-                else{
-                    proj->setX(player->x() + worldPlan->x());
-                    proj->setBegin(player->x() + worldPlan->x());
-                }
-
-                proj->setY(player->y() + player->getHeight() / 2 - proj->getHeight() / 2);
             }
         }
         else if (event->key() == Qt::Key_R){
@@ -163,6 +160,12 @@ void GameEngine::keyReleaseEvent(QKeyEvent *event)
     }
     else if (event->key() == Qt::Key_Right){
         map->getPlayer()->SetMovingRight(false);
+    }
+    else if (event->key() == Qt::Key_Space){
+        if(event->isAutoRepeat())
+            event->ignore();
+        else
+            spacePressed = false;
     }
 }
 
@@ -205,6 +208,14 @@ void GameEngine::updatePlayerPosition()
     }
     next_x += map->getPlayer()->getXForce();
     map->getPlayer()->setPos(next_x,next_y);
+
+    // check if out of the map
+    if(map->getPlayer()->x() < worldPlan->x() ||
+            map->getPlayer()->x() + map->getPlayer()->getWidth() > MAP_WIDTH ||
+            //map->getPlayer()->y() < worldPlan->y() ||
+            map->getPlayer()->y() + map->getPlayer()->getWidth()  > MAP_HEIGHT){
+        gameOver();
+    }
 
     wallCollider->updateCollidingPosition();
     virusCollider->updateCollidingPosition();
@@ -291,7 +302,6 @@ void GameEngine::updateAllPositions()
     updatePlayerPosition();
     updateProjectilePosition();
     updateCamera();
-    //qDebug() << map->getUnitList()->count();
 }
 
 void GameEngine::animate()
@@ -299,11 +309,27 @@ void GameEngine::animate()
     // if player immune (get a an attack)
     if(map->getPlayer()->getImmune() && playerSprite % 2 == 0){
         map->getPlayer()->hide();
-        playerSprite ++;
-        return;
     }
     else{
         map->getPlayer()->show();
+    }
+
+    // attack
+    if(spacePressed || playerSprite < 0){
+        if(playerSprite > 0){
+            playerSprite = -1;
+            map->getPlayer()->setSprite(":/ressources/images/player/fire.png");
+        }
+        else{
+            if( - playerSprite < animFireDuration){
+                playerSprite --;
+            }
+            else{
+                map->getPlayer()->setFire(false);
+                playerSprite = 1;
+            }
+        }
+        return;
     }
 
 
@@ -325,7 +351,7 @@ void GameEngine::animate()
     }
     // if player is static
     else if(map->getPlayer()->getFixed()){
-        if(playerSprite > 4)
+        if(playerSprite > 4 || playerSprite < 1)
             playerSprite = 1;
         map->getPlayer()->setSprite(QString(":/ressources/images/player/%1.png").arg(playerSprite));
 

@@ -21,6 +21,7 @@ public:
     ~Map();
 
     void generateMap1();
+    void generateMap2();
     bool readmap(QString directory);
     void clearMap();
     bool saveMap(QString directory);

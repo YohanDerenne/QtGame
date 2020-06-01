@@ -5,6 +5,7 @@ Player::Player() : Unit()
     width = PLAYER_WIDTH;
     height = PLAYER_HEIGHT;
     gotGel = false;
+    fire = false;
 
     setSprite(":/ressources/images/player/1.png");
     type = "player";
@@ -79,9 +80,42 @@ void Player::disableGel()
     info->setGelIndicator(false);
 }
 
+bool Player::getFire() const
+{
+    return fire;
+}
+
+void Player::setFire(bool value)
+{
+    fire = value;
+}
+
 bool Player::getGotGel() const
 {
     return gotGel;
+}
+
+GelProjectile *Player::launchGel(int xPlanOffset, int yPlanOffset)
+{
+
+
+    // create projectile
+    if(getGotGel()){
+        fire = true;
+        GelProjectile * proj = new GelProjectile(getIsRightSide());
+        if(getIsRightSide()){
+            proj->setX(x() + getWidth() + xPlanOffset);
+            proj->setBegin(x() + getWidth() + xPlanOffset);
+        }
+        else{
+            proj->setX(x() + xPlanOffset);
+            proj->setBegin(x() + xPlanOffset);
+        }
+
+        proj->setY(y() + getHeight() / 2 - proj->getHeight() / 2 + yPlanOffset);
+        return proj;
+    }
+    return NULL;
 }
 
 
