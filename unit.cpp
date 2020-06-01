@@ -18,6 +18,8 @@ Unit::Unit() : Element()
 
     setLife(1);
     immune = false;
+
+    immuneTimer = NULL;
 }
 
 void Unit::SetMovingRight(bool state)
@@ -131,6 +133,12 @@ void Unit::disableImmune()
 {
     immune = false;
     delete immuneTimer;
+    immuneTimer = NULL;
+}
+
+QTimer *Unit::getImmuneTimer() const
+{
+    return immuneTimer;
 }
 
 void Unit::setImmune(bool value)

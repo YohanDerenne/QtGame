@@ -51,7 +51,7 @@ public:
     bool getImmune() const;
     void setImmune(bool value);
 
-
+    QTimer *getImmuneTimer() const;
 
 public slots:
     //void MovePlayer();

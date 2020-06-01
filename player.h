@@ -37,6 +37,12 @@ public:
     bool getFire() const;
     void setFire(bool value);
 
+    QTimer *getMaskTimer() const;
+
+    QTimer *getGelTimer() const;
+
+    bool getGotMask() const;
+
 public slots:
     void takeOffMask();
     void disableGel();
@@ -46,6 +52,7 @@ private:
     QTimer * maskTimer;
     QTimer * gelTimer;
     bool gotGel;
+    bool gotMask;
     bool fire;
 };
 

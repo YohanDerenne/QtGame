@@ -6,12 +6,16 @@ Player::Player() : Unit()
     height = PLAYER_HEIGHT;
     gotGel = false;
     fire = false;
+    gotMask = false;
 
     setSprite(":/ressources/images/player/1.png");
     type = "player";
 
     // Accept collision with transparent pixels
     this->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+
+    maskTimer = NULL;
+    gelTimer = NULL;
 }
 
 void Player::jump()
@@ -51,6 +55,7 @@ void Player::setInfo(Info *value)
 void Player::putMask()
 {
     setImmune(true);
+    gotMask = true;
     maskTimer = new QTimer();
     maskTimer->start(5000);
     connect(maskTimer,&QTimer::timeout,this,&Player::takeOffMask);
@@ -68,7 +73,9 @@ void Player::catchGel()
 
 void Player::takeOffMask()
 {
+    gotMask = false;
     delete maskTimer;
+    maskTimer = NULL;
     setImmune(false);
     info->setMaskIndicator(false);
 }
@@ -76,8 +83,24 @@ void Player::takeOffMask()
 void Player::disableGel()
 {
     delete gelTimer;
+    gelTimer = NULL;
     gotGel = false;
     info->setGelIndicator(false);
+}
+
+bool Player::getGotMask() const
+{
+    return gotMask;
+}
+
+QTimer *Player::getGelTimer() const
+{
+    return gelTimer;
+}
+
+QTimer *Player::getMaskTimer() const
+{
+    return maskTimer;
 }
 
 bool Player::getFire() const

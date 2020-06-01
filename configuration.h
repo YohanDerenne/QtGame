@@ -25,7 +25,7 @@
 #define GEL_WIDTH 30
 #define GEL_HEIGHT 50
 
-#define MASK_WIDTH 50
+#define MASK_WIDTH 70
 #define MASK_HEIGHT 50
 
 #define LIFE_WIDTH 30

@@ -54,6 +54,9 @@ public:
 
     void gameOver();
 
+    void pauseTimer();
+    void resumeTimer();
+
 public slots:
     void updateAllPositions();
     void animate();
@@ -94,6 +97,11 @@ private:
     int animFireDuration;
 
     bool spacePressed;
+
+    int overRemainTime;
+    int maskRemainTime;
+    int gelRemainTime;
+    int immuneRemainTime;
 
 };
 

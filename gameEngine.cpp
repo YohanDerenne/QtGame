@@ -44,6 +44,9 @@ GameEngine::GameEngine()
     connect(Animtimer,SIGNAL(timeout()),this,SLOT(animate()));
     animFireDuration = 2;
 
+    restartTimer = new QTimer();
+    connect(restartTimer,SIGNAL(timeout()),this,SLOT(restart()));
+
     //show();
     horizontalScrollBar()->setValue(0);
     verticalScrollBar()->setValue(0);
@@ -488,7 +491,7 @@ void GameEngine::quitApp()
 
 void GameEngine::restart()
 {
-    delete restartTimer;
+    restartTimer->stop();
     loadMap("world 2");
 }
 
@@ -511,8 +514,7 @@ void GameEngine::openPause()
 
     // stop timer
     paused = true;
-    Animtimer->stop();
-    refreshTimer->stop();
+    pauseTimer();
 
     levelScene->addItem(pauseMenu);
     levelScene->addWidget(pauseMenu->getContinueBtn());
@@ -526,8 +528,7 @@ void GameEngine::closePause()
 
     // restart timers
     paused = false;
-    Animtimer->start(90);
-    refreshTimer->start(1000/FPS);
+    resumeTimer();
 
     // remove pause component from scene
     levelScene->removeItem(pauseMenu);
@@ -542,17 +543,63 @@ void GameEngine::clearLevel()
 {
     map->clearMap();
     worldPlan->setPos(0,0);
+    if (restartTimer->isActive()){
+        restartTimer->stop();
+    }
 }
 
 void GameEngine::gameOver()
 {
     map->getPlayer()->setSprite(":/ressources/images/player/hurt.png");
+
+    pauseTimer();
+
+
+    restartTimer->start(1000);
+
+
+}
+
+void GameEngine::pauseTimer()
+{
     Animtimer->stop();
     refreshTimer->stop();
+    if (restartTimer->isActive() && paused == true){
+        overRemainTime = restartTimer->remainingTime();
+        restartTimer->stop();
+    }
+    else
+        overRemainTime = 1000;
+    if(map->getPlayer()->getGotMask()){
+        maskRemainTime = map->getPlayer()->getMaskTimer()->remainingTime();
+        map->getPlayer()->getMaskTimer()->stop();
+    }
+    if(map->getPlayer()->getGotGel()){
+        gelRemainTime = map->getPlayer()->getGelTimer()->remainingTime();
+        map->getPlayer()->getGelTimer()->stop();
+    }
+    if(map->getPlayer()->getImmune() && !map->getPlayer()->getGotMask()){
+        immuneRemainTime = map->getPlayer()->getImmuneTimer()->remainingTime();
+        map->getPlayer()->getImmuneTimer()->stop();
+    }
 
-    restartTimer = new QTimer();
-    restartTimer->start(1000);
-    connect(restartTimer,SIGNAL(timeout()),this,SLOT(restart()));
+}
 
+void GameEngine::resumeTimer()
+{
+    if(overRemainTime < 1000)
+        restartTimer->start(overRemainTime);
+    Animtimer->start(90);
+    refreshTimer->start(1000/FPS);
+
+    if(map->getPlayer()->getGotMask()){
+        map->getPlayer()->getMaskTimer()->start(maskRemainTime);
+    }
+    if(map->getPlayer()->getGotGel()){
+        map->getPlayer()->getGelTimer()->start(gelRemainTime);
+    }
+    if(map->getPlayer()->getImmune() && !map->getPlayer()->getGotMask()){
+        map->getPlayer()->getImmuneTimer()->start(immuneRemainTime);
+    }
 }
 
