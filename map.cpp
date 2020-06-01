@@ -195,6 +195,12 @@ bool Map::readmap(QString directory)
             flag->setY(elem["y"].toInt());
             elementList->append(flag);
         }
+        if(elem["type"].toString() == "mobileVirus"){
+            MobileVirus * mbVir = new MobileVirus();
+            mbVir->setX(elem["x"].toInt());
+            mbVir->setY(elem["y"].toInt());
+            unitList->append(mbVir);
+        }
     }
     loadFile.close();
     return true;

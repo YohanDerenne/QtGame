@@ -12,6 +12,7 @@
 #include "gel.h"
 #include "projectile.h"
 #include "finishflag.h"
+#include "mobilevirus.h"
 
 
 
