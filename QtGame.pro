@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     consoObject.cpp \
     element.cpp \
+    finishflag.cpp \
     fixedblock.cpp \
     gameEngine.cpp \
     gelprojectile.cpp \
@@ -32,10 +33,12 @@ SOURCES += \
     main.cpp \
     map.cpp \
     mask.cpp \
+    mobilevirus.cpp \
     pausegroup.cpp \
     player.cpp \
     projectile.cpp \
     unit.cpp \
+    victorygroup.cpp \
     virus.cpp \
     wall.cpp
 
@@ -44,6 +47,7 @@ HEADERS += \
     configuration.h \
     consoObject.h \
     element.h \
+    finishflag.h \
     fixedblock.h \
     gameEngine.h \
     gelprojectile.h \
@@ -56,10 +60,12 @@ HEADERS += \
     heart.h \
     map.h \
     mask.h \
+    mobilevirus.h \
     pausegroup.h \
     player.h \
     projectile.h \
     unit.h \
+    victorygroup.h \
     virus.h \
     wall.h
 

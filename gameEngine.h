@@ -24,6 +24,7 @@
 #include "pausegroup.h"
 #include "projectile.h"
 #include "gelprojectile.h"
+#include "victorygroup.h"
 
 
 
@@ -57,10 +58,14 @@ public:
     void pauseTimer();
     void resumeTimer();
 
+    void victory();
+    void closeVictory();
+
 public slots:
     void updateAllPositions();
-    void animate();
     void loadMap(QString worldName);
+    void animate();
+    void retryMap();
     void closePause();
     void openMenu();
     void quitApp();
@@ -88,11 +93,13 @@ private:
     QSignalMapper * buttonMenuMapper;
 
     PauseGroup * pauseMenu;
+    VictoryGroup * victoryMenu;
 
     QGraphicsProxyWidget * continueProxy;
     QGraphicsProxyWidget * backMenuProxy;
 
     bool paused;
+    bool finished;
 
     int animFireDuration;
 

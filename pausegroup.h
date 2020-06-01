@@ -17,6 +17,7 @@ public:
 private:
     MenuButton * continueBtn;
     MenuButton * backMenuBtn;
+    QGraphicsTextItem * title;
 };
 
 #endif // PAUSEGROUP_H

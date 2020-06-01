@@ -77,6 +77,12 @@ GameEngine::GameEngine()
     connect(pauseMenu->getContinueBtn(), SIGNAL(clicked()), this, SLOT(closePause()));
     connect(pauseMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
 
+    // init victory menu
+    victoryMenu = new VictoryGroup();
+    connect(victoryMenu->getRetryBtn(), SIGNAL(clicked()), this, SLOT(retryMap()));
+    connect(victoryMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
+    finished = false;
+
     openMenu();
     //openGame();
 
@@ -138,7 +144,7 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
     }
     // pause control
     if (event->key() == Qt::Key_Escape){
-        if(scene() == levelScene){
+        if(scene() == levelScene && finished == false){
             if(pauseMenu->scene() == levelScene)
                 closePause();
             else
@@ -188,8 +194,7 @@ void GameEngine::updatePlayerPosition()
     CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(map->getPlayer(),true,true,true,true);
     CollideManager<Virus> * virusCollider = new CollideManager<Virus>(map->getPlayer(),true,false,false,false);
     CollideManager<consoObject> * consoCollider = new CollideManager<consoObject>(map->getPlayer(),false,false,false,false);
-    //CollideManager<gel> * consoCollider = new CollideManager<consoObject>(map->getPlayer(),false,false,false,false);
-
+    CollideManager<FinishFlag> * flagCollider = new CollideManager<FinishFlag>(map->getPlayer(),false,false,false,false);
 
     int next_x = map->getPlayer()->x();
     int next_y = map->getPlayer()->y();
@@ -223,6 +228,7 @@ void GameEngine::updatePlayerPosition()
     wallCollider->updateCollidingPosition();
     virusCollider->updateCollidingPosition();
     consoCollider->updateCollidingPosition();
+    flagCollider->updateCollidingPosition();
 
     // If no wall or virus collides -> begin de falling
     if(!wallCollider->getAreColliding() &&
@@ -270,11 +276,16 @@ void GameEngine::updatePlayerPosition()
         }
     }
 
-    // projectile
+    // touch the flag
+    if(flagCollider->getAreColliding()){
+        victory();
+    }
 
 
     delete wallCollider;
     delete virusCollider;
+    delete consoCollider;
+    delete flagCollider;
     //qDebug() << player->getXForce();
 }
 
@@ -310,7 +321,7 @@ void GameEngine::updateAllPositions()
 void GameEngine::animate()
 {
     // if player immune (get a an attack)
-    if(map->getPlayer()->getImmune() && playerSprite % 2 == 0){
+    if(map->getPlayer()->getImmune() && playerSprite % 3 == 0){
         map->getPlayer()->hide();
     }
     else{
@@ -337,7 +348,7 @@ void GameEngine::animate()
 
 
     // if player in the air
-    if(map->getPlayer()->isJumping()){
+    else if(map->getPlayer()->isJumping()){
         map->getPlayer()->setSprite(QString(":/ressources/images/player/21.png"));
         playerSprite ++;
     }
@@ -379,8 +390,17 @@ void GameEngine::animate()
 
 }
 
+void GameEngine::retryMap()
+{
+    loadMap(map->getName());
+}
+
 void GameEngine::loadMap(QString worldName)
 {
+    if(finished == true){
+        closeVictory();
+    }
+
     //qDebug() << "loading " << worldName;
     worldPlan->setPos(0,0);
     clearLevel();
@@ -602,4 +622,31 @@ void GameEngine::resumeTimer()
         map->getPlayer()->getImmuneTimer()->start(immuneRemainTime);
     }
 }
+
+void GameEngine::victory()
+{
+    // Show mouse cursor
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
+
+    pauseTimer();
+    finished = true;
+    levelScene->addItem(victoryMenu);
+    levelScene->addWidget(victoryMenu->getRetryBtn());
+    levelScene->addWidget(victoryMenu->getBackMenuBtn());
+}
+
+void GameEngine::closeVictory()
+{
+    // hide mouse cursor
+    QApplication::setOverrideCursor(Qt::BlankCursor);
+    levelScene->removeItem(victoryMenu);
+    finished = false;
+    // remove victory component from scene
+    levelScene->removeItem(victoryMenu->getBackMenuBtn()->graphicsProxyWidget());
+    levelScene->removeItem(victoryMenu->getRetryBtn()->graphicsProxyWidget());
+    // reset proxy
+    victoryMenu->getBackMenuBtn()->graphicsProxyWidget()->setWidget( NULL );
+    victoryMenu->getRetryBtn()->graphicsProxyWidget()->setWidget( NULL );
+}
+
 

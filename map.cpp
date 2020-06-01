@@ -71,6 +71,11 @@ void Map::generateMap1()
             gel->setPos(i*bloc->getWidth(),500 - gel->getHeight());
             consoObjectList->append(gel);
         }
+        if(i == 69){
+            FinishFlag *flag = new FinishFlag();
+            flag->setPos(i*bloc->getWidth(),500 - flag->getHeight());
+            elementList->append(flag);
+        }
     }
 
     // platform
@@ -183,6 +188,12 @@ bool Map::readmap(QString directory)
             mask->setX(elem["x"].toInt());
             mask->setY(elem["y"].toInt());
             consoObjectList->append(mask);
+        }
+        if(elem["type"].toString() == "finish"){
+            FinishFlag * flag = new FinishFlag();
+            flag->setX(elem["x"].toInt());
+            flag->setY(elem["y"].toInt());
+            elementList->append(flag);
         }
     }
     loadFile.close();

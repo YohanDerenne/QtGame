@@ -11,6 +11,7 @@
 #include "mask.h"
 #include "gel.h"
 #include "projectile.h"
+#include "finishflag.h"
 
 
 

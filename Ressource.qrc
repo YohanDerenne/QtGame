@@ -22,5 +22,6 @@
         <file>images/player/hurt.png</file>
         <file>images/projectile.png</file>
         <file>images/player/fire.png</file>
+        <file>images/flag.png</file>
     </qresource>
 </RCC>

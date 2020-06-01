@@ -34,6 +34,9 @@
 #define PROJ_HEIGHT 40
 #define PROJ_WIDTH 40
 
+#define FLAG_HEIGHT 300
+#define FLAG_WIDTH 120
+
 #define GRAVITY 9
 
 #define FPS 60
