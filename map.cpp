@@ -36,6 +36,9 @@ void Map::generateMap1()
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
 
+    //don't forget qrc for music
+    musicPath = "qrc:/ressources/sounds/Castle_of_Funk.mp3";
+
     // create the player
     player = new Player();
     player->setPos(200,400);
@@ -143,6 +146,7 @@ bool Map::readmap(QString directory)
     // read json elements
     height = mapJson["height"].toInt();
     width = mapJson["width"].toInt();
+    musicPath = mapJson["music"].toString();
 
     backgroundPath = mapJson["background"].toString();
     background = QImage(backgroundPath);
@@ -271,6 +275,7 @@ bool Map::saveMap(QString directory)
     // Save the map in mapJson
     mapJson["height"] = height;
     mapJson["width"] = width;
+    mapJson["music"] = musicPath;
     mapJson["background"] = backgroundPath;
     foreach (Element * elem, *elementList) {
         QJsonObject jsonObject;
@@ -365,6 +370,11 @@ Info *Map::getPlayerInfo() const
 QList<Projectile *> *Map::getProjectileList() const
 {
     return projectileList;
+}
+
+QString Map::getMusic() const
+{
+    return musicPath;
 }
 
 QList<Unit *> * Map::getUnitList() const

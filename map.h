@@ -44,6 +44,8 @@ public:
 
     QList<Projectile *> *getProjectileList() const;
 
+    QString getMusic() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -56,6 +58,7 @@ private:
     int height;
     QString name;
     Info * playerInfo;
+    QString musicPath;
 };
 
 #endif // MAP_H
