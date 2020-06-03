@@ -13,8 +13,7 @@ GameEngine::GameEngine()
 
     // create the scene
     levelScene = new QGraphicsScene();
-    levelScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
-    setScene(levelScene);
+    //setScene(levelScene);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -219,9 +218,9 @@ void GameEngine::updatePlayerPosition()
 
     // check if out of the map
     if(map->getPlayer()->x() < worldPlan->x() ||
-            map->getPlayer()->x() + map->getPlayer()->getWidth() > MAP_WIDTH ||
+            map->getPlayer()->x() + map->getPlayer()->getWidth() > map->getWidth() ||
             //map->getPlayer()->y() < worldPlan->y() ||
-            map->getPlayer()->y() + map->getPlayer()->getWidth()  > MAP_HEIGHT){
+            map->getPlayer()->y() + map->getPlayer()->getWidth() > map->getHeight()){
         gameOver();
     }
 
@@ -397,6 +396,8 @@ void GameEngine::retryMap()
 
 void GameEngine::loadMap(QString worldName)
 {
+    levelScene->setSceneRect(0,0,map->getWidth(),map->getHeight());
+
     if(finished == true){
         closeVictory();
     }
