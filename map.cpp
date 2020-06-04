@@ -12,7 +12,7 @@ Map::Map()
     elementList = new QList<Element*>();
     unitList = new QList<Unit*>();
     consoObjectList = new QList<consoObject *>();
-    name = "no level";
+    name = "noNamedlevel";
     projectileList = new QList<Projectile *>();
 }
 
@@ -42,6 +42,8 @@ void Map::generateMap1()
     // create the player
     player = new Player();
     player->setPos(200,400);
+
+    name = "Paradyze";
 
     // add the player to the scene
     //scene->addItem(player);
@@ -136,8 +138,126 @@ void Map::generateMap1()
 
 void Map::generateMap2()
 {
+    width = MAP_WIDTH;
+    height = MAP_HEIGHT;
 
+    // set background
+    backgroundPath = ":/ressources/images/backgrounds/background_2.png";
+
+    //don't forget qrc for music
+    musicPath = "qrc:/ressources/sounds/kirby.mp3";
+
+    // create the player
+    player = new Player();
+    player->setPos(200,600);
+
+    name = "Paradyze";
+
+    // add the player to the scene
+    //scene->addItem(player);
+
+    // create map
+    // floor
+    for(int i = 0; i < 60; i++){
+        if(i != 30 && i != 31){
+            Wall * bloc = new Wall();
+
+            bloc->setPos(i*bloc->getWidth(),660);
+            elementList->append(bloc);
+        }
+        Wall * bloc = new Wall();
+
+        if(i == 13){
+            Mask *mask = new Mask();
+            mask->setPos(i*bloc->getWidth(),510 - mask->getHeight());
+            consoObjectList->append(mask);
+        }
+        if(i == 25){
+            Virus * virus = new Virus();
+            virus->setPos(i*bloc->getWidth(), 430 - virus->getHeight());
+            unitList->append(virus);
+        }
+
+        if(i == 34){
+            Gel *gel = new Gel();
+            gel->setPos(i*bloc->getWidth(),430 - gel->getHeight());
+            consoObjectList->append(gel);
+        }
+        delete bloc;
+    }
+
+    for (int i = 37;i<60;i++) {
+        if(i != 47 && i != 48){
+
+            Wall * bloc = new Wall();
+            bloc->setPos(i*bloc->getWidth(),510);
+            elementList->append(bloc);
+
+            //flag
+            if(i == 57){
+                FinishFlag *flag = new FinishFlag();
+                flag->setPos(i*bloc->getWidth(),510 - flag->getHeight());
+                elementList->append(flag);
+            }
+        }
+    }
+    //End wall
+    for(int i = 3; i >= 0; i--){
+
+        Wall * bloc = new Wall();
+        bloc->setPos(3000 ,710 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+
+
+    }
+
+    // platform
+    for(int i = 5; i < 10; i++){
+        if(i != 9){
+
+            Wall * bloc = new Wall();
+            bloc->setPos(i*bloc->getWidth() + 900 ,430);
+            elementList->append(bloc);
+        }
+
+    }
+
+    for(int i = 0; i >= 0; i--){
+
+        Wall * bloc = new Wall();
+        bloc->setPos(i*bloc->getWidth() + 1690 ,430);
+        elementList->append(bloc);
+
+    }
+
+
+    // little wall
+    for(int i = 1; i >= 0; i--){
+        Wall * bloc = new Wall();
+        Wall * bloc1 = new Wall();
+        bloc->setPos(500 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc1->setPos(750 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+        elementList->append(bloc1);
+    }
+    // little wall
+    for(int i = 2; i >= 0; i--){
+        Wall * bloc = new Wall();
+        Wall * bloc1 = new Wall();
+        Wall * bloc2 = new Wall();
+        Wall * bloc3 = new Wall();
+        bloc->setPos(550 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc1->setPos(600 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc2->setPos(650 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc2->setPos(650 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc3->setPos(700 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+        elementList->append(bloc1);
+        elementList->append(bloc2);
+        elementList->append(bloc3);
+    }
 }
+
 
 void Map::generateMapBen()
 {
@@ -284,6 +404,7 @@ void Map::generateRectangle(int length,int height, int xPosition,int yPosition){
         generateRoad(length,xPosition,yPosition+i);
     }
 }
+
 void Map::generateCityWorld()
 {
     width = MAP_WIDTH * 2;
@@ -291,7 +412,6 @@ void Map::generateCityWorld()
 
     // set background
     backgroundPath = ":/ressources/images/backgrounds/city.jpg";
-    setBackground(QImage(backgroundPath));
 
     //don't forget qrc for music
     musicPath = "qrc:/ressources/sounds/drop_gems.mp3";
@@ -457,9 +577,9 @@ void Map::generateCityWorld()
             bloc2->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight());
             elementList->append(bloc2);
             if(i==29){
-               FinishFlag * flag = new FinishFlag();
-               flag->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight() - flag->getHeight());
-               elementList->append(flag);
+                FinishFlag * flag = new FinishFlag();
+                flag->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight() - flag->getHeight());
+                elementList->append(flag);
             }
             else{
                 Heart * heart = new Heart();

@@ -36,7 +36,8 @@
         <file>sounds/pause.wav</file>
         <file>images/backgrounds/city.jpg</file>
         <file>sounds/drop_gems.mp3</file>
-        <file>sounds/kirky.mp3</file>
         <file>sounds/must_fall.mp3</file>
+        <file>images/backgrounds/background_2.png</file>
+        <file>sounds/kirby.mp3</file>
     </qresource>
 </RCC>
