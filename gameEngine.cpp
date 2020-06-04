@@ -76,12 +76,14 @@ GameEngine::GameEngine()
     pauseMenu = new PauseGroup();
     connect(pauseMenu->getContinueBtn(), SIGNAL(clicked()), this, SLOT(closePause()));
     connect(pauseMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
+    paused = false;
 
     // init victory menu
     victoryMenu = new VictoryGroup();
     connect(victoryMenu->getRetryBtn(), SIGNAL(clicked()), this, SLOT(retryMap()));
     connect(victoryMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
     finished = false;
+
 
     openMenu();
     //openGame();
