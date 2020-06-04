@@ -2,6 +2,7 @@
 
 Element::Element()
 {
+    isRightSide = true;
     height = 0;
     width = 0;
 }
@@ -83,4 +84,9 @@ void Element::respawn()
 int Element::getIsRightSide() const
 {
     return isRightSide;
+}
+
+void Element::setIsRightSide(int value)
+{
+    isRightSide = value;
 }

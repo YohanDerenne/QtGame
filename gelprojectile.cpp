@@ -9,10 +9,10 @@ GelProjectile::GelProjectile(bool right) : Projectile()
 
     // inital force
     if(isRightSide){
-        xForce = 10;
+        xForce = 13;
     }
     else{
-        xForce = -10;
+        xForce = -13;
     }
 
 

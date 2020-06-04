@@ -13,8 +13,7 @@ GameEngine::GameEngine()
 
     // create the scene
     levelScene = new QGraphicsScene();
-    levelScene->setSceneRect(0,0,MAP_WIDTH,MAP_HEIGHT);
-    setScene(levelScene);
+    //setScene(levelScene);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -31,8 +30,8 @@ GameEngine::GameEngine()
     map = new Map();
 
     // SAVE GENERATED MAP ===================================================
-    map->generateMapBen();
-    map->saveMap("world 2");
+    map->generateCityWorld();
+    map->saveMap(map->getName());
     // ======================================================================
 
 
@@ -84,6 +83,16 @@ GameEngine::GameEngine()
     connect(victoryMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
     finished = false;
 
+    //init sounds players
+    musicPlayer = new QMediaPlayer();
+    gain.setSource(QUrl("qrc:/ressources/sounds/gain.wav"));
+    jump.setSource(QUrl("qrc:/ressources/sounds/jump.wav"));
+    fire.setSource(QUrl("qrc:/ressources/sounds/catch.wav"));
+    win.setSource(QUrl("qrc:/ressources/sounds/win.wav"));
+    hurt.setSource(QUrl("qrc:/ressources/sounds/hurt.wav"));
+    kick.setSource(QUrl("qrc:/ressources/sounds/kick.wav"));
+    pause.setSource(QUrl("qrc:/ressources/sounds/pause.wav"));
+    life.setSource(QUrl("qrc:/ressources/sounds/life.wav"));
 
     openMenu();
     //openGame();
@@ -108,6 +117,8 @@ GameEngine::~GameEngine()
 
     levelScene->clear();
     delete levelScene;
+
+    delete musicPlayer;
 }
 
 void GameEngine::keyPressEvent(QKeyEvent *event)
@@ -124,6 +135,8 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             map->getPlayer()->SetMovingRight(true);
         }
         else if (event->key() == Qt::Key_Up){
+            if(!map->getPlayer()->isFlying())
+                jump.play();
             map->getPlayer()->jump();
         }
         else if (event->key() == Qt::Key_Space){
@@ -131,8 +144,10 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             if(spacePressed == false){
                 GelProjectile * proj = map->getPlayer()->launchGel(worldPlan->x(), worldPlan->y());
                 if(proj != NULL){
+                    fire.play();
+                    //qDebug() << map->getPlayer()->x() + map->getPlayer()->getWidth() << proj->x();
                     spacePressed = true;
-                    levelScene->addItem(proj);
+                    worldPlan->addToGroup(proj);
                     map->getProjectileList()->append(proj);
                 }
             }
@@ -183,9 +198,9 @@ void GameEngine::keyReleaseEvent(QKeyEvent *event)
 void GameEngine::resizeEvent(QResizeEvent *event)
 {
     qDebug() << "resize";
-
+    levelScene->setSceneRect(0,0,map->getWidth(),map->getHeight());
     // Scale the view to the new size
-    QRect rect = QRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
+    QRect rect = QRect(0,0,WINDOW_WIDTH,map->getHeight());
     fitInView(rect);
 }
 
@@ -223,7 +238,8 @@ void GameEngine::updatePlayerPosition()
     if(map->getPlayer()->x() < worldPlan->x() ||
             map->getPlayer()->x() + map->getPlayer()->getWidth() > map->getWidth() ||
             //map->getPlayer()->y() < worldPlan->y() ||
-            map->getPlayer()->y() + map->getPlayer()->getWidth()  > map->getHeight()){
+            map->getPlayer()->y() > map->getHeight() - map->getPlayer()->getHeight()){
+        hurt.play();
         gameOver();
     }
 
@@ -239,6 +255,7 @@ void GameEngine::updatePlayerPosition()
         if(map->getPlayer()->getYForce() == 0)
             map->getPlayer()->setYForce(map->getPlayer()->getYForce() + 100);
     }
+
     if(virusCollider->getAreColliding()){
         QMap<Virus *,fromPosition> virusMap = virusCollider->getCollidingItemList();
         QMapIterator<Virus*, fromPosition> iterator(virusMap);
@@ -252,11 +269,15 @@ void GameEngine::updatePlayerPosition()
                 // Kill virus
                 map->getUnitList()->removeOne(virus);
                 worldPlan->removeFromGroup(virus);
+                kick.play();
                 delete iterator.key();
             }
             else{
                 // is attacked !
+                if(!hurt.isPlaying() && !map->getPlayer()->getImmune())
+                    hurt.play();
                 virus->attack(map->getPlayer());
+
 
                 // if player is not alive
                 if(!map->getPlayer()->isAlive()){
@@ -274,7 +295,14 @@ void GameEngine::updatePlayerPosition()
             consoObject * conso = iterator.key();
             conso->applyEffect(map->getPlayer());
             map->getConsoObjectList()->removeOne(conso);
+
+            //sound
+            if(conso->getType() == "heart")
+                life.play();
+            else
+                gain.play();
             delete conso;
+
         }
     }
 
@@ -317,6 +345,7 @@ void GameEngine::updateAllPositions()
 {
     updatePlayerPosition();
     updateProjectilePosition();
+    updateMobileVirusPosition();
     updateCamera();
 }
 
@@ -399,6 +428,8 @@ void GameEngine::retryMap()
 
 void GameEngine::loadMap(QString worldName)
 {
+    musicPlayer->stop();
+
     if(finished == true){
         closeVictory();
     }
@@ -408,6 +439,14 @@ void GameEngine::loadMap(QString worldName)
     clearLevel();
     map->readmap(worldName);
     drawElements();
+
+    playMusic(map->getMusic());
+
+    // Adapt the window size to the map
+    levelScene->setSceneRect(0,0,map->getWidth(),map->getHeight());
+    QRect rect = QRect(0,0,WINDOW_WIDTH,map->getHeight());
+    fitInView(rect);
+
     openGame();
     //playerInfo->setPos(10,10);
 }
@@ -450,6 +489,7 @@ void GameEngine::drawElements()
 void GameEngine::updateProjectilePosition()
 {
     for(Projectile * projectile : *map->getProjectileList()){
+        //qDebug() << projectile->getXForce();
         projectile->move();
         if(projectile->isMaxDist()){
             map->getProjectileList()->removeOne(projectile);
@@ -463,6 +503,7 @@ void GameEngine::updateProjectilePosition()
             if(virus){
                 projectile->touch(virus);
                 if(virus->getLife() == 0 ){
+                    kick.play();
                     map->getUnitList()->removeOne(virus);
                     delete virus;
                     map->getProjectileList()->removeOne(projectile);
@@ -477,6 +518,66 @@ void GameEngine::updateProjectilePosition()
                 delete projectile;
                 break;
             }
+        }
+    }
+}
+
+void GameEngine::updateMobileVirusPosition()
+{
+    // for all mobile virus
+    for(Unit * enemy: *map->getUnitList()){
+        if(enemy->getType() == "mobileVirus"){
+            MobileVirus * mbVirus = dynamic_cast<MobileVirus*>(enemy);
+
+            //qDebug() << mbVirus->getXForce();
+
+            CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(enemy,true,true,true,true);
+
+            // calculate next mobile virus position
+            int next_y = mbVirus->y();
+            if (mbVirus->isFlying() == true){
+                next_y += mbVirus->getYForce() * 1/FPS;
+                float dt = 1/(float)FPS;
+                mbVirus->setYForce( mbVirus->getYForce() + mbVirus->getWeight() * GRAVITY * dt);
+            }
+
+            // update position and adapt position with collision
+            mbVirus->setPos(mbVirus->getXForce() + mbVirus->x(),next_y);
+
+            // check if out of the map -> kill virus if out of the map
+            if(mbVirus->x() < worldPlan->x() ||
+                    mbVirus->x() + mbVirus->getWidth() > map->getWidth() ||
+                    //map->getPlayer()->y() < worldPlan->y() ||
+                    mbVirus->y() > map->getHeight() - mbVirus->getHeight()){
+                kick.play();
+                map->getUnitList()->removeOne(mbVirus);
+                delete mbVirus;
+                delete wallCollider;
+                return;
+            }
+
+            wallCollider->updateCollidingPosition();
+
+            // If no wall-> begin de falling
+            if(!wallCollider->getAreColliding()){
+                // if initial falling
+                if(mbVirus->getYForce() == 0)
+                    mbVirus->setYForce(100);
+            }
+            else{
+                QMap<FixedBlock *,fromPosition> blocMap = wallCollider->getCollidingItemList();
+                QMapIterator<FixedBlock*, fromPosition> iterator(blocMap);
+
+                // if virus touch a side of a block, it will go back
+                while (iterator.hasNext()) {
+                    iterator.next();
+                    if((iterator.value().fromLeft || iterator.value().fromRight) &&
+                            !iterator.value().fromUnder && !iterator.value().fromTop){
+                        mbVirus->switchSide();
+                    }
+                }
+            }
+            delete wallCollider;
         }
     }
 }
@@ -504,6 +605,9 @@ void GameEngine::openMenu()
 
     // replace scene by menu scene
     setScene(menuScene);
+
+    //menu music
+    playMusic("qrc:/ressources/sounds/menu.mp3");
 }
 
 void GameEngine::quitApp()
@@ -514,8 +618,9 @@ void GameEngine::quitApp()
 void GameEngine::restart()
 {
     restartTimer->stop();
-    loadMap("world 2");
+    loadMap(map->getName());
 }
+
 
 void GameEngine::openGame()
 {
@@ -531,12 +636,16 @@ void GameEngine::openGame()
 
 void GameEngine::openPause()
 {
+    pause.play();
+
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
     // stop timer
     paused = true;
     pauseTimer();
+
+    musicPlayer->setVolume(10);
 
     levelScene->addItem(pauseMenu);
     levelScene->addWidget(pauseMenu->getContinueBtn());
@@ -545,6 +654,8 @@ void GameEngine::openPause()
 
 void GameEngine::closePause()
 {
+    musicPlayer->setVolume(100);
+
     // hide mouse cursor
     QApplication::setOverrideCursor(Qt::BlankCursor);
 
@@ -627,6 +738,9 @@ void GameEngine::resumeTimer()
 
 void GameEngine::victory()
 {
+    musicPlayer->stop();
+    win.play();
+
     // Show mouse cursor
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 
@@ -650,5 +764,13 @@ void GameEngine::closeVictory()
     victoryMenu->getBackMenuBtn()->graphicsProxyWidget()->setWidget( NULL );
     victoryMenu->getRetryBtn()->graphicsProxyWidget()->setWidget( NULL );
 }
+
+void GameEngine::playMusic(QString qrcPath)
+{
+    musicPlayer->setMedia(QUrl(qrcPath));
+    musicPlayer->setVolume(100);
+    musicPlayer->play();
+}
+
 
 

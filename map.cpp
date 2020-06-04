@@ -36,6 +36,9 @@ void Map::generateMap1()
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
 
+    //don't forget qrc for music
+    musicPath = "qrc:/ressources/sounds/Castle_of_Funk.mp3";
+
     // create the player
     player = new Player();
     player->setPos(200,400);
@@ -46,6 +49,7 @@ void Map::generateMap1()
     // create map
     // floor
     for(int i = 0; i < 70; i++){
+
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth(),500);
         elementList->append(bloc);
@@ -54,6 +58,24 @@ void Map::generateMap1()
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
             unitList->append(virus);
         }
+
+        // for mobile virus
+        if(i==25){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(i*bloc->getWidth(),500 - bloc2->getHeight());
+            elementList->append(bloc2);
+        }
+        if(i==23){
+            MobileVirus * mb = new MobileVirus();
+            mb->setPos(i*bloc->getWidth(),500 - mb->getHeight());
+            unitList->append(mb);
+        }
+        if(i == 19 || i==20){
+            // hole
+            elementList->removeOne(bloc);
+            delete bloc;
+        }
+
 
         // Consos
         if(i == 9){
@@ -262,6 +284,205 @@ void Map::generateRectangle(int length,int height, int xPosition,int yPosition){
         generateRoad(length,xPosition,yPosition+i);
     }
 }
+void Map::generateCityWorld()
+{
+    width = MAP_WIDTH * 2;
+    height = MAP_HEIGHT;
+
+    // set background
+    backgroundPath = ":/ressources/images/backgrounds/city.jpg";
+    setBackground(QImage(backgroundPath));
+
+    //don't forget qrc for music
+    musicPath = "qrc:/ressources/sounds/drop_gems.mp3";
+
+    // create the player
+    player = new Player();
+    player->setPos(200,400);
+    //player->setPos(2000,400);
+
+    name = "City NightFall";
+
+    // wall
+    for(int i = 15; i >= 0; i--){
+        Wall * bloc = new Wall();
+        bloc->setPos(0 ,950 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+    }
+
+    // 1st floor
+    for(int i = 0; i < 20; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos((i+1)*bloc->getWidth(),500);
+        elementList->append(bloc);
+    }
+    // 2nd floor
+    for(int i = 0; i < 20; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos((i+10)*bloc->getWidth(),700);
+        elementList->append(bloc);
+    }
+    // 3rd floor
+    for(int i = 0; i < 36; i++){
+        if(i!= 2 && i!= 5 && i!= 7 && i!=22 && i!=23){
+            Wall * bloc = new Wall();
+            bloc->setPos((i+1)*bloc->getWidth(),900);
+            elementList->append(bloc);
+
+            // gel
+            if(i == 1){
+                Gel * gel = new Gel();
+                gel->setPos((i+1)*bloc->getWidth(),900 - gel->getHeight());
+                consoObjectList->append(gel);
+            }
+
+            if(i==3){
+                // virus wall
+                for(int j = 0 ; j<3 ; j ++){
+                    Virus * virus = new Virus();
+                    virus->setPos((i+1)*bloc->getWidth(),900 - (j+1) * virus->getHeight());
+                    unitList->append(virus);
+                }
+            }
+            if(i==6){
+                // virus wall
+                for(int j = 0 ; j<3 ; j ++){
+                    Virus * virus = new Virus();
+                    virus->setPos((i+1)*bloc->getWidth(),900 - (j+1) * virus->getHeight());
+                    unitList->append(virus);
+                }
+            }
+            if(i==9){
+                // virus wall
+                for(int j = 0 ; j<3 ; j ++){
+                    Virus * virus = new Virus();
+                    virus->setPos((i+1)*bloc->getWidth(),900 - (j+1) * virus->getHeight());
+                    unitList->append(virus);
+                }
+            }
+        }
+    }
+
+    // 2nd wall
+    for(int i = 8; i >= 0; i--){
+        Wall * bloc = new Wall();
+        bloc->setPos(1500 ,750 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+        if(i == 5){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(1500 + bloc->getWidth(),750 - i * bloc2->getHeight());
+            elementList->append(bloc2);
+
+            // heart
+            Heart * heart = new Heart();
+            heart->setPos(1500 + bloc->getWidth(),750 - i * bloc2->getHeight() - heart->getHeight());
+            consoObjectList->append(heart);
+        }
+        if(i==1){
+            // wall blocker with virus
+            for(int j=0 ; j<6 ; j++){
+                Wall * vir = new Wall();
+                vir->setPos(1500 + bloc->getWidth() + j*vir->getWidth(),750 - i * bloc->getHeight());
+                elementList->append(vir);
+            }
+            MobileVirus * mbvir = new MobileVirus();
+            mbvir->setPos(1500 + bloc->getWidth(),750 - i * bloc->getHeight() - mbvir->getHeight());
+            unitList->append(mbvir);
+        }
+    }
+
+    // 3rd wall
+    for(int i = 0 ; i<13 ; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(1800 ,50 + i * bloc->getHeight());
+        elementList->append(bloc);
+        if(i==4){
+            // heart
+            Heart * heart = new Heart();
+            heart->setPos(1800 + bloc->getWidth(),750 - i * bloc->getHeight());
+            consoObjectList->append(heart);
+        }
+    }
+
+    // 4th floor
+    for(int i=0 ; i<30 ; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(2000 + i*bloc->getWidth() ,900);
+        elementList->append(bloc);
+        // border
+        if(i == 0 || i == 29){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(2000 + i*bloc->getWidth() ,900 - bloc->getHeight());
+            elementList->append(bloc2);
+        }
+        // virus mobile
+        if(i == 1){
+            MobileVirus * mobVir = new MobileVirus();
+            mobVir->setPos(2000 + i*bloc->getWidth() ,900 - mobVir->getHeight());
+            unitList->append(mobVir);
+        }
+        // virus mobile
+        if(i == 10){
+            MobileVirus * mobVir = new MobileVirus();
+            mobVir->setPos(2000 + i*bloc->getWidth() ,900 - mobVir->getHeight());
+            unitList->append(mobVir);
+        }
+    }
+    // 5th floor
+    for(int i=0 ; i<30 ; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(3800 + i*bloc->getWidth() ,750);
+        elementList->append(bloc);
+        // border
+        if(i == 0 || i == 29){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(3800 + i*bloc->getWidth() ,750 - bloc->getHeight());
+            elementList->append(bloc2);
+        }
+        // 3 virus mobile
+        if(i == 1 || i==10 || i==20){
+            MobileVirus * mobVir = new MobileVirus();
+            mobVir->setPos(3800 + i*bloc->getWidth() ,750 - mobVir->getHeight());
+            unitList->append(mobVir);
+        }
+    }
+    // 5th floor
+    for(int i=0 ; i<30 ; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(5600 + i*bloc->getWidth() ,600);
+        elementList->append(bloc);
+        // border
+        if(i == 0 || i == 29){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight());
+            elementList->append(bloc2);
+            if(i==29){
+               FinishFlag * flag = new FinishFlag();
+               flag->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight() - flag->getHeight());
+               elementList->append(flag);
+            }
+            else{
+                Heart * heart = new Heart();
+                heart->setPos(5600 + i*bloc->getWidth() ,600 - bloc->getHeight() - heart->getHeight());
+                elementList->append(heart);
+            }
+        }
+        // 4 virus mobile
+        if(i == 1 || i==10 || i==20 || i == 25){
+            MobileVirus * mobVir = new MobileVirus();
+            mobVir->setPos(5600 + i*bloc->getWidth() ,600 - mobVir->getHeight());
+            unitList->append(mobVir);
+        }
+        // virus wall
+        if(i==7 || i == 15 || i== 27){
+            for(int j=0; j<3 ; j++){
+                Virus * virus = new Virus();
+                virus->setPos(5600 + (i+1)*bloc->getWidth(),600 - (j+1) * virus->getHeight());
+                unitList->append(virus);
+            }
+        }
+    }
+}
 bool Map::readmap(QString directory)
 {
     // Clear the actual map if exists
@@ -288,6 +509,7 @@ bool Map::readmap(QString directory)
     // read json elements
     height = mapJson["height"].toInt();
     width = mapJson["width"].toInt();
+    musicPath = mapJson["music"].toString();
 
     backgroundPath = mapJson["background"].toString();
     background = QImage(backgroundPath);
@@ -416,6 +638,7 @@ bool Map::saveMap(QString directory)
     // Save the map in mapJson
     mapJson["height"] = height;
     mapJson["width"] = width;
+    mapJson["music"] = musicPath;
     mapJson["background"] = backgroundPath;
     foreach (Element * elem, *elementList) {
         QJsonObject jsonObject;
@@ -510,6 +733,11 @@ Info *Map::getPlayerInfo() const
 QList<Projectile *> *Map::getProjectileList() const
 {
     return projectileList;
+}
+
+QString Map::getMusic() const
+{
+    return musicPath;
 }
 
 QList<Unit *> * Map::getUnitList() const

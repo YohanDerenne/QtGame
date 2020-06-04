@@ -121,18 +121,17 @@ bool Player::getGotGel() const
 GelProjectile *Player::launchGel(int xPlanOffset, int yPlanOffset)
 {
 
-
     // create projectile
     if(getGotGel()){
         fire = true;
         GelProjectile * proj = new GelProjectile(getIsRightSide());
         if(getIsRightSide()){
             proj->setX(x() + getWidth() + xPlanOffset);
-            proj->setBegin(x() + getWidth() + xPlanOffset);
+            proj->setBegin(x() + getWidth());
         }
         else{
             proj->setX(x() + xPlanOffset);
-            proj->setBegin(x() + xPlanOffset);
+            proj->setBegin(x());
         }
 
         proj->setY(y() + getHeight() / 2 - proj->getHeight() / 2 + yPlanOffset);
