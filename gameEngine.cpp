@@ -75,6 +75,7 @@ GameEngine::GameEngine()
     pauseMenu = new PauseGroup();
     connect(pauseMenu->getContinueBtn(), SIGNAL(clicked()), this, SLOT(closePause()));
     connect(pauseMenu->getBackMenuBtn(), SIGNAL(clicked()), this, SLOT(openMenu()));
+    paused = false;
 
     // init victory menu
     victoryMenu = new VictoryGroup();
@@ -92,7 +93,6 @@ GameEngine::GameEngine()
     kick.setSource(QUrl("qrc:/ressources/sounds/kick.wav"));
     pause.setSource(QUrl("qrc:/ressources/sounds/pause.wav"));
     life.setSource(QUrl("qrc:/ressources/sounds/life.wav"));
-
 
     openMenu();
     //openGame();

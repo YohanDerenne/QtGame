@@ -139,6 +139,151 @@ void Map::generateMap2()
 
 }
 
+void Map::generateMapBen()
+{
+    width = MAP_WIDTH  * 3;
+    height = MAP_HEIGHT;
+
+    // set background
+    backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
+    setBackground(QImage(backgroundPath));
+
+    // create the player
+    player = new Player();
+    player->setPos(200,400);
+
+    // add the player to the scene
+    //scene->addItem(player);
+
+    // create map
+    // floor
+    int  offset = 120;
+    // first part
+    generateRoad(24,0+offset,5);
+    generateWall(6,23+offset,6);
+    generateRoad(11,13+offset,12);
+
+    // first jump
+    generateU(15,7,0,6+offset,9);
+    generateWall(2,10+offset,9);
+
+    // first stair
+    generateStairs(6,26+offset,5,true);
+
+    // first U
+    generateU(6,2,2,34+offset,10);
+    generateItem(34+offset+1,11,new MobileVirus());
+    // second L
+    generateU(11,0,6,38+offset,5);
+    generateRoadVirus(4, 38+offset+3, 6);
+    generateRoadVirus(4, 38+offset+3, 7);
+    generateRoadVirus(4, 38+offset+3, 8);
+    generateItem(38+offset+1,6,new Gel());
+
+    // third L
+    generateU(4,10,0,42+offset,9);
+
+
+    // tricky pass
+    generateRoad(2,54+offset,5);
+    generateRoad(1,58+offset,11);
+    generateRoad(30,60+offset,5);
+
+
+
+    FinishFlag *flag = new FinishFlag();
+   Wall * block = new Wall();
+   flag->setPos((offset+85)*block->getWidth() , this->getHeight() - block->getHeight()*(6) );
+   elementList->append(flag);
+
+
+    generateRoad(offset/10,0,6);
+
+    generateRoad(offset/10,offset/8,6);
+    generateU(offset/10,2,2,offset/4,6);
+    generateU(offset/10,2,2,offset/4+offset/10,6);
+
+    generateRoad(offset/5,offset/4,6);
+    generateU(offset/5,3,2,offset/4,6);
+    generateItem(offset/4+2,7,new MobileVirus());
+
+    generateRoad(offset/5,offset/2,6);
+    generateU(offset/5,2,3,offset/2,6);
+
+    generateRoad(offset/3,offset/2 +offset/5+ 4,6);
+    generateStairs(8,offset/2 +offset/5+ 4,6,true);
+    generateStairs(8,offset/2 +offset/5+ 12,6,false);
+
+
+
+
+
+}
+
+// little wall
+void Map::generateWall(int height, int xPosition, int yPosition){
+
+    for(int i = 0; i < height; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(xPosition*bloc->getWidth() , this->getHeight() - bloc->getHeight()*(yPosition + 1) - i * bloc->getHeight());
+        elementList->append(bloc);
+    }
+}
+
+void Map::generateRoad(int length, int xPosition, int yPosition){
+
+    for(int i = 0; i < length; i++){
+        Wall * bloc = new Wall();
+        bloc->setPos(xPosition*bloc->getWidth() + i*bloc->getWidth()  , this->getHeight() - bloc->getHeight()*(yPosition+1) );
+        elementList->append(bloc);
+    }
+}
+
+
+void Map::generateItem(int xPosition, int yPosition,Element * obj){
+    Wall * bloc = new Wall();
+    obj->setPos(xPosition*bloc->getWidth()   , this->getHeight() - bloc->getHeight()*(yPosition+1) );
+    elementList->append(obj);
+}
+
+void Map::generateRoadVirus(int length, int xPosition, int yPosition){
+    for(int i = 0; i < length; i++){
+        Virus * bloc = new Virus();
+        bloc->setPos(xPosition*bloc->getWidth() + i*bloc->getWidth()  , this->getHeight() - bloc->getHeight()*(yPosition+1) );
+        elementList->append(bloc);
+    }
+}
+
+void Map::generateStairs(int length, int xPosition, int yPosition,bool isLeftEmpty){
+
+    if(isLeftEmpty){
+        for(int i = 0; i < length; i++){
+            generateRoad(length-i,xPosition+i,yPosition+i);
+        }
+    }
+    else{
+        for(int i = 0; i < length; i++){
+            generateRoad(length-i,xPosition,yPosition+i);
+        }
+    }
+
+}
+
+void Map::generateU(int xLength,int yLengthLeft, int yLengthRight, int xPosition, int yPosition){
+
+
+    generateRoad(xLength,xPosition,yPosition);      // ground
+    generateWall(yLengthLeft,xPosition,yPosition+1);// left wall
+    generateWall(yLengthRight,xPosition+xLength-1,yPosition+1);// rightWall
+
+
+}
+
+void Map::generateRectangle(int length,int height, int xPosition,int yPosition){
+    for(int i = 0; i<height;i++){
+        generateRoad(length,xPosition,yPosition+i);
+    }
+}
 void Map::generateCityWorld()
 {
     width = MAP_WIDTH * 2;
@@ -338,7 +483,6 @@ void Map::generateCityWorld()
         }
     }
 }
-
 bool Map::readmap(QString directory)
 {
     // Clear the actual map if exists
