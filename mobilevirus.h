@@ -12,6 +12,11 @@
 class MobileVirus : public Virus
 {
 public:
+    /**
+     * \fn MobileVirus()
+     * \brief Constructor of the MobileVirus class
+     * affects the item's type to "mobilevirus."
+     */
     MobileVirus();
 };
 

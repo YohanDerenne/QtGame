@@ -22,19 +22,42 @@ template <class itemType>
 class CollideManager
 {
 public:
+
     /**
-     * @brief Create before moving
-     * @param subject
-     * @param solidTop
-     * @param solidLeft
-     * @param solidRight
-     * @param solidUnder
+     * \fn CollideManager<itemType>(Unit * subject, bool solidTop, bool solidLeft, bool solidRight, bool solidUnder);
+     * \brief Constructor of the CollideManager class
+     * \param subject
+     * \param solidTop
+     * \param solidLeft
+     * \param solidRight
+     * \param solidUnder
+     *
+     * Retain the player's initial position before he moves
      */
     CollideManager<itemType>(Unit * subject, bool solidTop, bool solidLeft, bool solidRight, bool solidUnder);
+
+    /**
+     * \fn void updateCollidingPosition()
+     * \brief adjusts the playing position of the subject if he comes in contact with a block.
+     *
+     *
+     */
     void updateCollidingPosition();
 
+    /**
+     * \fn getAreColliding() const;
+     * \brief Accessor of the attribute areColliding
+     * \return the value of the attribute areColliding
+     *
+     */
     bool getAreColliding() const;
 
+    /**
+     * \fn QMap<itemType *, fromPosition> getCollidingItemList() const;
+     * \brief Retrieve the elements in collison with the subject.
+     * \return A list of elements in collison with the subject
+     *
+     */
     QMap<itemType *, fromPosition> getCollidingItemList() const;
 
 private:

@@ -15,13 +15,30 @@ class consoObject : public Element
 {
 public:
 
-    consoObject();
-    int getDurationOfEffect() const;
-    void setDurationOfEffect(int value);
-    virtual void applyEffect(Unit * unit)=0;
 
-/*protected :
-    virtual void applyEffect(Unit unit) = 0;*/
+    /**
+     * \fn consoObject();
+     * \brief Consrtructor of the consoObject class
+     *
+     * Reset the durationOfEffect attribute to 0
+     */
+    consoObject();
+
+    /**
+     * \fn int getDurationOfEffect() const
+     * \brief Accessor to the "durationOfEffect" attribute.
+     * \return The value of the durationOfEffect attribute of the "consoObject" object.
+     */
+    int getDurationOfEffect() const;
+    /**
+     * \fn  void setDurationOfEffect(int value)
+     * \brief durationOfEffect attribute modification accessors.
+     * \param value, value to assign to the durationOfEffect attribute
+     *
+     */
+    void setDurationOfEffect(int value);
+
+    virtual void applyEffect(Unit * unit)=0;
 
 private:
     int durationOfEffect;

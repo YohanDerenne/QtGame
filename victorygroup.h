@@ -15,10 +15,32 @@
 class VictoryGroup : public QGraphicsItemGroup
 {
 public:
+    /**
+     * \fn VictoryGroup()
+     * \brief Constructor of the VictoryGroup class
+     * the objects that form the victory flag
+     */
     VictoryGroup();
+    /**
+     * \fn ~VictoryGroup()
+     * \brief destructor of the VictoryGroup class
+     * removes all objects that form the victory flag
+     */
     ~VictoryGroup();
 
+    /**
+     * \fn  MenuButton *getRetryBtn() const;
+     * \brief accessors for the "retryBtn" attribute.
+     * \return a MenuButton object, value of attribute retryBtn
+     *
+     */
     MenuButton *getRetryBtn() const;
+    /**
+     * \fn  MenuButton *getBackMenuBtn() const;
+     * \brief accessors for the "backMenuBtn" attribute.
+     * \return a MenuButton object, value of attribute backMenuBtn
+     *
+     */
     MenuButton *getBackMenuBtn() const;
 
 private:

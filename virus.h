@@ -13,6 +13,11 @@
 class Virus : public Unit
 {
 public:
+    /**
+     * \fn Projectile()
+     * \brief Constructor of the Virus class
+     * Initializes the default virus attributes
+     */
     Virus();
 };
 

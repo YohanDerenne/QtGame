@@ -16,6 +16,11 @@
 class Wall : public FixedBlock
 {
 public:
+    /**
+     * \fn Wall()
+     * \brief Constructor of the Wall class
+     * Initializes the default Wall attributes
+     */
     Wall();
 };
 

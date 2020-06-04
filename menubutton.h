@@ -12,6 +12,11 @@
 class MenuButton : public QPushButton
 {
 public:
+    /**
+     * \fn MenuButton(QString text)
+     * \brief Constructor of the MenuButton class
+     * Reset the navigation menu buttons
+     */
     MenuButton(QString text);
 };
 

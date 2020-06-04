@@ -14,7 +14,7 @@ class FixedBlock : public Element
 public:
     /**
      * \fn FixedBlock()
-     * \brief Constructeur de la classe FixedBlock
+     * \brief Constructor of the FixedBlock class
      *
      */
     FixedBlock();

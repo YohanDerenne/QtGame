@@ -13,6 +13,11 @@
 class FinishFlag : public Element
 {
 public:
+    /**
+     * \fn FinishFlag()
+     * \brief Class FinishFlag Constructor
+     * Reset the type to "finish" the width and height of the Flag with the parameters in the class Configuration.h
+     */
     FinishFlag();
 };
 
