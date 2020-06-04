@@ -7,6 +7,7 @@ class MobileVirus : public Virus
 {
 public:
     MobileVirus();
+    void switchSide();
 };
 
 #endif // MOBILEVIRUS_H

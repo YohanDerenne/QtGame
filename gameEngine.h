@@ -12,6 +12,9 @@
 #include <QSignalMapper>
 #include <QApplication>
 #include <QGraphicsProxyWidget>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QSoundEffect>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -45,6 +48,7 @@ public:
     void updateCamera();
     void drawElements();
     void updateProjectilePosition();
+    void updateMobileVirusPosition();
 
     void createVirus();
 
@@ -60,6 +64,8 @@ public:
 
     void victory();
     void closeVictory();
+
+    void playMusic(QString qrcPath);
 
 public slots:
     void updateAllPositions();
@@ -110,6 +116,15 @@ private:
     int gelRemainTime;
     int immuneRemainTime;
 
+    QMediaPlayer * musicPlayer;
+    QSoundEffect gain;
+    QSoundEffect jump;
+    QSoundEffect fire;
+    QSoundEffect win;
+    QSoundEffect hurt;
+    QSoundEffect pause;
+    QSoundEffect kick;
+    QSoundEffect life;
 };
 
 

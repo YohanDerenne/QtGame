@@ -24,6 +24,7 @@ public:
 
     void generateMap1();
     void generateMap2();
+    void generateCityWorld();
     bool readmap(QString directory);
     void clearMap();
     bool saveMap(QString directory);
@@ -44,6 +45,8 @@ public:
 
     QList<Projectile *> *getProjectileList() const;
 
+    QString getMusic() const;
+
 private:
     QImage background;
     QString backgroundPath;
@@ -56,6 +59,7 @@ private:
     int height;
     QString name;
     Info * playerInfo;
+    QString musicPath;
 };
 
 #endif // MAP_H
