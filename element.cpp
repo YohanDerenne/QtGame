@@ -2,6 +2,7 @@
 
 Element::Element()
 {
+    isRightSide = true;
     height = 0;
     width = 0;
 }

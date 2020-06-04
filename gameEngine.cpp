@@ -30,8 +30,8 @@ GameEngine::GameEngine()
     map = new Map();
 
     // SAVE GENERATED MAP ===================================================
-    map->generateMap1();
-    map->saveMap("world 2");
+    map->generateCityWorld();
+    map->saveMap(map->getName());
     // ======================================================================
 
 

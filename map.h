@@ -24,6 +24,7 @@ public:
 
     void generateMap1();
     void generateMap2();
+    void generateCityWorld();
     bool readmap(QString directory);
     void clearMap();
     bool saveMap(QString directory);
