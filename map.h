@@ -50,9 +50,12 @@ public:
      *
      */
     void generateMap2();
+  
+    void generateMapBen();
+    void generateCityWorld();
 
     /**
-     * \fn bool readmap(QString directory);
+     * \fn void readmap(QString directory);
      * \brief Creates a map from a file
      * \param directory, the path of the file used to create the map
      *
@@ -61,7 +64,7 @@ public:
 
 
     /**
-     * \fn bool clearMap();
+     * \fn void clearMap();
      * \brief deletes all objects used to create the map
      * \param directory, the path of the file used to create the map
      *
@@ -174,6 +177,15 @@ public:
      *
      */
     QList<Projectile *> *getProjectileList() const;
+    void generateWall(int height, int xPosition, int yPosition);
+    void generateRoad(int length, int xPosition, int yPosition);
+    void generateStairs(int length, int xPosition, int yPosition,bool isLeftEmpty);
+    void generateU(int xLength,int yLengthLeft, int yLengthRight, int xPosition, int yPosition);
+    void generateRectangle(int length,int height, int xPosition,int yPosition);
+    void generateRoadVirus(int length, int xPosition, int yPosition);
+    void generateItem(int xPosition, int yPosition,Element* obj);
+
+    QString getMusic() const;
 
 private:
 
@@ -254,6 +266,7 @@ private:
      *
      */
     Info * playerInfo;
+    QString musicPath;
 };
 
 #endif // MAP_H

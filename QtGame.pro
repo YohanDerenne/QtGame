@@ -1,4 +1,5 @@
-QT       += core gui
+QT       += core gui \
+        multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,8 +25,6 @@ SOURCES += \
     gelprojectile.cpp \
     info.cpp \
     lifebar.cpp \
-    main.cpp \
-    map.cpp \
     menu.cpp \
     menubutton.cpp \
     gel.cpp \
@@ -53,8 +52,6 @@ HEADERS += \
     gelprojectile.h \
     info.h \
     lifebar.h \
-    map.h \
-    menu.h \
     menubutton.h \
     gel.h \
     heart.h \

@@ -18,6 +18,7 @@ public:
      * affects the item's type to "mobilevirus."
      */
     MobileVirus();
+    void switchSide();
 };
 
 #endif // MOBILEVIRUS_H

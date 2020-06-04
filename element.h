@@ -120,6 +120,8 @@ public:
      */
     int getIsRightSide() const;
 
+    void setIsRightSide(int value);
+
 protected:
 
     /**

@@ -12,6 +12,9 @@
 #include <QSignalMapper>
 #include <QApplication>
 #include <QGraphicsProxyWidget>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QSoundEffect>
 
 #include "collidemanager.h"
 #include "player.h"
@@ -97,6 +100,7 @@ public:
      * \brief updates the projectile's position during the game
      */
     void updateProjectilePosition();
+    void updateMobileVirusPosition();
 
     /**
      * \fn createVirus();
@@ -150,6 +154,8 @@ public:
      * \brief closes the victory menu
      */
     void closeVictory();
+
+    void playMusic(QString qrcPath);
 
 public slots:
 
@@ -376,6 +382,15 @@ private:
      */
     int immuneRemainTime;
 
+    QMediaPlayer * musicPlayer;
+    QSoundEffect gain;
+    QSoundEffect jump;
+    QSoundEffect fire;
+    QSoundEffect win;
+    QSoundEffect hurt;
+    QSoundEffect pause;
+    QSoundEffect kick;
+    QSoundEffect life;
 };
 
 

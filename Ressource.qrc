@@ -23,5 +23,21 @@
         <file>images/projectile.png</file>
         <file>images/player/fire.png</file>
         <file>images/flag.png</file>
+        <file>sounds/Castle_of_Funk.mp3</file>
+        <file>sounds/menu.mp3</file>
+        <file>sounds/bounce.wav</file>
+        <file>sounds/catch.wav</file>
+        <file>sounds/gain.wav</file>
+        <file>sounds/jump.wav</file>
+        <file>sounds/win.wav</file>
+        <file>sounds/hurt.wav</file>
+        <file>sounds/kick.wav</file>
+        <file>sounds/life.wav</file>
+        <file>sounds/pause.wav</file>
+        <file>images/backgrounds/city.jpg</file>
+        <file>sounds/drop_gems.mp3</file>
+        <file>sounds/must_fall.mp3</file>
+        <file>images/backgrounds/background_2.png</file>
+        <file>sounds/kirby.mp3</file>
     </qresource>
 </RCC>
