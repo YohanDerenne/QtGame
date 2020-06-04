@@ -141,7 +141,7 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
         }
         else if (event->key() == Qt::Key_Space){
             // change sprite
-            if(spacePressed == false){                
+            if(spacePressed == false){
                 GelProjectile * proj = map->getPlayer()->launchGel(worldPlan->x(), worldPlan->y());
                 if(proj != NULL){
                     fire.play();
@@ -255,6 +255,7 @@ void GameEngine::updatePlayerPosition()
         if(map->getPlayer()->getYForce() == 0)
             map->getPlayer()->setYForce(map->getPlayer()->getYForce() + 100);
     }
+
     if(virusCollider->getAreColliding()){
         QMap<Virus *,fromPosition> virusMap = virusCollider->getCollidingItemList();
         QMapIterator<Virus*, fromPosition> iterator(virusMap);
@@ -344,6 +345,7 @@ void GameEngine::updateAllPositions()
 {
     updatePlayerPosition();
     updateProjectilePosition();
+    updateMobileVirusPosition();
     updateCamera();
 }
 
@@ -440,6 +442,7 @@ void GameEngine::loadMap(QString worldName)
 
     playMusic(map->getMusic());
 
+    // Adapt the window size to the map
     levelScene->setSceneRect(0,0,map->getWidth(),map->getHeight());
     QRect rect = QRect(0,0,WINDOW_WIDTH,map->getHeight());
     fitInView(rect);
@@ -519,6 +522,66 @@ void GameEngine::updateProjectilePosition()
     }
 }
 
+void GameEngine::updateMobileVirusPosition()
+{
+    // for all mobile virus
+    for(Unit * enemy: *map->getUnitList()){
+        if(enemy->getType() == "mobileVirus"){
+            MobileVirus * mbVirus = dynamic_cast<MobileVirus*>(enemy);
+
+            //qDebug() << mbVirus->getXForce();
+
+            CollideManager<FixedBlock> * wallCollider = new CollideManager<FixedBlock>(enemy,true,true,true,true);
+
+            // calculate next mobile virus position
+            int next_y = mbVirus->y();
+            if (mbVirus->isFlying() == true){
+                next_y += mbVirus->getYForce() * 1/FPS;
+                float dt = 1/(float)FPS;
+                mbVirus->setYForce( mbVirus->getYForce() + mbVirus->getWeight() * GRAVITY * dt);
+            }
+
+            // update position and adapt position with collision
+            mbVirus->setPos(mbVirus->getXForce() + mbVirus->x(),next_y);
+
+            // check if out of the map -> kill virus if out of the map
+            if(mbVirus->x() < worldPlan->x() ||
+                    mbVirus->x() + mbVirus->getWidth() > map->getWidth() ||
+                    //map->getPlayer()->y() < worldPlan->y() ||
+                    mbVirus->y() > map->getHeight() - mbVirus->getHeight()){
+                kick.play();
+                map->getUnitList()->removeOne(mbVirus);
+                delete mbVirus;
+                delete wallCollider;
+                return;
+            }
+
+            wallCollider->updateCollidingPosition();
+
+            // If no wall-> begin de falling
+            if(!wallCollider->getAreColliding()){
+                // if initial falling
+                if(mbVirus->getYForce() == 0)
+                    mbVirus->setYForce(100);
+            }
+            else{
+                QMap<FixedBlock *,fromPosition> blocMap = wallCollider->getCollidingItemList();
+                QMapIterator<FixedBlock*, fromPosition> iterator(blocMap);
+
+                // if virus touch a side of a block, it will go back
+                while (iterator.hasNext()) {
+                    iterator.next();
+                    if((iterator.value().fromLeft || iterator.value().fromRight) &&
+                            !iterator.value().fromUnder && !iterator.value().fromTop){
+                        mbVirus->switchSide();
+                    }
+                }
+            }
+            delete wallCollider;
+        }
+    }
+}
+
 // FOR TESTS
 void GameEngine::createVirus(){
     Virus * virus = new Virus();
@@ -591,7 +654,7 @@ void GameEngine::openPause()
 
 void GameEngine::closePause()
 {
-    musicPlayer->setVolume(50);
+    musicPlayer->setVolume(100);
 
     // hide mouse cursor
     QApplication::setOverrideCursor(Qt::BlankCursor);
@@ -705,7 +768,7 @@ void GameEngine::closeVictory()
 void GameEngine::playMusic(QString qrcPath)
 {
     musicPlayer->setMedia(QUrl(qrcPath));
-    musicPlayer->setVolume(50);
+    musicPlayer->setVolume(100);
     musicPlayer->play();
 }
 

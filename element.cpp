@@ -84,3 +84,8 @@ int Element::getIsRightSide() const
 {
     return isRightSide;
 }
+
+void Element::setIsRightSide(int value)
+{
+    isRightSide = value;
+}

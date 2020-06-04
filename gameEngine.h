@@ -48,6 +48,7 @@ public:
     void updateCamera();
     void drawElements();
     void updateProjectilePosition();
+    void updateMobileVirusPosition();
 
     void createVirus();
 

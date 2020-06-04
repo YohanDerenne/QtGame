@@ -49,6 +49,7 @@ void Map::generateMap1()
     // create map
     // floor
     for(int i = 0; i < 70; i++){
+
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth(),500);
         elementList->append(bloc);
@@ -57,6 +58,24 @@ void Map::generateMap1()
             virus->setPos(i*bloc->getWidth(), 500 - virus->getHeight());
             unitList->append(virus);
         }
+
+        // for mobile virus
+        if(i==25){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(i*bloc->getWidth(),500 - bloc2->getHeight());
+            elementList->append(bloc2);
+        }
+        if(i==23){
+            MobileVirus * mb = new MobileVirus();
+            mb->setPos(i*bloc->getWidth(),500 - mb->getHeight());
+            unitList->append(mb);
+        }
+        if(i == 19 || i==20){
+            // hole
+            elementList->removeOne(bloc);
+            delete bloc;
+        }
+
 
         // Consos
         if(i == 9){
