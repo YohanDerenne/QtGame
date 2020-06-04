@@ -5,18 +5,68 @@
 #include "menubutton.h"
 #include "configuration.h"
 
+/**
+ * \file pausegroup.h
+ * \brief Pause menu class.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class PauseGroup : public QGraphicsItemGroup
 {
 public:
+
+    /**
+     * \fn PauseGroup()
+     * \brief Constructor of the PauseGroup class
+     * Initiates pause mode
+     */
     PauseGroup();
+    /**
+     * \fn ~PauseGroup()
+     * \brief destructor of the PauseGroup class
+     * removes all objects from the pause mode
+     */
     ~PauseGroup();
+
+
+    /**
+     * \fn int *getContinueBtn() const
+     * \brief Accessor of the "continueBtn" attribute.
+     * \return The value of the continueBtn attribute of the "PauseGroup" object.
+     */
     MenuButton *getContinueBtn() const;
 
+
+    /**
+     * \fn int *getBackMenuBtn() const
+     * \brief Accessor of the "backMenuBtn" attribute.
+     * \return The value of the backMenuBtn attribute of the "PauseGroup" object.
+     */
     MenuButton *getBackMenuBtn() const;
 
 private:
+
+
+    /**
+     * \var  MenuButton * continueBtn;
+     * \brief button to continue the game
+     *
+     */
     MenuButton * continueBtn;
+
+
+    /**
+     * \var  MenuButton * backMenuBtn;
+     * \brief button to return to the main menu
+     *
+     */
     MenuButton * backMenuBtn;
+
+    /**
+     * \var QGraphicsTextItem * title;
+     * \brief Name of Victory
+     *
+     */
     QGraphicsTextItem * title;
 };
 
