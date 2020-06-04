@@ -18,6 +18,11 @@ public:
      * affects the item's type to "mobilevirus."
      */
     MobileVirus();
+
+    /**
+     * \fn switchSide()
+     * @brief switch the side direction of the virus
+     */
     void switchSide();
 };
 
