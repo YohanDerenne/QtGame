@@ -71,21 +71,6 @@ public:
     bool isMovingLeft() const;
 
     /**
-     * \fn void SetMovingLeft(bool state);
-     * \brief Modification accessors for the "movingLeft" attribute.
-     * \param state, value to be assigned to the attribute "movingLeft"
-     */
-    void setMovingLeft(bool value);
-
-
-    /**
-     * \fn void SetMovingRight(bool state);
-     * \brief Modification accessors for the "movingRight" attribute.
-     * \param state, value to be assigned to the attribute "movingRight"
-     */
-    void setMovingRight(bool value);
-
-    /**
      * \fn bool isMovingRight() const;
      * \brief accessors for the "movingRight" attribute.
      * \return value of the attribute "movingRight"

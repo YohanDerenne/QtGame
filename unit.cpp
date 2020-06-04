@@ -172,20 +172,12 @@ void Unit::setYForce(float value)
     updateMovementStates();
 }
 
-void Unit::setMovingLeft(bool value)
-{
-    movingLeft = value;
-}
 
 bool Unit::isMovingRight() const
 {
     return movingRight;
 }
 
-void Unit::setMovingRight(bool value)
-{
-    movingRight = value;
-}
 
 bool Unit::isMovingLeft() const
 {

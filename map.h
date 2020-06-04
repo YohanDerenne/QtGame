@@ -177,6 +177,7 @@ public:
      *
      */
     QList<Projectile *> *getProjectileList() const;
+
     void generateWall(int height, int xPosition, int yPosition);
     void generateRoad(int length, int xPosition, int yPosition);
     void generateStairs(int length, int xPosition, int yPosition,bool isLeftEmpty);
@@ -186,6 +187,7 @@ public:
     void generateItem(int xPosition, int yPosition,Element* obj);
 
     QString getMusic() const;
+    int getDifficulty() const;
 
 private:
 
@@ -266,7 +268,18 @@ private:
      *
      */
     Info * playerInfo;
+
+    /**
+     * \var QString musicPath
+     * \brief path of the music content
+     */
     QString musicPath;
+
+    /**
+     * \var int difficulty
+     * \brief difficulty level of the map
+     */
+    int difficulty;
 };
 
 #endif // MAP_H

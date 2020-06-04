@@ -95,18 +95,18 @@ public:
      * \brief displays all elements
      */
     void drawElements();
+
     /**
      * \fn updateProjectilePosition();
      * \brief updates the projectile's position during the game
      */
     void updateProjectilePosition();
-    void updateMobileVirusPosition();
 
     /**
-     * \fn createVirus();
-     * \brief creates a virus within the map
+     * \fn updateMobileVirusPosition();
+     * \brief updates all mobile virus position during the game
      */
-    void createVirus();
+    void updateMobileVirusPosition();
 
     /**
      * \fn openGame();
@@ -155,6 +155,10 @@ public:
      */
     void closeVictory();
 
+    /**
+     * \fn void playMusic(QString qrcPath);
+     * \brief play a music
+     */
     void playMusic(QString qrcPath);
 
 public slots:

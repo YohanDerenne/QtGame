@@ -29,10 +29,20 @@ GameEngine::GameEngine()
     // init map
     map = new Map();
 
-    // SAVE GENERATED MAP ===================================================
+    // GENERATED MAPS ====================PUT THIS IN COMMENT WHEN EDITOR IS FINALIZED
     map->generateMap2();
     map->saveMap(map->getName());
-    // ======================================================================
+    map->clearMap();
+    map->generateMap1();
+    map->saveMap(map->getName());
+    map->clearMap();
+    map->generateCityWorld();
+    map->saveMap(map->getName());
+    map->clearMap();
+    map->generateMapBen();
+    map->saveMap(map->getName());
+    map->clearMap();
+    // ===============================================================================
 
 
     // Init Timer
@@ -156,7 +166,7 @@ void GameEngine::keyPressEvent(QKeyEvent *event)
             loadMap(map->getName());
         }
         else if (event->key() == Qt::Key_A){
-            createVirus();
+            //createVirus();
         }
     }
     // pause control
@@ -574,6 +584,7 @@ void GameEngine::updateMobileVirusPosition()
                     if((iterator.value().fromLeft || iterator.value().fromRight) &&
                             !iterator.value().fromUnder && !iterator.value().fromTop){
                         mbVirus->switchSide();
+                        break;
                     }
                 }
             }
@@ -582,13 +593,6 @@ void GameEngine::updateMobileVirusPosition()
     }
 }
 
-// FOR TESTS
-void GameEngine::createVirus(){
-    Virus * virus = new Virus();
-    worldPlan->addToGroup(virus);
-    map->getUnitList()->append(virus);
-    virus->setPos(700,450);
-}
 
 void GameEngine::openMenu()
 {

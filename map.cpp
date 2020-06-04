@@ -14,6 +14,7 @@ Map::Map()
     consoObjectList = new QList<consoObject *>();
     name = "noNamedlevel";
     projectileList = new QList<Projectile *>();
+    difficulty = 0;
 }
 
 Map::~Map()
@@ -31,19 +32,20 @@ void Map::generateMap1()
 {
     width = MAP_WIDTH;
     height = MAP_HEIGHT;
+    difficulty = 0;
 
     // set background
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
 
     //don't forget qrc for music
-    musicPath = "qrc:/ressources/sounds/Castle_of_Funk.mp3";
+    musicPath = "";
 
     // create the player
     player = new Player();
     player->setPos(200,400);
 
-    name = "Paradyze";
+    name = "Training";
 
     // add the player to the scene
     //scene->addItem(player);
@@ -141,6 +143,8 @@ void Map::generateMap2()
     width = MAP_WIDTH;
     height = MAP_HEIGHT;
 
+    difficulty = 1;
+
     // set background
     backgroundPath = ":/ressources/images/backgrounds/background_2.png";
 
@@ -161,12 +165,10 @@ void Map::generateMap2()
     for(int i = 0; i < 60; i++){
         if(i != 30 && i != 31){
             Wall * bloc = new Wall();
-
             bloc->setPos(i*bloc->getWidth(),660);
             elementList->append(bloc);
         }
         Wall * bloc = new Wall();
-
         if(i == 13){
             Mask *mask = new Mask();
             mask->setPos(i*bloc->getWidth(),510 - mask->getHeight());
@@ -177,21 +179,38 @@ void Map::generateMap2()
             virus->setPos(i*bloc->getWidth(), 430 - virus->getHeight());
             unitList->append(virus);
         }
-
         if(i == 34){
             Gel *gel = new Gel();
             gel->setPos(i*bloc->getWidth(),430 - gel->getHeight());
             consoObjectList->append(gel);
         }
+        if(i == 34 || i== 45 || i== 55){
+            MobileVirus * mob = new MobileVirus();
+            mob->setPos(i*bloc->getWidth(),660 - mob->getHeight());
+            unitList->append(mob);
+        }
+        if(i == 32){
+            Wall * bloc2 = new Wall();
+            bloc2->setPos(i*bloc->getWidth(),660 - bloc2->getHeight());
+            elementList->append(bloc2);
+        }
+
         delete bloc;
     }
 
     for (int i = 37;i<60;i++) {
         if(i != 47 && i != 48){
-
             Wall * bloc = new Wall();
             bloc->setPos(i*bloc->getWidth(),510);
             elementList->append(bloc);
+
+            if(i == 45){
+                for(int j=0 ; j<5 ; j++){
+                    Virus * vir = new Virus();
+                    vir->setPos(i*bloc->getWidth(),510 - (j+1) * vir->getHeight());
+                    unitList->append(vir);
+                }
+            }
 
             //flag
             if(i == 57){
@@ -203,33 +222,25 @@ void Map::generateMap2()
     }
     //End wall
     for(int i = 3; i >= 0; i--){
-
         Wall * bloc = new Wall();
         bloc->setPos(3000 ,710 - bloc->getHeight() - i * bloc->getHeight());
         elementList->append(bloc);
-
-
     }
 
     // platform
     for(int i = 5; i < 10; i++){
         if(i != 9){
-
             Wall * bloc = new Wall();
             bloc->setPos(i*bloc->getWidth() + 900 ,430);
             elementList->append(bloc);
         }
-
     }
 
     for(int i = 0; i >= 0; i--){
-
         Wall * bloc = new Wall();
         bloc->setPos(i*bloc->getWidth() + 1690 ,430);
         elementList->append(bloc);
-
     }
-
 
     // little wall
     for(int i = 1; i >= 0; i--){
@@ -240,6 +251,7 @@ void Map::generateMap2()
         elementList->append(bloc);
         elementList->append(bloc1);
     }
+
     // little wall
     for(int i = 2; i >= 0; i--){
         Wall * bloc = new Wall();
@@ -258,19 +270,25 @@ void Map::generateMap2()
     }
 }
 
-
 void Map::generateMapBen()
 {
     width = MAP_WIDTH  * 3;
     height = MAP_HEIGHT;
 
     // set background
+
     backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
     setBackground(QImage(backgroundPath));
+
+    musicPath = "qrc:/ressources/sounds/Castle_of_Funk.mp3";
 
     // create the player
     player = new Player();
     player->setPos(200,400);
+
+    difficulty = 2;
+
+    name = "Co-ville 19";
 
     // add the player to the scene
     //scene->addItem(player);
@@ -296,7 +314,6 @@ void Map::generateMapBen()
     // second L
     generateU(11,0,6,38+offset,5);
     generateRoadVirus(4, 38+offset+3, 6);
-    generateRoadVirus(4, 38+offset+3, 7);
     generateRoadVirus(4, 38+offset+3, 8);
     generateItem(38+offset+1,6,new Gel());
 
@@ -309,13 +326,10 @@ void Map::generateMapBen()
     generateRoad(1,58+offset,11);
     generateRoad(30,60+offset,5);
 
-
-
     FinishFlag *flag = new FinishFlag();
-   Wall * block = new Wall();
-   flag->setPos((offset+85)*block->getWidth() , this->getHeight() - block->getHeight()*(6) );
-   elementList->append(flag);
-
+    generateItem(offset+85,11,flag);
+    //flag->setPos((offset+85)*block->getWidth() , this->getHeight() - block->getHeight()*(6) );
+    //elementList->append(flag);
 
     generateRoad(offset/10,0,6);
 
@@ -325,7 +339,7 @@ void Map::generateMapBen()
 
     generateRoad(offset/5,offset/4,6);
     generateU(offset/5,3,2,offset/4,6);
-    generateItem(offset/4+2,7,new MobileVirus());
+    generateItem(offset/4+2,8,new MobileVirus());
 
     generateRoad(offset/5,offset/2,6);
     generateU(offset/5,2,3,offset/2,6);
@@ -333,11 +347,6 @@ void Map::generateMapBen()
     generateRoad(offset/3,offset/2 +offset/5+ 4,6);
     generateStairs(8,offset/2 +offset/5+ 4,6,true);
     generateStairs(8,offset/2 +offset/5+ 12,6,false);
-
-
-
-
-
 }
 
 // little wall
@@ -362,8 +371,9 @@ void Map::generateRoad(int length, int xPosition, int yPosition){
 
 void Map::generateItem(int xPosition, int yPosition,Element * obj){
     Wall * bloc = new Wall();
-    obj->setPos(xPosition*bloc->getWidth()   , this->getHeight() - bloc->getHeight()*(yPosition+1) );
+    obj->setPos(xPosition*bloc->getWidth() , this->getHeight() - bloc->getHeight()*(yPosition+1) );
     elementList->append(obj);
+    delete bloc;
 }
 
 void Map::generateRoadVirus(int length, int xPosition, int yPosition){
@@ -410,6 +420,8 @@ void Map::generateCityWorld()
     width = MAP_WIDTH * 2;
     height = MAP_HEIGHT;
 
+    difficulty = 3;
+
     // set background
     backgroundPath = ":/ressources/images/backgrounds/city.jpg";
 
@@ -421,7 +433,7 @@ void Map::generateCityWorld()
     player->setPos(200,400);
     //player->setPos(2000,400);
 
-    name = "City NightFall";
+    name = "Lockdown Night";
 
     // wall
     for(int i = 15; i >= 0; i--){
@@ -630,6 +642,7 @@ bool Map::readmap(QString directory)
     height = mapJson["height"].toInt();
     width = mapJson["width"].toInt();
     musicPath = mapJson["music"].toString();
+    difficulty = mapJson["difficulty"].toInt();
 
     backgroundPath = mapJson["background"].toString();
     background = QImage(backgroundPath);
@@ -760,6 +773,9 @@ bool Map::saveMap(QString directory)
     mapJson["width"] = width;
     mapJson["music"] = musicPath;
     mapJson["background"] = backgroundPath;
+    mapJson["difficulty"] = difficulty;
+
+
     foreach (Element * elem, *elementList) {
         QJsonObject jsonObject;
         jsonObject["type"] = elem->getType();
@@ -831,11 +847,19 @@ QList<QString> Map::getLevels()
 {
     QList<QString> list;
     QDirIterator iterator("levels");
+    QMap<int,QString> listSorted;
     while (iterator.hasNext()) {
         QString dir = iterator.next();
         dir.remove("levels/");
-        if(dir != "." && dir != "..")
-            list.append(dir);
+        if(dir != "." && dir != ".."){
+            Map* temp = new Map();
+            temp->readmap(dir);
+            int dif = temp->getDifficulty();
+            listSorted.insert(dif,dir);
+        }
+    }
+    foreach(QString value,listSorted){
+        list.append(value);
     }
     return list;
 }
@@ -859,6 +883,12 @@ QString Map::getMusic() const
 {
     return musicPath;
 }
+
+int Map::getDifficulty() const
+{
+    return difficulty;
+}
+
 
 QList<Unit *> * Map::getUnitList() const
 {
