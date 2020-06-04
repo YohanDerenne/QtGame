@@ -12,37 +12,119 @@ struct fromPosition
     bool fromLeft;
 };
 
+/**
+ * \file collidemanager.h
+ * \brief Class allowing the collision of the objects of the class "player" with the class "element".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 template <class itemType>
 class CollideManager
 {
 public:
+
     /**
-     * @brief Create before moving
-     * @param subject
-     * @param solidTop
-     * @param solidLeft
-     * @param solidRight
-     * @param solidUnder
+     * \fn CollideManager<itemType>(Unit * subject, bool solidTop, bool solidLeft, bool solidRight, bool solidUnder);
+     * \brief Constructor of the CollideManager class
+     * \param subject
+     * \param solidTop
+     * \param solidLeft
+     * \param solidRight
+     * \param solidUnder
+     *
+     * Retain the player's initial position before he moves
      */
     CollideManager<itemType>(Unit * subject, bool solidTop, bool solidLeft, bool solidRight, bool solidUnder);
+
+    /**
+     * \fn void updateCollidingPosition()
+     * \brief adjusts the playing position of the subject if he comes in contact with a block.
+     *
+     *
+     */
     void updateCollidingPosition();
 
+    /**
+     * \fn getAreColliding() const;
+     * \brief Accessor of the attribute areColliding
+     * \return the value of the attribute areColliding
+     *
+     */
     bool getAreColliding() const;
 
+    /**
+     * \fn QMap<itemType *, fromPosition> getCollidingItemList() const;
+     * \brief Retrieve the elements in collison with the subject.
+     * \return A list of elements in collison with the subject
+     *
+     */
     QMap<itemType *, fromPosition> getCollidingItemList() const;
 
 private:
+
+    /**
+     * \var Unit * subject;
+     * \brief The colliding object
+     *
+     */
     Unit * subject;
+
+    /**
+     * \var QMap<itemType *,fromPosition> collidingItemList;
+     * \brief The list of collided objects
+     *
+     */
     QMap<itemType *,fromPosition> collidingItemList;
 
+
+    /**
+     * \var bool areColliding;
+     * \brief true if the subject is in collision
+     *
+     */
     bool areColliding;
 
+
+    /**
+     * \var bool solidTop;
+     * \brief true if the collision is at the top of the object
+     *
+     */
     bool solidTop;
+
+    /**
+     * \var bool solidLeft;
+     * \brief true if the collision is to the left of the object
+     *
+     */
     bool solidLeft;
+
+    /**
+     * \var bool solidRight;
+     * \brief true if the collision is to the right of the object
+     *
+     */
     bool solidRight;
+
+    /**
+     * \var bool solidUnder;
+     * \brief true if the collision is to the under of the object
+     *
+     */
     bool solidUnder;
 
+    /**
+     * \var int prec_y;
+     * \brief the y position at the time of the collision
+     *
+     */
     int prec_y;
+
+    /**
+     * \var int prec_x;
+     * \brief the x position at the time of the collision
+     *
+     */
     int prec_x;
 };
 
