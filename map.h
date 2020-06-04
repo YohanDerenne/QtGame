@@ -24,6 +24,7 @@ public:
 
     void generateMap1();
     void generateMap2();
+    void generateMapBen();
     bool readmap(QString directory);
     void clearMap();
     bool saveMap(QString directory);
@@ -43,6 +44,13 @@ public:
     Info *getPlayerInfo() const;
 
     QList<Projectile *> *getProjectileList() const;
+    void generateWall(int height, int xPosition, int yPosition);
+    void generateRoad(int length, int xPosition, int yPosition);
+    void generateStairs(int length, int xPosition, int yPosition,bool isLeftEmpty);
+    void generateU(int xLength,int yLengthLeft, int yLengthRight, int xPosition, int yPosition);
+    void generateRectangle(int length,int height, int xPosition,int yPosition);
+    void generateRoadVirus(int length, int xPosition, int yPosition);
+    void generateItem(int xPosition, int yPosition,Element* obj);
 
 private:
     QImage background;

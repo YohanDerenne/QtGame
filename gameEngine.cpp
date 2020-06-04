@@ -31,7 +31,7 @@ GameEngine::GameEngine()
     map = new Map();
 
     // SAVE GENERATED MAP ===================================================
-    map->generateMap1();
+    map->generateMapBen();
     map->saveMap("world 2");
     // ======================================================================
 
@@ -221,9 +221,9 @@ void GameEngine::updatePlayerPosition()
 
     // check if out of the map
     if(map->getPlayer()->x() < worldPlan->x() ||
-            map->getPlayer()->x() + map->getPlayer()->getWidth() > MAP_WIDTH ||
+            map->getPlayer()->x() + map->getPlayer()->getWidth() > map->getWidth() ||
             //map->getPlayer()->y() < worldPlan->y() ||
-            map->getPlayer()->y() + map->getPlayer()->getWidth()  > MAP_HEIGHT){
+            map->getPlayer()->y() + map->getPlayer()->getWidth()  > map->getHeight()){
         gameOver();
     }
 
