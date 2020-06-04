@@ -24,8 +24,6 @@ SOURCES += \
     gelprojectile.cpp \
     info.cpp \
     lifebar.cpp \
-    main.cpp \
-    map.cpp \
     menu.cpp \
     menubutton.cpp \
     gel.cpp \
@@ -53,8 +51,6 @@ HEADERS += \
     gelprojectile.h \
     info.h \
     lifebar.h \
-    map.h \
-    menu.h \
     menubutton.h \
     gel.h \
     heart.h \
