@@ -17,7 +17,7 @@
 
 /**
  * \file map.h
- * \brief Classe de la map.
+ * \brief Class of the map.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

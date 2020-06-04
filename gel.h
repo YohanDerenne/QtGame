@@ -6,7 +6,7 @@
 
 /**
  * \file gel.h
- * \brief Classe du consommable de type Gel, hérite de la classe "consoObject".
+ * \brief Class of the consumable of type Gel, inherits the class "consoObject".
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

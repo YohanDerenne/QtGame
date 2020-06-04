@@ -29,7 +29,7 @@
 
 /**
  * \file GameEngine.h
- * \brief Classe du moteur du jeu.
+ * \brief Class of the game engine.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

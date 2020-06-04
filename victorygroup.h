@@ -8,7 +8,7 @@
 
 /**
  * \file victoryGroup.h
- * \brief Classe pour gérer la victoire de la partie
+ * \brief Class to manage the victory of the game
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

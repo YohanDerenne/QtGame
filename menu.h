@@ -9,7 +9,7 @@
 
 /**
  * \file menu.h
- * \brief Classe du menu de contrôle de la partie.
+ * \brief Class of the game control menu.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

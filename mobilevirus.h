@@ -5,7 +5,7 @@
 
 /**
  * \file mobilevirus.h
- * \brief Classe des elements de type "Virus mobile", hérite de la classe "Virus".
+ * \brief Class of "Mobile Virus" type elements, inherits from the "Virus" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

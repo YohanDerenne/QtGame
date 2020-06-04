@@ -7,7 +7,7 @@
 
 /**
  * \file pausegroup.h
- * \brief Classe du menu de pause.
+ * \brief Pause menu class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

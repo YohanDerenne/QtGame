@@ -6,7 +6,7 @@
 
 /**
  * \file heart.h
- * \brief Classe du consommable de type coeur, hérite de la classe "consoObject".
+ * \brief Heart consumable class, inherits the "consoObject" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

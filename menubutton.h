@@ -5,7 +5,7 @@
 
 /**
  * \file menubutton.h
- * \brief Classe des boutons du menu de contrôle de la partie.
+ * \brief Class of the buttons of the game control menu.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

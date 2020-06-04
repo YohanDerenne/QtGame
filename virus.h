@@ -6,7 +6,7 @@
 
 /**
  * \file virus.h
- * \brief Classe de l'element "Virus", hérite de la classe Unit.
+ * \brief Class of the "Virus" element, inherits from the Unit class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

@@ -6,7 +6,7 @@
 
 /**
  * \file FinishFlag.h
- * \brief Classe du drapeau de victoire, hérite de la classe "Element".
+ * \brief Victory flag class, inherits the "Element" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

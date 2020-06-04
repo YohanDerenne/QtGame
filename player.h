@@ -17,7 +17,7 @@
 
 /**
  * \file player.h
- * \brief Classe du Player, hérite de la classe "Unit".
+ * \brief Player class, inherits the "Unit" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

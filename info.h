@@ -7,7 +7,7 @@
 
 /**
  * \file info.h
- * \brief Classe des informations du joueur.
+ * \brief player information Class
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

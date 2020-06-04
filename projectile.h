@@ -5,7 +5,7 @@
 
 /**
  * \file projectfile.h
- * \brief Classe des projectiles, hérite de la classe "Unit".
+ * \brief Projectile class, inherits the "Unit" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

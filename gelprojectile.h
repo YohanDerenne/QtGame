@@ -5,7 +5,7 @@
 
 /**
  * \file gelprojectile.h
- * \brief Classe du projectile Gel, hérite de la classe "Projectile".
+ * \brief Class of projectile Gel, inherits the class "Projectile".
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

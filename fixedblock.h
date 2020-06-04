@@ -5,13 +5,18 @@
 
 /**
  * \file fixedblock.h
- * \brief Classe des elements fixes, hérite de la classe "Element".
+ * \brief Fixed elements class, inherits from the "Element" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */
 class FixedBlock : public Element
 {
 public:
+    /**
+     * \fn FixedBlock()
+     * \brief Constructeur de la classe FixedBlock
+     *
+     */
     FixedBlock();
 };
 

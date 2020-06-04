@@ -8,7 +8,7 @@
 
 /**
  * \file unit.h
- * \brief Classe d'elements non fixes dans la map, hérite de la classe "Element".
+ * \brief Class of elements not fixed in the map, inherits from the "Element" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

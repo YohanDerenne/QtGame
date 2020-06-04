@@ -9,7 +9,7 @@
 
 /**
  * \file wall.h
- * \brief Classe de l'element de type brique au sein de la map, herite de la classe "FixedBlock".
+ * \brief Class of the brick-type element within the map, inherited from the "FixedBlock" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

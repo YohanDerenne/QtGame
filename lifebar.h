@@ -7,7 +7,7 @@
 
 /**
  * \file lifebar.h
- * \brief Classe de la barre de vie.
+ * \brief Life bar class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

@@ -7,7 +7,7 @@
 
 /**
  * \file consoObject.h
- * \brief Classe des elements consommables par le joueur, hérite de la classe "Element".
+ * \brief Class of elements consumable by the player, inherited from the "Element" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

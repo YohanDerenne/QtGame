@@ -5,7 +5,7 @@
 
 /**
  * \file mask.h
- * \brief Classe du consommable de type Masque, hérite de la classe "consoObject".
+ * \brief Class of the Mask type consumable, inherits from the "consoObject" class.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */

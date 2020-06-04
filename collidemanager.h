@@ -14,7 +14,7 @@ struct fromPosition
 
 /**
  * \file collidemanager.h
- * \brief Classe permettant la collision des objets de la classe "player" avec la classe "element".
+ * \brief Class allowing the collision of the objects of the class "player" with the class "element".
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */
