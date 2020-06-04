@@ -54,6 +54,7 @@ public:
     void generateItem(int xPosition, int yPosition,Element* obj);
 
     QString getMusic() const;
+    int getDifficulty() const;
 
 private:
     QImage background;
@@ -68,6 +69,7 @@ private:
     QString name;
     Info * playerInfo;
     QString musicPath;
+    int difficulty;
 };
 
 #endif // MAP_H

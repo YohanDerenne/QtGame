@@ -32,6 +32,16 @@ GameEngine::GameEngine()
     // SAVE GENERATED MAP ===================================================
     map->generateMap2();
     map->saveMap(map->getName());
+    map->clearMap();
+    map->generateMap1();
+    map->saveMap(map->getName());
+    map->clearMap();
+    map->generateCityWorld();
+    map->saveMap(map->getName());
+    map->clearMap();
+    map->generateMapBen();
+    map->saveMap(map->getName());
+    map->clearMap();
     // ======================================================================
 
 
@@ -574,6 +584,7 @@ void GameEngine::updateMobileVirusPosition()
                     if((iterator.value().fromLeft || iterator.value().fromRight) &&
                             !iterator.value().fromUnder && !iterator.value().fromTop){
                         mbVirus->switchSide();
+                        break;
                     }
                 }
             }
