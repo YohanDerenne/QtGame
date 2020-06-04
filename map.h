@@ -15,7 +15,12 @@
 #include "mobilevirus.h"
 
 
-
+/**
+ * \file map.h
+ * \brief Classe de la map.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Map
 {
 public:

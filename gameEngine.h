@@ -27,7 +27,12 @@
 #include "victorygroup.h"
 
 
-
+/**
+ * \file GameEngine.h
+ * \brief Classe du moteur du jeu.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class GameEngine: public QGraphicsView{
     Q_OBJECT
 

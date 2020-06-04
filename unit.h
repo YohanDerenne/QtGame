@@ -6,6 +6,12 @@
 
 #include "configuration.h"
 
+/**
+ * \file unit.h
+ * \brief Classe d'elements non fixes dans la map, hérite de la classe "Element".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Unit : public Element
 {
     Q_OBJECT

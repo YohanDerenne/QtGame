@@ -5,6 +5,12 @@
 #include "element.h"
 #include <QDebug>
 
+/**
+ * \file lifebar.h
+ * \brief Classe de la barre de vie.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class LifeBar : public QGraphicsItemGroup
 {
 public:

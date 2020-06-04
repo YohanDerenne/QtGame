@@ -5,6 +5,12 @@
 #include <QObject>
 #include <QMutex>
 
+/**
+ * \file element.h
+ * \brief Classe de la structure de base des elements dans la map.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Element :  public QObject, public QGraphicsPixmapItem
 {
 public:

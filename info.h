@@ -5,6 +5,12 @@
 #include "configuration.h"
 #include "lifebar.h"
 
+/**
+ * \file info.h
+ * \brief Classe des informations du joueur.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Info : public QGraphicsItemGroup
 {
 public:

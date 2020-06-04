@@ -3,6 +3,12 @@
 
 #include "unit.h"
 
+/**
+ * \file projectfile.h
+ * \brief Classe des projectiles, hérite de la classe "Unit".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Projectile : public Unit
 {
 public:

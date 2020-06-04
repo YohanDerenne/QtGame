@@ -3,7 +3,12 @@
 
 #include "element.h"
 
-
+/**
+ * \file fixedblock.h
+ * \brief Classe des elements fixes, hérite de la classe "Element".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class FixedBlock : public Element
 {
 public:

@@ -3,7 +3,12 @@
 
 #include <QPushButton>
 
-
+/**
+ * \file menubutton.h
+ * \brief Classe des boutons du menu de contrôle de la partie.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class MenuButton : public QPushButton
 {
 public:

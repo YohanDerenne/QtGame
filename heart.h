@@ -4,7 +4,12 @@
 #include "configuration.h"
 
 
-
+/**
+ * \file heart.h
+ * \brief Classe du consommable de type coeur, hérite de la classe "consoObject".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Heart: public consoObject
 {
 public:

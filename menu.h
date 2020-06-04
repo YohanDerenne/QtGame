@@ -7,6 +7,12 @@
 #include "map.h"
 #include <QDebug>
 
+/**
+ * \file menu.h
+ * \brief Classe du menu de contrôle de la partie.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Menu : public QGraphicsScene
 {
 public:

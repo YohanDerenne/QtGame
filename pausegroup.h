@@ -5,6 +5,12 @@
 #include "menubutton.h"
 #include "configuration.h"
 
+/**
+ * \file pausegroup.h
+ * \brief Classe du menu de pause.
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class PauseGroup : public QGraphicsItemGroup
 {
 public:

@@ -15,7 +15,12 @@
 #include "mask.h"
 #include "gelprojectile.h"
 
-
+/**
+ * \file player.h
+ * \brief Classe du Player, hérite de la classe "Unit".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class Player : public Unit{
     Q_OBJECT
 public:

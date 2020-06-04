@@ -3,6 +3,12 @@
 
 #include "projectile.h"
 
+/**
+ * \file gelprojectile.h
+ * \brief Classe du projectile Gel, hérite de la classe "Projectile".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class GelProjectile : public Projectile
 {
 public:

@@ -12,6 +12,12 @@ struct fromPosition
     bool fromLeft;
 };
 
+/**
+ * \file collidemanager.h
+ * \brief Classe permettant la collision des objets de la classe "player" avec la classe "element".
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 template <class itemType>
 class CollideManager
 {

@@ -6,6 +6,12 @@
 #include "configuration.h"
 #include <QGraphicsTextItem>
 
+/**
+ * \file victoryGroup.h
+ * \brief Classe pour gérer la victoire de la partie
+ * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
+ *
+ */
 class VictoryGroup : public QGraphicsItemGroup
 {
 public:
