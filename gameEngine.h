@@ -109,12 +109,6 @@ public:
     void updateMobileVirusPosition();
 
     /**
-     * \fn createVirus();
-     * \brief creates a virus within the map
-     */
-    void createVirus();
-
-    /**
      * \fn openGame();
      * \brief start the game
      */
