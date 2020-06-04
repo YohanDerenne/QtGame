@@ -46,7 +46,19 @@ public:
     MenuButton *getQuitBtn() const;
 
 private:
+
+    /**
+     * \var  QList<MenuButton *> buttonList;
+     * \brief List of main menu buttons
+     *
+     */
     QList<MenuButton *> buttonList;
+
+    /**
+     * \var  MenuButton * QuitBtn;
+     * \brief button to quit the game
+     *
+     */
     MenuButton * QuitBtn;
 
 };

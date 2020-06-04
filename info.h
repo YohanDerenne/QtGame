@@ -52,9 +52,34 @@ public:
     void setGelIndicator(bool state);
 
 private:
+
+    /**
+     * \var LifeBar * life;
+     * \brief the player's lifebar
+     *
+     */
     LifeBar * life;
+
+    /**
+     * \var Element * maskIndicator;
+     * \brief the mask indicator
+     *
+     */
     Element * maskIndicator;
+
+    /**
+     * \var Element * gelIndicator;
+     * \brief the gel indicator
+     *
+     */
     Element * gelIndicator;
+
+
+    /**
+     * \fn  void updateIndicatorPos()
+     * \brief update the position of the indicators
+     *
+     */
     void updateIndicatorPos();
 };
 

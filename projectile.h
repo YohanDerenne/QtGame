@@ -44,7 +44,21 @@ public:
     void setBegin(int value);
 
 private:
+
+
+    /**
+     * \var int maxDist;
+     * \brief the maximum distance the projectile can travel
+     *
+     */
     int maxDist;
+
+
+    /**
+     * \var int begin;
+     * \brief the distance the projectile travelled
+     *
+     */
     int begin;
 };
 

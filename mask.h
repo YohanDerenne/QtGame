@@ -28,6 +28,12 @@ public:
     void applyEffect(Unit * unit);
 
 private:
+
+    /**
+     * \var QTimer * bonusTimer;
+     * \brief the time the mask can be worn
+     *
+     */
     QTimer * bonusTimer;
 };
 

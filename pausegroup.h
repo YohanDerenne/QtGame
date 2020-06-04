@@ -45,8 +45,28 @@ public:
     MenuButton *getBackMenuBtn() const;
 
 private:
+
+
+    /**
+     * \var  MenuButton * continueBtn;
+     * \brief button to continue the game
+     *
+     */
     MenuButton * continueBtn;
+
+
+    /**
+     * \var  MenuButton * backMenuBtn;
+     * \brief button to return to the main menu
+     *
+     */
     MenuButton * backMenuBtn;
+
+    /**
+     * \var QGraphicsTextItem * title;
+     * \brief Name of Victory
+     *
+     */
     QGraphicsTextItem * title;
 };
 

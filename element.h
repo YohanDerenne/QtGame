@@ -121,12 +121,47 @@ public:
     int getIsRightSide() const;
 
 protected:
+
+    /**
+     * \var int width
+     * \brief the width of the element
+     *
+     */
     int width;
+
+    /**
+     * \var int height
+     * \brief the height of the element
+     *
+     */
     int height;
+
+    /**
+     * \var int isRightSide
+     * \brief 1 if the element is on the right side, 0 otherwise
+     *
+     */
     int isRightSide;
+
+    /**
+     * \var QString type;
+     * \brief the type of the element
+     *
+     */
     QString type;
 
+    /**
+     * \var int spawnX;
+     * \brief the x position of the spawn of the element
+     *
+     */
     int spawnX;
+
+    /**
+     * \var int spawnY;
+     * \brief the y position of the spawn of the element
+     *
+     */
     int spawnY;
 };
 

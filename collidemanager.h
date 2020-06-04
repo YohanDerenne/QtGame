@@ -61,17 +61,70 @@ public:
     QMap<itemType *, fromPosition> getCollidingItemList() const;
 
 private:
+
+    /**
+     * \var Unit * subject;
+     * \brief The colliding object
+     *
+     */
     Unit * subject;
+
+    /**
+     * \var QMap<itemType *,fromPosition> collidingItemList;
+     * \brief The list of collided objects
+     *
+     */
     QMap<itemType *,fromPosition> collidingItemList;
 
+
+    /**
+     * \var bool areColliding;
+     * \brief true if the subject is in collision
+     *
+     */
     bool areColliding;
 
+
+    /**
+     * \var bool solidTop;
+     * \brief true if the collision is at the top of the object
+     *
+     */
     bool solidTop;
+
+    /**
+     * \var bool solidLeft;
+     * \brief true if the collision is to the left of the object
+     *
+     */
     bool solidLeft;
+
+    /**
+     * \var bool solidRight;
+     * \brief true if the collision is to the right of the object
+     *
+     */
     bool solidRight;
+
+    /**
+     * \var bool solidUnder;
+     * \brief true if the collision is to the under of the object
+     *
+     */
     bool solidUnder;
 
+    /**
+     * \var int prec_y;
+     * \brief the y position at the time of the collision
+     *
+     */
     int prec_y;
+
+    /**
+     * \var int prec_x;
+     * \brief the x position at the time of the collision
+     *
+     */
     int prec_x;
 };
 

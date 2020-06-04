@@ -5,7 +5,7 @@
 
 /**
  * \file menubutton.h
- * \brief Class of the buttons of the game control menu.
+ * \brief Class of the buttons of the menu.
  * \author Derenne / Kiavoukiladioko / Vouillon / Akrafi
  *
  */
@@ -15,7 +15,8 @@ public:
     /**
      * \fn MenuButton(QString text)
      * \brief Constructor of the MenuButton class
-     * Reset the navigation menu buttons
+     * \param text, text of the button
+     * Reset the buttons
      */
     MenuButton(QString text);
 };

@@ -41,6 +41,12 @@ public:
     virtual void applyEffect(Unit * unit)=0;
 
 private:
+
+    /**
+     * \var int durationOfEffect;
+     * \brief consumable duration
+     *
+     */
     int durationOfEffect;
 };
 

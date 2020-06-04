@@ -29,7 +29,7 @@ public:
     ~LifeBar();
 
     /**
-     * \fn setNbHeart(int nb,int x, int y);
+     * \fn void setNbHeart(int nb,int x, int y);
      * \brief affects life at the lifebar
      * \param nb, the number of hearts assigned to the life bar
      * \param x, the "x" position of the heart we create
@@ -39,7 +39,7 @@ public:
     void setNbHeart(int nb,int x, int y);
 
     /**
-     * \fn clearHearts()
+     * \fn void clearHearts()
      * \brief destructor of the LifeBar class
      * removes all objects from the player's lifebar
      */
@@ -59,8 +59,27 @@ public:
     int getHeartHeight() const;
 
 private:
+
+
+    /**
+     * \var  QList<Element *> HeartList;
+     * \brief The list of hearts owned by the lifebar
+     *
+     */
     QList<Element *> * HeartList;
+
+    /**
+     * \var int heartWidth;
+     * \brief the width of a heart
+     *
+     */
     int heartWidth;
+
+    /**
+     * \var int heartHeight;
+     * \brief the height of a heart
+     *
+     */
     int heartHeight;
 };
 
