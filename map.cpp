@@ -114,7 +114,85 @@ void Map::generateMap1()
 
 void Map::generateMap2()
 {
+    width = MAP_WIDTH;
+    height = MAP_HEIGHT;
 
+    // set background
+    backgroundPath = ":/ressources/images/backgrounds/background_1.jpg";
+    setBackground(QImage(backgroundPath));
+
+    // create the player
+    player = new Player();
+    player->setPos(200,600);
+
+    // add the player to the scene
+    //scene->addItem(player);
+
+    // create map
+    // floor
+    for(int i = 0; i < 70; i++){
+
+        Wall * bloc = new Wall();
+
+        bloc->setPos(i*bloc->getWidth(),660);
+        elementList->append(bloc);
+
+
+
+
+        if(i == 69){
+            FinishFlag *flag = new FinishFlag();
+            flag->setPos(i*bloc->getWidth(),660 - flag->getHeight());
+            elementList->append(flag);
+        }
+    }
+
+    // platform
+    for(int i = 5; i < 10; i++){
+        if(i != 9){
+
+            Wall * bloc = new Wall();
+            bloc->setPos(i*bloc->getWidth() + 900 ,430);
+            elementList->append(bloc);
+        }
+
+    }
+
+    // wall
+    /*for(int i = 5; i >= 0; i--){
+        if(i != 2 && i !=3 ){
+            Wall * bloc = new Wall();
+            bloc->setPos(0 ,500 - bloc->getHeight() - i * bloc->getHeight());
+            elementList->append(bloc);
+        }
+
+    }*/
+    // little wall
+    for(int i = 1; i >= 0; i--){
+        Wall * bloc = new Wall();
+        Wall * bloc1 = new Wall();
+        bloc->setPos(500 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc1->setPos(750 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+        elementList->append(bloc1);
+    }
+    // little wall
+    for(int i = 2; i >= 0; i--){
+        Wall * bloc = new Wall();
+        Wall * bloc1 = new Wall();
+        Wall * bloc2 = new Wall();
+        Wall * bloc3 = new Wall();
+        bloc->setPos(550 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc1->setPos(600 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc2->setPos(650 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc2->setPos(650 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        bloc3->setPos(700 ,660 - bloc->getHeight() - i * bloc->getHeight());
+        elementList->append(bloc);
+        elementList->append(bloc1);
+        elementList->append(bloc2);
+        elementList->append(bloc3);
+
+    }
 }
 
 bool Map::readmap(QString directory)

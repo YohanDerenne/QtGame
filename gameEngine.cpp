@@ -31,10 +31,14 @@ GameEngine::GameEngine()
     map = new Map();
 
     // SAVE GENERATED MAP ===================================================
-    map->generateMap1();
-    map->saveMap("world 2");
+   // map->generateMap1();
+    //map->saveMap("world 2");
     // ======================================================================
 
+    // SAVE GENERATED MAP ===================================================
+    map->generateMap2();
+    map->saveMap("world 1");
+    // ======================================================================
 
     // Init Timer
     refreshTimer = new QTimer(this);
