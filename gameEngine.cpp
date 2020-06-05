@@ -19,7 +19,7 @@ GameEngine::GameEngine()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //setFixedSize(WINDOW_WIDTH,WINDOW_HEIGHT);
     //resize(windowWidth,windowHeight);
-    //showFullScreen();
+
 
     // Game plan
     worldPlan = new QGraphicsItemGroup();
@@ -106,6 +106,8 @@ GameEngine::GameEngine()
 
     openMenu();
     //openGame();
+
+    showFullScreen();
 
 }
 
@@ -208,6 +210,7 @@ void GameEngine::keyReleaseEvent(QKeyEvent *event)
 void GameEngine::resizeEvent(QResizeEvent *event)
 {
     qDebug() << "resize";
+    if(levelScene)
     levelScene->setSceneRect(0,0,map->getWidth(),map->getHeight());
     // Scale the view to the new size
     QRect rect = QRect(0,0,WINDOW_WIDTH,map->getHeight());
